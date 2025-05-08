@@ -1,0 +1,20 @@
+{
+  "framework": "react",
+  "typescript": true,
+  "projectName": "piggybanx-forms",
+  "mode": "file-router",
+  "tailwind": true,
+  "packageManager": "pnpm",
+  "toolchain": "none",
+  "variableValues": {},
+  "git": true,
+  "version": 1,
+  "existingAddOns": [
+    "form",
+    "netlify",
+    "shadcn",
+    "start",
+    "tRPC",
+    "tanstack-query"
+  ]
+}
