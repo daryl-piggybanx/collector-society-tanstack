@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
-import logo from '/logo-white.png'
-import logoHover from '/logo-red.png'
+import logo from '@/assets/logo-white.png'
+import logoHover from '@/assets/logo-red.png'
 import { useState } from 'react'
 
 export default function Header() {
