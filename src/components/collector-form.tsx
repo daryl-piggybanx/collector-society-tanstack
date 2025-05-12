@@ -144,7 +144,7 @@ export default function CollectorForm() {
   return (
     <div className="w-full max-w-3xl">
       <motion.div
-        className="bg-amber-950/30 backdrop-blur-md border border-amber-400/20 rounded-2xl shadow-xl overflow-hidden relative"
+        className="bg-amber-950/30 backdrop-blur-sm border border-amber-400/20 rounded-2xl shadow-xl overflow-hidden relative"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
