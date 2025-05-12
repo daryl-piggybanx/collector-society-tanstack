@@ -11,7 +11,7 @@ export const Route = createFileRoute('/')({
 
 function App() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-950 via-gray-700 to-zinc-900">
+    <main className="absolute inset-0 overflow-hidden bg-gradient-to-b from-gray-950 via-gray-700 to-zinc-900">
       {/* Particle effect background */}
       <ParticleBackground />
 
