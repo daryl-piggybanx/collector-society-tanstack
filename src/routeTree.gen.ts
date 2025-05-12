@@ -13,7 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
-import { Route as CollectorCollectorFormImport } from './routes/collector.collector-form'
+import { Route as CollectorNewImport } from './routes/collector.new'
 import { Route as DemoStartServerFuncsImport } from './routes/demo.start.server-funcs'
 import { Route as DemoStartApiRequestImport } from './routes/demo.start.api-request'
 import { Route as DemoFormSimpleImport } from './routes/demo.form.simple'
@@ -33,9 +33,9 @@ const DemoTanstackQueryRoute = DemoTanstackQueryImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const CollectorCollectorFormRoute = CollectorCollectorFormImport.update({
-  id: '/collector/collector-form',
-  path: '/collector/collector-form',
+const CollectorNewRoute = CollectorNewImport.update({
+  id: '/collector/new',
+  path: '/collector/new',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -74,11 +74,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/collector/collector-form': {
-      id: '/collector/collector-form'
-      path: '/collector/collector-form'
-      fullPath: '/collector/collector-form'
-      preLoaderRoute: typeof CollectorCollectorFormImport
+    '/collector/new': {
+      id: '/collector/new'
+      path: '/collector/new'
+      fullPath: '/collector/new'
+      preLoaderRoute: typeof CollectorNewImport
       parentRoute: typeof rootRoute
     }
     '/demo/tanstack-query': {
@@ -123,7 +123,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/collector/collector-form': typeof CollectorCollectorFormRoute
+  '/collector/new': typeof CollectorNewRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
@@ -133,7 +133,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/collector/collector-form': typeof CollectorCollectorFormRoute
+  '/collector/new': typeof CollectorNewRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
@@ -144,7 +144,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/collector/collector-form': typeof CollectorCollectorFormRoute
+  '/collector/new': typeof CollectorNewRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
@@ -156,7 +156,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/collector/collector-form'
+    | '/collector/new'
     | '/demo/tanstack-query'
     | '/demo/form/address'
     | '/demo/form/simple'
@@ -165,7 +165,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/collector/collector-form'
+    | '/collector/new'
     | '/demo/tanstack-query'
     | '/demo/form/address'
     | '/demo/form/simple'
@@ -174,7 +174,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/collector/collector-form'
+    | '/collector/new'
     | '/demo/tanstack-query'
     | '/demo/form/address'
     | '/demo/form/simple'
@@ -185,7 +185,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CollectorCollectorFormRoute: typeof CollectorCollectorFormRoute
+  CollectorNewRoute: typeof CollectorNewRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
   DemoFormSimpleRoute: typeof DemoFormSimpleRoute
@@ -195,7 +195,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CollectorCollectorFormRoute: CollectorCollectorFormRoute,
+  CollectorNewRoute: CollectorNewRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
   DemoFormSimpleRoute: DemoFormSimpleRoute,
@@ -214,7 +214,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/collector/collector-form",
+        "/collector/new",
         "/demo/tanstack-query",
         "/demo/form/address",
         "/demo/form/simple",
@@ -225,8 +225,8 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
-    "/collector/collector-form": {
-      "filePath": "collector.collector-form.tsx"
+    "/collector/new": {
+      "filePath": "collector.new.tsx"
     },
     "/demo/tanstack-query": {
       "filePath": "demo.tanstack-query.tsx"

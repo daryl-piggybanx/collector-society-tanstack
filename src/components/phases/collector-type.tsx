@@ -40,7 +40,7 @@ export default function PhaseOne({ formData, updateFormData }: PhaseOneProps) {
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit" className="text-center">
-      <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-8 text-amber-100">
+      <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-8 text-rose-100">
         Are you a new or returning collector?
       </motion.h2>
 
@@ -51,8 +51,8 @@ export default function PhaseOne({ formData, updateFormData }: PhaseOneProps) {
           onClick={() => handleSelection(false)}
           className={`flex items-center gap-3 p-8 text-lg transition-all ${
             formData.isReturningCollector === false
-              ? "bg-amber-600 hover:bg-amber-500 text-white scale-105"
-              : "bg-amber-950/40 border-amber-400/30 text-amber-100 hover:bg-amber-800/50 hover:text-amber-50"
+              ? "bg-rose-600 hover:bg-rose-500 text-white scale-105"
+              : "bg-rose-950/40 border-rose-400/30 text-rose-100 hover:bg-rose-800/50 hover:text-rose-50"
           }`}
         >
           <UserPlus size={24} />
@@ -65,8 +65,8 @@ export default function PhaseOne({ formData, updateFormData }: PhaseOneProps) {
           onClick={() => handleSelection(true)}
           className={`flex items-center gap-3 p-8 text-lg transition-all ${
             formData.isReturningCollector === true
-              ? "bg-amber-600 hover:bg-amber-500 text-white scale-105"
-              : "bg-amber-950/40 border-amber-400/30 text-amber-100 hover:bg-amber-800/50 hover:text-amber-50"
+              ? "bg-rose-600 hover:bg-rose-500 text-white scale-105"
+              : "bg-rose-950/40 border-rose-400/30 text-rose-100 hover:bg-rose-800/50 hover:text-rose-50"
           }`}
         >
           <UserCheck size={24} />

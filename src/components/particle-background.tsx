@@ -54,11 +54,21 @@ export default function ParticleBackground() {
     const particleCount = Math.min(Math.floor((width * height) / 10000), 200)
 
     const colors = [
-      "rgba(255, 183, 77, 0.8)", // Amber
-      "rgba(255, 167, 38, 0.8)", // Orange
-      "rgba(255, 152, 0, 0.8)", // Deep Orange
-      "rgba(244, 143, 177, 0.8)", // Pink
-      "rgba(255, 204, 128, 0.8)", // Light Orange
+      // "rgba(255, 183, 77, 0.8)", // Amber
+      // "rgba(255, 167, 38, 0.8)", // Orange
+      // "rgba(255, 152, 0, 0.8)", // Deep Orange
+      // "rgba(244, 143, 177, 0.8)", // Pink
+      // "rgba(255, 204, 128, 0.8)", // Light Orange
+      // "rgba(236, 235, 235, 0.8)", // Off-white
+      // "rgba(200, 195, 187, 0.6)", // Light stone gray
+      // "rgba(166, 167, 163, 0.7)", // Silver gray
+      // "rgba(236, 235, 235, 0.5)", // Off-white with more transparency
+      // "rgba(200, 195, 187, 0.4)", // Light stone gray with more transparency
+      "rgba(243, 244, 246, 0.8)", // gray-100 (off-white)
+      "rgba(229, 231, 235, 0.6)", // gray-200 (off-white with transparency)
+      "rgba(228, 228, 231, 0.7)", // zinc-200 (light gray)
+      "rgba(250, 250, 250, 0.6)", // zinc-50 with more transparency
+      "rgba(244, 244, 245, 0.5)", // zinc-100 with more transparency
     ]
 
     for (let i = 0; i < particleCount; i++) {

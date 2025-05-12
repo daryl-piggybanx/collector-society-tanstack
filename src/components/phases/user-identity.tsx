@@ -60,14 +60,14 @@ export default function PhaseThree({ formData, updateFormData }: PhaseThreeProps
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <User size={28} className="text-amber-300" />
-        <h2 className="text-2xl font-bold text-amber-100">
+        <User size={28} className="text-rose-300" />
+        <h2 className="text-2xl font-bold text-rose-100">
           {formData.isReturningCollector ? "Welcome back!" : "Tell us about yourself"}
         </h2>
       </motion.div>
 
       {formData.isReturningCollector && (
-        <motion.p variants={itemVariants} className="text-amber-100/80 mb-6">
+        <motion.p variants={itemVariants} className="text-rose-100/80 mb-6">
           We've found your information. Feel free to update if needed.
         </motion.p>
       )}
@@ -75,7 +75,7 @@ export default function PhaseThree({ formData, updateFormData }: PhaseThreeProps
       <motion.div variants={itemVariants} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="firstName" className="text-amber-200">
+            <Label htmlFor="firstName" className="text-rose-200">
               First Name
             </Label>
             <div className="relative">
@@ -85,17 +85,17 @@ export default function PhaseThree({ formData, updateFormData }: PhaseThreeProps
                 value={formData.firstName}
                 onChange={handleInputChange}
                 placeholder="Enter your first name"
-                className="border-amber-400/30 bg-amber-950/40 text-amber-100 placeholder:text-amber-300/50 focus:border-amber-400 focus:ring-amber-400 pl-3 pr-10"
+                className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
                 required
               />
               {formData.isReturningCollector && (
-                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-300" />
+                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
               )}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-amber-200">
+            <Label htmlFor="lastName" className="text-rose-200">
               Last Name
             </Label>
             <div className="relative">
@@ -105,18 +105,18 @@ export default function PhaseThree({ formData, updateFormData }: PhaseThreeProps
                 value={formData.lastName}
                 onChange={handleInputChange}
                 placeholder="Enter your last name"
-                className="border-amber-400/30 bg-amber-950/40 text-amber-100 placeholder:text-amber-300/50 focus:border-amber-400 focus:ring-amber-400 pl-3 pr-10"
+                className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
                 required
               />
               {formData.isReturningCollector && (
-                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-300" />
+                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
               )}
             </div>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="discordUsername" className="text-amber-200">
+          <Label htmlFor="discordUsername" className="text-rose-200">
             Discord Username
           </Label>
           <div className="relative">
@@ -126,11 +126,11 @@ export default function PhaseThree({ formData, updateFormData }: PhaseThreeProps
               value={formData.discordUsername}
               onChange={handleInputChange}
               placeholder="Enter your Discord username"
-              className="border-amber-400/30 bg-amber-950/40 text-amber-100 placeholder:text-amber-300/50 focus:border-amber-400 focus:ring-amber-400 pl-3 pr-10"
+              className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
               required
             />
             {formData.isReturningCollector && (
-              <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-amber-300" />
+              <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
             )}
           </div>
         </div>

@@ -44,17 +44,17 @@ export default function PhaseTwo({ formData, updateFormData, rules }: PhaseTwoPr
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <ScrollText size={28} className="text-amber-300" />
-        <h2 className="text-2xl font-bold text-amber-100">
+        <ScrollText size={28} className="text-rose-300" />
+        <h2 className="text-2xl font-bold text-rose-100">
           {formData.isReturningCollector ? "Welcome back!" : "Before we get started"}
         </h2>
       </motion.div>
 
-      <motion.p variants={itemVariants} className="text-lg mb-8 text-amber-100/90">
+      <motion.p variants={itemVariants} className="text-lg mb-8 text-rose-100/90">
         {formData.isReturningCollector ? "Here is a reminder of our rules" : "Please review our collecting rules"}
       </motion.p>
 
-      <motion.div variants={itemVariants} className="bg-amber-950/50 rounded-lg p-6 border border-amber-400/30">
+      <motion.div variants={itemVariants} className="bg-rose-950/50 rounded-lg p-6 border border-rose-400/30">
         <ul className="space-y-4">
           {rules.map((rule, index) => (
             <motion.li
@@ -71,9 +71,9 @@ export default function PhaseTwo({ formData, updateFormData, rules }: PhaseTwoPr
                 id={`rule-${index}`}
                 checked={formData.rulesAccepted[index]}
                 onCheckedChange={(checked) => handleRuleCheck(index, checked === true)}
-                className="mt-1 data-[state=checked]:bg-amber-500 data-[state=checked]:text-white border-amber-400"
+                className="mt-1 data-[state=checked]:bg-rose-500 data-[state=checked]:text-white border-rose-400"
               />
-              <label htmlFor={`rule-${index}`} className="text-amber-100/90 cursor-pointer">
+              <label htmlFor={`rule-${index}`} className="text-rose-100/90 cursor-pointer">
                 {rule}
               </label>
             </motion.li>
@@ -84,7 +84,7 @@ export default function PhaseTwo({ formData, updateFormData, rules }: PhaseTwoPr
       <motion.div
         variants={itemVariants}
         className={`mt-6 flex items-center justify-center p-3 rounded-md transition-all ${
-          allRulesAccepted ? "bg-green-900/30 text-green-300" : "bg-amber-950/50 text-amber-300/50"
+          allRulesAccepted ? "bg-green-900/30 text-green-300" : "bg-rose-950/50 text-rose-300/50"
         }`}
       >
         <Check size={18} className="mr-2" />

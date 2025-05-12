@@ -44,19 +44,19 @@ export default function PhaseSix({ formData, updateFormData }: PhaseSixProps) {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <PlusCircle size={28} className="text-amber-300" />
-        <h2 className="text-2xl font-bold text-amber-100">
+        <PlusCircle size={28} className="text-rose-300" />
+        <h2 className="text-2xl font-bold text-rose-100">
           {formData.firstName ? `${formData.firstName}, ` : ""}
           what category would you want added?
         </h2>
       </motion.div>
 
-      <motion.p variants={itemVariants} className="text-amber-100/80 mb-6">
+      <motion.p variants={itemVariants} className="text-rose-100/80 mb-6">
         We're always looking to expand our collection categories. Let us know what you'd like to see!
       </motion.p>
 
       <motion.div variants={itemVariants} className="space-y-3">
-        <Label htmlFor="categoryToAdd" className="text-amber-200">
+        <Label htmlFor="categoryToAdd" className="text-rose-200">
           Suggest a new category
         </Label>
         <Textarea
@@ -64,11 +64,11 @@ export default function PhaseSix({ formData, updateFormData }: PhaseSixProps) {
           value={formData.categoryToAdd}
           onChange={handleInputChange}
           placeholder="Enter your suggestion here..."
-          className="min-h-[120px] border-amber-400/30 bg-amber-950/40 text-amber-100 placeholder:text-amber-300/50 focus:border-amber-400 focus:ring-amber-400"
+          className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
         />
       </motion.div>
 
-      <motion.p variants={itemVariants} className="mt-4 text-sm text-amber-300/70 italic">
+      <motion.p variants={itemVariants} className="mt-4 text-sm text-rose-300/70 italic">
         This field is optional. Feel free to skip if you don't have any suggestions.
       </motion.p>
     </motion.div>

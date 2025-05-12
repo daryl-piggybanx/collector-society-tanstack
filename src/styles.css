@@ -19,7 +19,7 @@ code {
 }
 
 :root {
-  --primary: var(--color-amber-100);
+  --primary: var(--color-slate-300);
   --complement: #C76E00;
   --contrast: #e7e9ec;
   --background: oklch(1 0 0);
@@ -136,6 +136,6 @@ code {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-amber-100;
+    @apply bg-background text-stone-300;
   }
 }

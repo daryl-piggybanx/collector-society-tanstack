@@ -93,6 +93,13 @@ const config = {
           900: "#881337",
           950: "#4c0519",
         },
+        // industrial colors
+        "charcoal": "#1E1C1D",
+        "silver-gray": "#A6A7A3",
+        "slate-gray": "#63615E",
+        "stone-gray": "#C8C3BB",
+        "accent-red": "#F2280B",
+        "off-white": "#ECEBEB",
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -66,7 +66,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
 
   // Function to render the appropriate icon based on the icon name
   const renderIcon = (iconName: string, isSelected: boolean) => {
-    const iconClass = isSelected ? "text-amber-200" : "text-amber-100/60"
+    const iconClass = isSelected ? "text-rose-200" : "text-rose-100/60"
     const iconSize = 24
 
     switch (iconName) {
@@ -92,14 +92,14 @@ export default function TopCategories({ formData, updateFormData, preferences }:
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <Target size={28} className="text-amber-300" />
-        <h2 className="text-2xl font-bold text-amber-100">
+        <Target size={28} className="text-rose-300" />
+        <h2 className="text-2xl font-bold text-rose-100">
           {formData.firstName ? `${formData.firstName}, ` : ""}
           what do you want to collect?
         </h2>
       </motion.div>
 
-      <motion.p variants={itemVariants} className="text-amber-100/80 mb-6">
+      <motion.p variants={itemVariants} className="text-rose-100/80 mb-6">
         Select up to 4 categories (order matters)
       </motion.p>
 
@@ -125,17 +125,17 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                 disabled={isDisabled}
                 className={`w-full h-full p-6 text-center transition-all ${
                   isSelected
-                    ? "bg-amber-800/60 border-2 border-amber-500"
-                    : "bg-amber-950/40 border border-amber-400/30 hover:border-amber-400/60"
+                    ? "bg-rose-800/60 border-2 border-rose-500"
+                    : "bg-rose-950/40 border border-rose-400/30 hover:border-rose-400/60"
                 } rounded-lg flex flex-col items-center justify-center gap-3`}
               >
                 {renderIcon(preference.icon, isSelected)}
-                <span className={`font-medium ${isSelected ? "text-amber-200" : "text-amber-100/80"}`}>
+                <span className={`font-medium ${isSelected ? "text-rose-200" : "text-rose-100/80"}`}>
                   {preference.name}
                 </span>
 
                 {isSelected && (
-                  <div className="absolute top-2 right-2 bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                  <div className="absolute top-2 right-2 bg-rose-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
                     {selectedPreferences.indexOf(preference.name) + 1}
                   </div>
                 )}
@@ -145,9 +145,9 @@ export default function TopCategories({ formData, updateFormData, preferences }:
         })}
       </motion.div>
 
-      <motion.div variants={itemVariants} className="mt-6 text-center text-amber-100/80">
+      <motion.div variants={itemVariants} className="mt-6 text-center text-rose-100/80">
         {selectedPreferences.length > 0 ? (
-          <div className="flex items-center justify-center gap-2 text-amber-300">
+          <div className="flex items-center justify-center gap-2 text-rose-300">
             <Check size={18} />
             <span>
               {selectedPreferences.length === 4
