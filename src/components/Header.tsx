@@ -7,8 +7,8 @@ export default function Header() {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 right-0 p-2 flex gap-2 bg-transparent backdrop-blur-sm justify-center z-[100]">
-      <nav className="flex flex-row items-center">
+    <header className="fixed top-10 left-0 right-0 p-2 flex gap-2 bg-transparent justify-center z-[100]">
+      <nav className="flex flex-row items-center backdrop-blur-sm">
         <div className="px-2 font-bold">
           <Link 
             to="/" 
