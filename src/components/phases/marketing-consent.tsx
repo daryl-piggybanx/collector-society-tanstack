@@ -97,7 +97,7 @@ export default function PhaseSeven({ formData, updateFormData, onSubmit, isSubmi
         </div>
 
         <div className="space-y-3">
-          <Label className="text-rose-200">Communication Preference</Label>
+          <Label className="text-rose-200 mb-2">Communication Preference</Label>
           <RadioGroup
             value={formData.communicationPreference}
             onValueChange={handleCommunicationChange}

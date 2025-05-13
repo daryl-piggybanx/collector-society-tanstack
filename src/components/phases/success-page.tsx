@@ -76,8 +76,8 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="text-center">
       <motion.div variants={itemVariants} className="mb-8 flex flex-col items-center">
-        <div className="w-20 h-20 rounded-full bg-green-900/30 flex items-center justify-center mb-4">
-          <CheckCircle size={40} className="text-green-300" />
+        <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 w-100">
+          <CheckCircle size={40} className="text-rose-100" />
         </div>
         <h2 className="text-3xl font-bold text-rose-100">Success!</h2>
         <p className="text-rose-100/80 mt-2">Thank you for completing your collector profile.</p>
