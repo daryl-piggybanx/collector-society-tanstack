@@ -7,14 +7,12 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import type { FormData } from "@/components/collector-form"
 
-interface PhaseSevenProps {
+interface MarketingConsentProps {
   formData: FormData
   updateFormData: (data: Partial<FormData>) => void
-  onSubmit: () => void
-  isSubmitting: boolean
 }
 
-export default function PhaseSeven({ formData, updateFormData, onSubmit, isSubmitting }: PhaseSevenProps) {
+export default function MarketingConsent({ formData, updateFormData }: MarketingConsentProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     updateFormData({ [name]: value })
@@ -49,33 +47,29 @@ export default function PhaseSeven({ formData, updateFormData, onSubmit, isSubmi
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
-      <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <Mail size={28} className="text-rose-300" />
-        <h2 className="text-2xl font-bold text-rose-100">
-          {formData.firstName ? `${formData.firstName}, ` : ""}
-          how can we reach you?
-        </h2>
-      </motion.div>
 
-      <motion.p variants={itemVariants} className="text-rose-100/80 mb-6">
+      {/* <motion.p variants={itemVariants} className="text-rose-100/80 my-6">
         We'll use this information to keep you updated on new collections and events.
-      </motion.p>
+      </motion.p> */}
 
-      <motion.div variants={itemVariants} className="space-y-6">
+      <motion.div variants={itemVariants} className="space-y-6 my-6">
         <div className="space-y-3">
           <Label htmlFor="email" className="text-rose-200">
             Email Address
           </Label>
-          <Input
-            id="email"
+          <div className="flex items-center">
+            <Mail size={18} className="text-rose-300 mr-2" />
+            <Input
+              id="email"
             name="email"
             type="email"
             value={formData.email}
             onChange={handleInputChange}
-            placeholder="Enter your email address"
-            className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
-            required
-          />
+              placeholder="Enter your email address"
+              className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
+              required
+            />
+          </div>
         </div>
 
         <div className="space-y-3">
@@ -97,13 +91,13 @@ export default function PhaseSeven({ formData, updateFormData, onSubmit, isSubmi
         </div>
 
         <div className="space-y-3">
-          <Label className="text-rose-200 mb-2">Communication Preference</Label>
+          <Label className="text-rose-200 mb-4">Communication Preference</Label>
           <RadioGroup
             value={formData.communicationPreference}
             onValueChange={handleCommunicationChange}
-            className="space-y-3"
+            className="flex flex-row md:flex-col gap-4 md:gap-3 md:justify-start md:items-start"
           >
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-3">
               <RadioGroupItem
                 value="email"
                 id="comm-email"
@@ -113,7 +107,7 @@ export default function PhaseSeven({ formData, updateFormData, onSubmit, isSubmi
                 Email
               </Label>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-3">
               <RadioGroupItem
                 value="phone"
                 id="comm-phone"
@@ -123,7 +117,7 @@ export default function PhaseSeven({ formData, updateFormData, onSubmit, isSubmi
                 Phone
               </Label>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-3">
               <RadioGroupItem
                 value="both"
                 id="comm-both"

@@ -1,20 +1,19 @@
 import type React from "react"
 
 import { motion } from "framer-motion"
-import { Sparkles } from "lucide-react"
+import { Sparkles, Users } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import type { FormData } from "@/components/collector-form"
-import GroupIcon from "@/components/icons/group-icon"
 
-interface PhaseFourProps {
+interface CollectorPiecesProps {
   formData: FormData
   updateFormData: (data: Partial<FormData>) => void
   variations: string[]
 }
 
-export default function PhaseFour({ formData, updateFormData, variations }: PhaseFourProps) {
+export default function CollectorPieces({ formData, updateFormData, variations }: CollectorPiecesProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateFormData({ pieceCount: e.target.value })
   }
@@ -49,7 +48,7 @@ export default function PhaseFour({ formData, updateFormData, variations }: Phas
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <GroupIcon />
+        <Users size={28} className="text-rose-300" />
         <h2 className="text-2xl font-bold text-rose-100">
           {formData.firstName ? `Hi ${formData.firstName}!` : "Your Collection"}
         </h2>

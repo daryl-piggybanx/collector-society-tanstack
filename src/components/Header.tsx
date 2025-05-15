@@ -8,7 +8,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-10 left-0 right-0 p-2 flex gap-2 bg-transparent justify-center z-[100]">
-      <nav className="flex flex-row items-center backdrop-blur-sm">
+      <nav className="flex flex-row items-center">
         <div className="px-2 font-bold">
           <Link 
             to="/" 
@@ -19,7 +19,7 @@ export default function Header() {
             <img 
               src={isHovered ? logoHover : logo} 
               alt="PiggyBanx Logo" 
-              className="h-20 w-[200px] object-contain transition-opacity duration-200" 
+              className="h-20 w-20 object-contain transition-opacity duration-200 backdrop-blur-sm rounded-full" 
             />
           </Link>
         </div>

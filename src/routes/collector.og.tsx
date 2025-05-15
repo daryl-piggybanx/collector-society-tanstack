@@ -1,6 +1,8 @@
 import { getProfileByEmail } from '@/integrations/klaviyo/profiles/services'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
+import { OGCollectorForm } from '@/components/collector-form'
+import ParticleBackground from '@/components/particle-background'
 
 export const Route = createFileRoute('/collector/og')({
     loader: async ({ context }) => {
@@ -31,9 +33,16 @@ function RouteComponent() {
     if (error) return <div>Error loading profile</div>
     if (!profile) return <div>No profile found</div>
 
-    return (
-        <div>
-            <h1>Welcome, {profile.attributes.first_name}!</h1>
-        </div>
-    )
+    // Welcome, {profile.attributes.first_name}
+
+  return (
+    <main className="absolute inset-0  overflow-hidden bg-gradient-to-b from-gray-950 via-gray-700 to-zinc-900">
+
+      <ParticleBackground />
+
+      <div className="relative z-10 flex min-h-screen items-center justify-center p-4">
+        <OGCollectorForm />
+      </div>
+    </main>
+  )
 }

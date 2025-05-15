@@ -3,13 +3,13 @@ import { Check, ScrollText } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { FormData } from "@/components/collector-form"
 
-interface PhaseTwoProps {
+interface CommunityRulesProps {
   formData: FormData
   updateFormData: (data: Partial<FormData>) => void
   rules: string[]
 }
 
-export default function PhaseTwo({ formData, updateFormData, rules }: PhaseTwoProps) {
+export default function CommunityRules({ formData, updateFormData, rules }: CommunityRulesProps) {
   const handleRuleCheck = (index: number, checked: boolean) => {
     const updatedRules = [...formData.rulesAccepted]
     updatedRules[index] = checked

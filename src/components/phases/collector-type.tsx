@@ -5,12 +5,12 @@ import { UserPlus, UserCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { FormData } from "@/components/collector-form"
 
-interface PhaseOneProps {
+interface CollectorTypeProps {
   formData: FormData
   updateFormData: (data: Partial<FormData>) => void
 }
 
-export default function PhaseOne({ formData, updateFormData }: PhaseOneProps) {
+export default function CollectorType({ formData, updateFormData }: CollectorTypeProps) {
   const handleSelection = (isReturning: boolean) => {
     updateFormData({ isReturningCollector: isReturning })
   }

@@ -8,12 +8,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import type { FormData } from "@/components/collector-form"
 
-interface PhaseSixProps {
+interface NewCategoriesProps {
   formData: FormData
   updateFormData: (data: Partial<FormData>) => void
 }
 
-export default function PhaseSix({ formData, updateFormData }: PhaseSixProps) {
+export default function NewCategories({ formData, updateFormData }: NewCategoriesProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     updateFormData({ categoryToAdd: e.target.value })
   }

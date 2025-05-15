@@ -8,12 +8,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type { FormData } from "@/components/collector-form"
 
-interface PhaseThreeProps {
+interface UserIdentityProps {
   formData: FormData
   updateFormData: (data: Partial<FormData>) => void
 }
 
-export default function PhaseThree({ formData, updateFormData }: PhaseThreeProps) {
+export default function UserIdentity({ formData, updateFormData }: UserIdentityProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     updateFormData({ [name]: value })
