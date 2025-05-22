@@ -84,7 +84,7 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleInputChange}
-                placeholder="Enter your first name"
+                placeholder="First Name"
                 className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
                 required
               />
@@ -104,7 +104,7 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleInputChange}
-                placeholder="Enter your last name"
+                placeholder="Last Name"
                 className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
                 required
               />
@@ -113,25 +113,45 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
               )}
             </div>
           </div>
-        </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="discordUsername" className="text-rose-200">
-            Discord Username
-          </Label>
-          <div className="relative">
-            <Input
-              id="discordUsername"
-              name="discordUsername"
-              value={formData.discordUsername}
-              onChange={handleInputChange}
-              placeholder="Enter your Discord username"
-              className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
-              required
-            />
-            {formData.isReturningCollector && (
-              <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
-            )}
+          <div className="space-y-2">
+            <Label htmlFor="discordUsername" className="text-rose-200">
+              Discord Username
+            </Label>
+            <div className="relative">
+              <Input
+                id="discordUsername"
+                name="discordUsername"
+                value={formData.discordUsername}
+                onChange={handleInputChange}
+                placeholder="Discord Username (optional)"
+                className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
+                required
+              />
+              {formData.isReturningCollector && (
+                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="instagramHandle" className="text-rose-200">
+              Instagram Handle
+            </Label>
+            <div className="relative">
+              <Input
+                id="instagramHandle"
+                name="instagramHandle"
+                value={formData.instagramHandle}
+                onChange={handleInputChange}
+                placeholder="Instagram Handle (optional)"
+                className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
+                required
+              />
+              {formData.isReturningCollector && (
+                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
+              )}
+            </div>
           </div>
         </div>
       </motion.div>

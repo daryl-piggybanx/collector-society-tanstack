@@ -57,7 +57,7 @@ export default function CollectorPieces({ formData, updateFormData, variations }
       <motion.div variants={itemVariants} className="space-y-8">
         <div className="space-y-3">
           <Label htmlFor="pieceCount" className="text-lg text-rose-200">
-            How many pieces do you have?
+          How many pieces do you currently have in your collection?
           </Label>
           <Input
             id="pieceCount"
@@ -70,7 +70,19 @@ export default function CollectorPieces({ formData, updateFormData, variations }
         </div>
 
         <div className="space-y-3">
-          <Label className="text-lg text-rose-200">What is your favorite variation? (Optional)</Label>
+          <Label className="text-lg text-rose-200">What was the first Piggybanx Piece you ever acquired or bought directly from the studio?</Label>
+          <Input
+            id="firstPiece"
+            value={formData.firstPiece}
+            onChange={handleInputChange}
+            placeholder="Enter the name of your first piece"
+            className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
+            required
+          />
+        </div>
+
+        <div className="space-y-3">
+          <Label className="text-lg text-rose-200">What are your top 3 variations? (Optional)</Label>
 
           <RadioGroup
             value={formData.favoriteVariation}

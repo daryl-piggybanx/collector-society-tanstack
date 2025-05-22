@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { Target, Check, Trophy, Music, Sparkles, Gamepad2, Film, Palette, Car } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Target, Check, Trophy, Music, Sparkles, Gamepad2, Film, Palette, Car, ChevronDown } from "lucide-react"
 import type { FormData } from "@/components/collector-form"
 
 interface Preference {
   name: string
   icon: string
+  subcategories: string[]
 }
 
 interface TopCategoriesProps {
@@ -15,31 +16,48 @@ interface TopCategoriesProps {
 }
 
 export default function TopCategories({ formData, updateFormData, preferences }: TopCategoriesProps) {
-  const [selectedPreferences, setSelectedPreferences] = useState<string[]>(() => formData.collectPreferences || [])
+  const [selectedPreference, setSelectedPreference] = useState<string | null>(null)
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null)
+  const [showSubcategories, setShowSubcategories] = useState(false)
 
-  const handlePreferenceToggle = (preference: string) => {
-    setSelectedPreferences((prev) => {
-      // If already selected, remove it
-      if (prev.includes(preference)) {
-        return prev.filter((p) => p !== preference)
-      }
+  const handlePreferenceToggle = (preference: Preference) => {
+    if (selectedPreference === preference.name) {
+      // If clicking the same preference, toggle subcategories
+      setShowSubcategories(!showSubcategories)
+      return
+    }
 
-      // If not selected and we have less than 4, add it
-      if (prev.length < 4) {
-        return [...prev, preference]
-      }
-
-      return prev
-    })
+    // Select new preference
+    setSelectedPreference(preference.name)
+    setSelectedSubcategory(null)
+    // Always show subcategories if the preference has them
+    setShowSubcategories(preference.subcategories.length > 0)
+    
+    // Update form data with the main category
+    updateFormData({ collectPreferences: [preference.name] })
   }
 
-  // Only update form data when selectedPreferences changes, but exclude updateFormData from dependencies
+  const handleSubcategorySelect = (subcategory: string) => {
+    setSelectedSubcategory(subcategory)
+    // Update form data with the subcategory
+    updateFormData({ collectPreferences: [subcategory] })
+    // Keep the subcategories visible
+    setShowSubcategories(true)
+  }
+
+  // Initialize from form data if it exists
   useEffect(() => {
-    // Prevent infinite loop by checking if the values are actually different
-    if (JSON.stringify(formData.collectPreferences) !== JSON.stringify(selectedPreferences)) {
-      updateFormData({ collectPreferences: selectedPreferences })
+    if (formData.collectPreferences.length > 0) {
+      const selected = formData.collectPreferences[0]
+      const preference = preferences.find(p => p.name === selected || p.subcategories.includes(selected))
+      if (preference) {
+        setSelectedPreference(preference.name)
+        if (preference.subcategories.includes(selected)) {
+          setSelectedSubcategory(selected)
+        }
+      }
     }
-  }, [selectedPreferences, formData.collectPreferences])
+  }, [formData.collectPreferences, preferences])
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -100,13 +118,14 @@ export default function TopCategories({ formData, updateFormData, preferences }:
       </motion.div>
 
       <motion.p variants={itemVariants} className="text-rose-100/80 mb-6">
-        Select up to 4 categories (order matters)
+        Select one category that interests you
       </motion.p>
 
       <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {preferences.map((preference, index) => {
-          const isSelected = selectedPreferences.includes(preference.name)
-          const isDisabled = !isSelected && selectedPreferences.length >= 4
+          const isSelected = selectedPreference === preference.name
+          const hasSubcategories = preference.subcategories.length > 0
+          const isSubcategorySelected = preference.subcategories.includes(selectedSubcategory || '')
 
           return (
             <motion.div
@@ -117,48 +136,74 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                 scale: 1,
                 transition: { delay: index * 0.05 + 0.2 },
               }}
-              whileHover={!isDisabled ? { scale: 1.05 } : {}}
-              className={`relative rounded-lg overflow-hidden ${isDisabled ? "opacity-50" : ""}`}
+              whileHover={{ scale: 1.05 }}
+              className="relative rounded-lg overflow-visible"
             >
               <button
-                onClick={() => handlePreferenceToggle(preference.name)}
-                disabled={isDisabled}
+                onClick={() => handlePreferenceToggle(preference)}
                 className={`w-full h-full p-6 text-center transition-all ${
-                  isSelected
+                  (isSelected || isSubcategorySelected)
                     ? "bg-rose-800/60 border-2 border-rose-500"
                     : "bg-rose-950/40 border border-rose-400/30 hover:border-rose-400/60"
                 } rounded-lg flex flex-col items-center justify-center gap-3`}
               >
-                {renderIcon(preference.icon, isSelected)}
-                <span className={`font-medium ${isSelected ? "text-rose-200" : "text-rose-100/80"}`}>
+                {renderIcon(preference.icon, isSelected || isSubcategorySelected)}
+                <span className={`font-medium ${(isSelected || isSubcategorySelected) ? "text-rose-200" : "text-rose-100/80"}`}>
                   {preference.name}
                 </span>
-
-                {isSelected && (
-                  <div className="absolute top-2 right-2 bg-rose-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
-                    {selectedPreferences.indexOf(preference.name) + 1}
-                  </div>
+                {hasSubcategories && (
+                  <ChevronDown 
+                    size={16} 
+                    className={`transition-transform ${showSubcategories && isSelected ? 'rotate-180' : ''} text-rose-100/60`}
+                  />
                 )}
               </button>
+
+              {/* Subcategories dropdown */}
+              <AnimatePresence>
+                {isSelected && showSubcategories && hasSubcategories && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute left-0 right-0 mt-2 bg-rose-950/90 border border-rose-400/30 rounded-lg overflow-hidden z-10 shadow-lg"
+                  >
+                    <p className="text-rose-100/80 text-sm p-2">More specificic (optional)</p>
+                    <hr className="border-rose-400/30 mx-3" />
+                    {preference.subcategories.map((subcategory) => (
+                      <button
+                        key={subcategory}
+                        onClick={() => handleSubcategorySelect(subcategory)}
+                        className={`w-full p-3 text-left transition-all ${
+                          selectedSubcategory === subcategory
+                            ? "bg-rose-800/60 text-rose-200"
+                            : "text-rose-100/80 hover:bg-rose-800/30"
+                        }`}
+                      >
+                        {subcategory}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )
         })}
       </motion.div>
 
       <motion.div variants={itemVariants} className="mt-6 text-center text-rose-100/80">
-        {selectedPreferences.length > 0 ? (
+        {(selectedPreference || selectedSubcategory) ? (
           <div className="flex items-center justify-center gap-2 text-rose-300">
             <Check size={18} />
             <span>
-              {selectedPreferences.length === 4
-                ? "You've selected 4 categories!"
-                : `You've selected ${selectedPreferences.length} ${
-                    selectedPreferences.length === 1 ? "category" : "categories"
-                  }`}
+              {selectedSubcategory 
+                ? `Selected: ${selectedSubcategory}`
+                : `Selected: ${selectedPreference}`}
             </span>
           </div>
         ) : (
-          <span>Please select at least one category</span>
+          <span>Please select a category</span>
         )}
       </motion.div>
     </motion.div>

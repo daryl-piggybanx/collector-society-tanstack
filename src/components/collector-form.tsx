@@ -5,12 +5,16 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 
 import { getProfileByEmail, createUpdateProfile } from "@/integrations/klaviyo/profiles/services"
+import { useMutation } from "@tanstack/react-query"
+import { collectionPreferences, collectionRules, collectionVariations } from "@/lib/data"
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 
 import CollectorPieces from "@/components/phases/collector-pieces"
 import CollectorType from "@/components/phases/collector-type"
+import CollectorReasons from "@/components/phases/collector-reasons"
+import CommunityExperience from "@/components/phases/community-experience"
 import CommunityRules from "@/components/phases/community-rules"
 import MarketingConsent from "@/components/phases/marketing-consent"
 import NewCategories from "@/components/phases/new-categories"
@@ -20,58 +24,52 @@ import UserIdentity from "@/components/phases/user-identity"
 import SuccessPage from "@/components/phases/success-page"
 
 export type FormData = {
-  isReturningCollector: boolean | null
+  isReturningCollector: boolean
   rulesAccepted: boolean[]
   firstName: string
   lastName: string
-  discordUsername: string
-  pieceCount: string
-  favoriteVariation: string
-  collectPreferences: string[]
-  categoryToAdd: string
+  created?: string
+  updated: string
+  discordUsername?: string
+  instagramHandle?: string
+  collectionReason?: string
+  interests?: string
   email: string
-  phoneNumber: string
-  communicationPreference: string
+  phoneNumber?: string
+  communicationPreference?: string
+  marketingConsent: boolean
+  pieceCount?: string
+  firstPiece?: string
+  favoriteVariation?: string
+  collectPreferences?: string[]
+  categoryToAdd?: string
+  communityExperience?: string
+  improvements?: string
 }
 
 const initialFormData: FormData = {
-  isReturningCollector: null,
+  isReturningCollector: false,
   rulesAccepted: [false, false, false, false],
   firstName: "",
   lastName: "",
+  created: "",
+  updated: "",
   discordUsername: "",
-  pieceCount: "",
-  favoriteVariation: "",
-  collectPreferences: [],
-  categoryToAdd: "",
+  instagramHandle: "",
+  collectionReason: "",
+  interests: "",
   email: "",
   phoneNumber: "",
   communicationPreference: "",
+  marketingConsent: false,
+  pieceCount: "",
+  firstPiece: "",
+  favoriteVariation: "",
+  collectPreferences: [],
+  categoryToAdd: "",
+  communityExperience: "",
+  improvements: "",
 }
-
-// Mock rules for the form
-const collectionRules = [
-  "I agree to follow all community guidelines",
-  "I understand that all trades are final",
-  "I will report any suspicious activity to moderators",
-  "I will maintain respectful communication with other collectors",
-]
-
-// Mock variations for the form
-const variations = ["Prism", "Radiant", "Disco", "Fractal"]
-
-// Mock collection preferences
-const collectionPreferences = [
-  { name: "Modern Sports/Athletes", icon: "trophy" },
-  { name: "Music", icon: "music" },
-  { name: "Star Wars", icon: "sparkles" },
-  { name: "Video Games", icon: "gamepad-2" },
-  { name: "Pop Culture", icon: "film" },
-  { name: "Anime", icon: "palette" },
-  { name: "Cars/Racing", icon: "car" },
-]
-
-
 
 export function NewCollectorForm() {
   const [currentPhase, setCurrentPhase] = useState(1)
@@ -79,8 +77,18 @@ export function NewCollectorForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
 
-  const totalPhases = 3;
+  const mutation = useMutation({
+    mutationFn: createUpdateProfile,
+    onSuccess: () => {
+      console.log("Profile created/updated successfully")
+    },
+    onError: (error) => {
+      console.error("Error creating/updating profile:", error)
+    },
+  })
 
+  const totalPhases = 5;
+ 
   const progressPercentage = (currentPhase / totalPhases) * 100
 
   const handleNext = () => {
@@ -96,32 +104,56 @@ export function NewCollectorForm() {
   }
 
   const handleSubmit = async () => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
+
+    formData.created = new Date().toISOString()
+    formData.updated = new Date().toISOString();
+
+    const transformedData = {
+      email: formData.email,
+      phone_number: formData.phoneNumber,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      created: formData.created,
+      updated: formData.updated,
+      marketing_consent: formData.marketingConsent,
+      discord_username: formData.discordUsername,
+      piece_count: formData.pieceCount,
+      favorite_variation: formData.favoriteVariation,
+      collect_preferences: formData.collectPreferences,
+      communication_preference: formData.communicationPreference,
+      instagram_handle: formData.instagramHandle,
+      collection_reason: formData.collectionReason,
+      interests: formData.interests,
+      first_piece: formData.firstPiece,
+      community_experience: formData.communityExperience,
+      improvements: formData.improvements
+    };
+
+    console.log('test payload to service: ', transformedData);
 
     try {
-      // Simulate API call to Klaviyo
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // In a real implementation, you would send the data to Klaviyo here
-      console.log("Form data submitted:", formData)
-
-      setIsComplete(true)
-      setCurrentPhase(totalPhases + 1)
+      await mutation.mutateAsync({ data: transformedData });
+      setIsComplete(true);
+      setCurrentPhase(totalPhases + 1);
     } catch (error) {
-      console.error("Error submitting form:", error)
+      console.error("Error submitting form:", error);
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
-
+  };
   // Determine if the next button should be disabled
   const isNextDisabled = () => {
     switch (currentPhase) {
       case 1:
         return !formData.rulesAccepted.every((rule) => rule)
       case 2:
-        return !formData.firstName || !formData.lastName || !formData.discordUsername
+        return !formData.firstName || !formData.lastName
       case 3:
+        return !formData.collectionReason || !formData.interests
+      case 4:
+        return !formData.email
+      case 5:
         return formData.collectPreferences.length === 0
       default:
         return false
@@ -131,7 +163,7 @@ export function NewCollectorForm() {
   return (
     <div className="w-full max-w-3xl">
       <motion.div
-        className="bg-rose-950/30 backdrop-blur-sm border border-rose-400/20 rounded-2xl shadow-xl overflow-hidden relative"
+        className="bg-rose-950/30 backdrop-blur-sm border border-rose-400/20 rounded-2xl shadow-xl overflow-hidden relative pt-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -151,27 +183,32 @@ export function NewCollectorForm() {
             {currentPhase === 2 && (
               <>
                 <UserIdentity key="user-identity" formData={formData} updateFormData={updateFormData} />
+              </>
+
+            )}
+
+
+            {currentPhase === 3 && (
+              <>
+                <CollectorReasons key="collector-reasons" formData={formData} updateFormData={updateFormData} />
+              </>
+
+            )}
+
+            {currentPhase === 4 && (
+              <>
                 <MarketingConsent key="marketing-consent" formData={formData} updateFormData={updateFormData} />
               </>
 
             )}
 
-            {currentPhase === 3 && (
+
+            {currentPhase === 5 && (
               <TopCategories
                 key="top-categories"
                 formData={formData}
                 updateFormData={updateFormData}
                 preferences={collectionPreferences}
-              />
-            )}
-
-            {currentPhase === 6 && (
-              <NewCategories 
-              key="new-categories" 
-              formData={formData} 
-              updateFormData={updateFormData} 
-              onSubmit={handleSubmit}
-              isSubmitting={isSubmitting}
               />
             )}
 
@@ -252,6 +289,16 @@ export function OGCollectorForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
 
+  const mutation = useMutation({
+    mutationFn: createUpdateProfile,
+    onSuccess: () => {
+      console.log("Profile created/updated successfully")
+    },
+    onError: (error) => {
+      console.error("Error creating/updating profile:", error)
+    },
+  })
+
   const totalPhases = 4;
 
   const progressPercentage = (currentPhase / totalPhases) * 100
@@ -269,23 +316,41 @@ export function OGCollectorForm() {
   }
 
   const handleSubmit = async () => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
+
+    formData.updated = new Date().toISOString()
+
+    const transformedData = {
+      email: formData.email,
+      phone_number: formData.phoneNumber,
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      created: formData.created,
+      updated: formData.updated,
+      marketing_consent: formData.marketingConsent,
+      discord_username: formData.discordUsername,
+      piece_count: formData.pieceCount,
+      favorite_variation: formData.favoriteVariation,
+      collect_preferences: formData.collectPreferences,
+      communication_preference: formData.communicationPreference,
+      instagram_handle: formData.instagramHandle,
+      collection_reason: formData.collectionReason,
+      interests: formData.interests,
+      first_piece: formData.firstPiece,
+      community_experience: formData.communityExperience,
+      improvements: formData.improvements
+    };
 
     try {
-      // Simulate API call to Klaviyo
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // In a real implementation, you would send the data to Klaviyo here
-      console.log("Form data submitted:", formData)
-
-      setIsComplete(true)
-      setCurrentPhase(totalPhases + 1)
+      await mutation.mutateAsync({ data: transformedData });
+      setIsComplete(true);
+      setCurrentPhase(totalPhases + 1);
     } catch (error) {
-      console.error("Error submitting form:", error)
+      console.error("Error submitting form:", error);
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   // Determine if the next button should be disabled
   const isNextDisabled = () => {
@@ -297,7 +362,7 @@ export function OGCollectorForm() {
       case 3:
         return formData.collectPreferences.length === 0
       case 4:
-        return false // Category to add is optional
+        return !formData.communityExperience || !formData.improvements
       default:
         return false
     }
@@ -324,11 +389,11 @@ export function OGCollectorForm() {
                 key="collector-pieces"
                 formData={formData}
                 updateFormData={updateFormData}
-                variations={variations}
+                variations={collectionVariations}
               />
             )}
 
-            {currentPhase === 4 && (
+            {currentPhase === 3 && (
               <TopCategories
                 key="top-categories"
                 formData={formData}
@@ -337,12 +402,20 @@ export function OGCollectorForm() {
               />
             )}
 
+            {currentPhase === 4 && (
+              <CommunityExperience
+                key="community-experience"
+                formData={formData}
+                updateFormData={updateFormData}
+              />
+            )}
+
             {isComplete && currentPhase === totalPhases + 1 && (
               <SuccessPage
                 key="success"
                 formData={formData}
                 preferences={collectionPreferences}
-                variations={variations}
+                variations={collectionVariations}
               />
             )}
           </AnimatePresence>

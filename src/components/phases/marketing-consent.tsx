@@ -5,6 +5,7 @@ import { Mail, Phone } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Checkbox } from "@/components/ui/checkbox"
 import type { FormData } from "@/components/collector-form"
 
 interface MarketingConsentProps {
@@ -48,9 +49,9 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
 
-      {/* <motion.p variants={itemVariants} className="text-rose-100/80 my-6">
+      <motion.p variants={itemVariants} className="text-rose-100/80 my-6">
         We'll use this information to keep you updated on new collections and events.
-      </motion.p> */}
+      </motion.p>
 
       <motion.div variants={itemVariants} className="space-y-6 my-6">
         <div className="space-y-3">
@@ -65,7 +66,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
             type="email"
             value={formData.email}
             onChange={handleInputChange}
-              placeholder="Enter your email address"
+              placeholder="Email Address"
               className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
               required
             />
@@ -84,10 +85,27 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
               type="tel"
               value={formData.phoneNumber}
               onChange={handleInputChange}
-              placeholder="Enter your phone number"
+              placeholder="Phone Number (optional)"
               className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
             />
           </div>
+        </div>
+
+        <div className="space-y-3">
+          <Checkbox 
+            id="marketingConsent" 
+            checked={formData.marketingConsent}
+            onCheckedChange={(checked) => updateFormData({ marketingConsent: checked === true })}
+            className="mt-1 data-[state=checked]:bg-rose-500 data-[state=checked]:text-white border-rose-400 mr-2 cursor-pointer"
+          />
+          <Label htmlFor="marketingConsent" className="text-rose-200 cursor-pointer">
+            Check this box to also receive promotional marketing texts.
+          </Label>
+        </div>
+        <div className="space-y-3">
+          <p className="text-rose-100/80">
+            By submitting this form and signing up for texts, you consent to receive marketing text messages (e.g. promos, cart reminders) from PiggyBanx at the number provided, including messages sent by autodialer. Consent is not a condition of purchase. Msg & data rates may apply. Msg frequency varies. Unsubscribe at any time by replying STOP or clicking the unsubscribe link (where available). 
+          </p>
         </div>
 
         <div className="space-y-3">
@@ -95,11 +113,11 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
           <RadioGroup
             value={formData.communicationPreference}
             onValueChange={handleCommunicationChange}
-            className="flex flex-row md:flex-col gap-4 md:gap-3 md:justify-start md:items-start"
+            className="flex flex-row gap-4 md:gap-3 md:justify-start md:items-start"
           >
             <div className="flex items-center gap-3">
               <RadioGroupItem
-                value="email"
+                value="Email"
                 id="comm-email"
                 className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
               />
@@ -109,7 +127,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
             </div>
             <div className="flex items-center gap-3">
               <RadioGroupItem
-                value="phone"
+                value="Phone Number"
                 id="comm-phone"
                 className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
               />
@@ -119,7 +137,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
             </div>
             <div className="flex items-center gap-3">
               <RadioGroupItem
-                value="both"
+                value="Both"
                 id="comm-both"
                 className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
               />
