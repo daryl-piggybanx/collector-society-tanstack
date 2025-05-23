@@ -136,7 +136,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                 scale: 1,
                 transition: { delay: index * 0.05 + 0.2 },
               }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={isSelected && showSubcategories ? {} : { scale: 1.05 }}
               className="relative rounded-lg overflow-visible"
             >
               <button
@@ -167,7 +167,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute left-0 right-0 mt-2 bg-rose-950/90 border border-rose-400/30 rounded-lg overflow-hidden z-10 shadow-lg"
+                    className="absolute left-0 right-0 mt-2 bg-rose-950/90 border border-rose-400/30 rounded-lg overflow-hidden z-10 shadow-lg pointer-events-auto"
                   >
                     <p className="text-rose-100/80 text-sm p-2">More specificic (optional)</p>
                     <hr className="border-rose-400/30 mx-3" />

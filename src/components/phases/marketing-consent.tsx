@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { FormData } from "@/components/collector-form"
+import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
 
 interface MarketingConsentProps {
   formData: FormData
@@ -84,11 +85,22 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
               name="phoneNumber"
               type="tel"
               value={formData.phoneNumber}
-              onChange={handleInputChange}
-              placeholder="Phone Number (optional)"
+              onChange={(e) => {
+                const value = e.target.value;
+                // Only update if empty or valid phone number
+                if (!value || isValidPhoneNumber(value)) {
+                  updateFormData({ phoneNumber: value });
+                }
+              }}
+              placeholder="Phone Number (optional) e.g. +12345678901"
               className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
             />
           </div>
+          {formData.phoneNumber && !isValidPhoneNumber(formData.phoneNumber) && (
+            <p className="text-rose-400 text-sm mt-1">
+              Please enter a valid phone number with country code (e.g., +12345678901)
+            </p>
+          )}
         </div>
 
         <div className="space-y-3">

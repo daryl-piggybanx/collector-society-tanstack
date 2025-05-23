@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import type { KlaviyoProfile } from './types'
 import { z } from 'zod'
+import { parsePhoneNumber } from 'libphonenumber-js'
 
 export const getProfileByEmail = createServerFn({ method: 'GET' })
   .validator(z.object({
@@ -70,13 +71,11 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
         type: "profile",
         attributes: {
           email: data.email,
-          phone_number: data.phone_number,
+          phone_number: data.phone_number ? parsePhoneNumber(data.phone_number).format('E.164') : undefined,
           first_name: data.first_name,
           last_name: data.last_name,
-          created: data.created,
-          updated: data.updated,
           properties: {
-            '$phone_number_region': data.phone_number ? 'US' : null,
+            '$phone_number_region': data.phone_number ? parsePhoneNumber(data.phone_number).country : null,
             '$source': 'New Collector Form',
             '$consent_method': 'Custom Klaviyo Form',
             '$consent': data.phone_number ? ['email', 'sms'] : ['email'],
@@ -115,12 +114,20 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       const response = await fetch(url, options);
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('Klaviyo API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText
+        });
+        throw new Error(`Klaviyo API Error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const json = await response.json();
       return json;
-    } catch (error) {
-      throw new Error('Failed to create/update profile');
+    } catch (error: unknown) {
+      console.error('Full error details:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new Error(`Failed to create/update profile: ${errorMessage}`);
     }
   });
