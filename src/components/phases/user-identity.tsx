@@ -66,11 +66,11 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
         </h2>
       </motion.div>
 
-      {formData.isReturningCollector && (
+      {/* {formData.isReturningCollector && (
         <motion.p variants={itemVariants} className="text-rose-100/80 mb-6">
           We've found your information. Feel free to update if needed.
         </motion.p>
-      )}
+      )} */}
 
       <motion.div variants={itemVariants} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

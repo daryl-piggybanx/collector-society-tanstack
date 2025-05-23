@@ -49,11 +49,11 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
-
+      {!formData.isReturningCollector && (
       <motion.p variants={itemVariants} className="text-rose-100/80 my-6">
         We'll use this information to keep you updated on new collections and events.
       </motion.p>
-
+      )}
       <motion.div variants={itemVariants} className="space-y-6 my-6">
         <div className="space-y-3">
           <Label htmlFor="email" className="text-rose-200">
@@ -92,7 +92,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
                   updateFormData({ phoneNumber: value });
                 }
               }}
-              placeholder="Phone Number (optional) e.g. +12345678901"
+              placeholder="Phone Number (optional)"
               className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
             />
           </div>
@@ -103,8 +103,10 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
           )}
         </div>
 
+        {!formData.isReturningCollector && (
+        <>
         <div className="space-y-3">
-          <Checkbox 
+              <Checkbox 
             id="marketingConsent" 
             checked={formData.marketingConsent}
             onCheckedChange={(checked) => updateFormData({ marketingConsent: checked === true })}
@@ -159,6 +161,8 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
             </div>
           </RadioGroup>
         </div>
+        </>
+        )}
       </motion.div>
     </motion.div>
   )

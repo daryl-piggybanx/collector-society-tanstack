@@ -44,9 +44,9 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
   }
 
   // Find the selected preference objects
-  const selectedPreferences = formData.collectPreferences.map(
+  const selectedPreferences = formData.collectPreferences?.map(
     (name) => preferences.find((p) => p.name === name) || { name, icon: "target" },
-  )
+  ) || [];
 
   // Function to render the appropriate icon based on the icon name
   const renderIcon = (iconName: string) => {

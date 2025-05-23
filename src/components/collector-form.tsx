@@ -88,7 +88,6 @@ export function NewCollectorForm() {
   })
 
   const totalPhases = 5;
- 
   const progressPercentage = (currentPhase / totalPhases) * 100
 
   const handleNext = () => {
@@ -111,7 +110,7 @@ export function NewCollectorForm() {
 
     const transformedData = {
       email: formData.email,
-      phone_number: formData.phoneNumber,
+      phone_number: formData.phoneNumber ? parsePhoneNumber(formData.phoneNumber).format('E.164') : undefined,
       first_name: formData.firstName,
       last_name: formData.lastName,
       created: formData.created,
@@ -284,10 +283,10 @@ export function NewCollectorForm() {
 }
 
 export function OGCollectorForm() {
-  const [currentPhase, setCurrentPhase] = useState(1)
-  const [formData, setFormData] = useState<FormData>(initialFormData)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isComplete, setIsComplete] = useState(false)
+  const [currentPhase, setCurrentPhase] = useState(1);
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
 
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
@@ -297,10 +296,10 @@ export function OGCollectorForm() {
     onError: (error) => {
       console.error("Error creating/updating profile:", error)
     },
-  })
+  });
 
+  formData.isReturningCollector = true;
   const totalPhases = 4;
-
   const progressPercentage = (currentPhase / totalPhases) * 100
 
   const handleNext = () => {
@@ -381,7 +380,10 @@ export function OGCollectorForm() {
 
 
             {currentPhase === 1 && (
-              <UserIdentity key="user-identity" formData={formData} updateFormData={updateFormData} />
+              <>
+                <UserIdentity key="user-identity" formData={formData} updateFormData={updateFormData} />
+                <MarketingConsent key="marketing-consent" formData={formData} updateFormData={updateFormData} />
+              </>
             )}
 
             {currentPhase === 2 && (

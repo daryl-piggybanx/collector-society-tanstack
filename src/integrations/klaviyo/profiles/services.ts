@@ -65,7 +65,52 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
 
     console.log('test data: ', data);
 
-    // Transform form data into Klaviyo format
+    const properties: Record<string, any> = {
+      '$source': 'New Collector Form',
+      '$consent_method': 'Custom Klaviyo Form',
+      '$consent': data.phone_number ? ['email', 'sms'] : ['email'],
+      '$consent_timestamp': new Date().toISOString(),
+      'Accepts Marketing': data.marketing_consent,
+    };
+
+    // Add optional properties only if they have values
+    if (data.phone_number) {
+      properties['$phone_number_region'] = parsePhoneNumber(data.phone_number).country;
+    }
+    if (data.discord_username) {
+      properties['Discord-Username'] = data.discord_username;
+    }
+    if (data.piece_count) {
+      properties['of-Pieces'] = data.piece_count;
+    }
+    if (data.favorite_variation) {
+      properties['Favorite-Variation'] = data.favorite_variation;
+    }
+    if (data.collect_preferences?.[0]) {
+      properties['Collection-Category-1'] = data.collect_preferences[0];
+    }
+    if (data.communication_preference) {
+      properties['Communication-Preference'] = data.communication_preference;
+    }
+    if (data.instagram_handle) {
+      properties['Instagram Handle'] = data.instagram_handle;
+    }
+    if (data.collection_reason) {
+      properties['Collection Reason'] = data.collection_reason;
+    }
+    if (data.interests) {
+      properties['Interests'] = data.interests;
+    }
+    if (data.first_piece) {
+      properties['First Piece'] = data.first_piece;
+    }
+    if (data.community_experience) {
+      properties['Community Experience'] = data.community_experience;
+    }
+    if (data.improvements) {
+      properties['Improve Experience'] = data.improvements;
+    }
+
     const klaviyoData = {
       data: {
         type: "profile",
@@ -74,25 +119,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
           phone_number: data.phone_number ? parsePhoneNumber(data.phone_number).format('E.164') : undefined,
           first_name: data.first_name,
           last_name: data.last_name,
-          properties: {
-            '$phone_number_region': data.phone_number ? parsePhoneNumber(data.phone_number).country : null,
-            '$source': 'New Collector Form',
-            '$consent_method': 'Custom Klaviyo Form',
-            '$consent': data.phone_number ? ['email', 'sms'] : ['email'],
-            '$consent_timestamp': new Date().toISOString(),
-            'Accepts Marketing': data.marketing_consent,
-            'Discord-Username': data.discord_username,
-            'of-Pieces': data.piece_count,
-            'Favorite-Variation': data.favorite_variation,
-            'Collection-Category-1': data.collect_preferences?.[0],
-            'Communication-Preference': data.communication_preference,
-            'Instagram Handle': data.instagram_handle,
-            'Collection Reason': data.collection_reason,
-            'Interests': data.interests,
-            'First Piece': data.first_piece,
-            'Community Experience': data.community_experience,
-            'Improve Experience': data.improvements
-          }
+          properties
         }
       }
     };
