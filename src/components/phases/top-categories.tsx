@@ -34,21 +34,21 @@ export default function TopCategories({ formData, updateFormData, preferences }:
     setShowSubcategories(preference.subcategories.length > 0)
     
     // Update form data with the main category
-    updateFormData({ collectPreferences: [preference.name] })
+    updateFormData({ collect_preferences: [preference.name] })
   }
 
   const handleSubcategorySelect = (subcategory: string) => {
     setSelectedSubcategory(subcategory)
     // Update form data with the subcategory
-    updateFormData({ collectPreferences: [subcategory] })
+    updateFormData({ collect_preferences: [subcategory] })
     // Keep the subcategories visible
     setShowSubcategories(true)
   }
 
   // Initialize from form data if it exists
   useEffect(() => {
-    if (formData.collectPreferences.length > 0) {
-      const selected = formData.collectPreferences[0]
+    if (formData.collect_preferences && formData.collect_preferences.length > 0) {
+      const selected = formData.collect_preferences[0]
       const preference = preferences.find(p => p.name === selected || p.subcategories.includes(selected))
       if (preference) {
         setSelectedPreference(preference.name)
@@ -57,7 +57,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
         }
       }
     }
-  }, [formData.collectPreferences, preferences])
+  }, [formData.collect_preferences, preferences])
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -112,7 +112,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
         <Target size={28} className="text-rose-300" />
         <h2 className="text-2xl font-bold text-rose-100">
-          {formData.firstName ? `${formData.firstName}, ` : ""}
+          {formData.first_name ? `${formData.first_name}, ` : ""}
           what do you want to collect?
         </h2>
       </motion.div>

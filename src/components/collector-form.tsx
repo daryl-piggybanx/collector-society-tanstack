@@ -24,50 +24,46 @@ import UserIdentity from "@/components/phases/user-identity"
 import SuccessPage from "@/components/phases/success-page"
 
 export type FormData = {
-  isReturningCollector: boolean
-  rulesAccepted: boolean[]
-  firstName: string
-  lastName: string
-  created?: string
-  updated: string
-  discordUsername?: string
-  instagramHandle?: string
-  collectionReason?: string
+  is_returning_collector: boolean
+  rules_accepted: boolean[]
+  first_name: string
+  last_name: string
+  discord_username?: string
+  instagram_handle?: string
+  collection_reason?: string
   interests?: string
   email: string
-  phoneNumber?: string
-  communicationPreference?: string
-  marketingConsent: boolean
-  pieceCount?: string
-  firstPiece?: string
-  favoriteVariation?: string
-  collectPreferences?: string[]
-  categoryToAdd?: string
-  communityExperience?: string
+  phone_number?: string
+  communication_preference?: string
+  marketing_consent: boolean
+  piece_count?: string
+  first_piece?: string
+  favorite_variation?: string
+  collect_preferences?: string[] | undefined
+  category_to_add?: string
+  community_experience?: string
   improvements?: string
 }
 
 const initialFormData: FormData = {
-  isReturningCollector: false,
-  rulesAccepted: [false, false, false, false],
-  firstName: "",
-  lastName: "",
-  created: "",
-  updated: "",
-  discordUsername: "",
-  instagramHandle: "",
-  collectionReason: "",
+  is_returning_collector: false,
+  rules_accepted: [false, false, false, false],
+  first_name: "",
+  last_name: "",
+  discord_username: "",
+  instagram_handle: "",
+  collection_reason: "",
   interests: "",
   email: "",
-  phoneNumber: "",
-  communicationPreference: "",
-  marketingConsent: false,
-  pieceCount: "",
-  firstPiece: "",
-  favoriteVariation: "",
-  collectPreferences: [],
-  categoryToAdd: "",
-  communityExperience: "",
+  phone_number: "",
+  communication_preference: "",
+  marketing_consent: false,
+  piece_count: "",
+  first_piece: "",
+  favorite_variation: "",
+  collect_preferences: [],
+  category_to_add: "",
+  community_experience: "",
   improvements: "",
 }
 
@@ -105,34 +101,8 @@ export function NewCollectorForm() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
-    formData.created = new Date().toISOString()
-    formData.updated = new Date().toISOString();
-
-    const transformedData = {
-      email: formData.email,
-      phone_number: formData.phoneNumber ? parsePhoneNumber(formData.phoneNumber).format('E.164') : undefined,
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      created: formData.created,
-      updated: formData.updated,
-      marketing_consent: formData.marketingConsent,
-      discord_username: formData.discordUsername,
-      piece_count: formData.pieceCount,
-      favorite_variation: formData.favoriteVariation,
-      collect_preferences: formData.collectPreferences,
-      communication_preference: formData.communicationPreference,
-      instagram_handle: formData.instagramHandle,
-      collection_reason: formData.collectionReason,
-      interests: formData.interests,
-      first_piece: formData.firstPiece,
-      community_experience: formData.communityExperience,
-      improvements: formData.improvements
-    };
-
-    console.log('test payload to service: ', transformedData);
-
     try {
-      await mutation.mutateAsync({ data: transformedData });
+      await mutation.mutateAsync({ data: formData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
     } catch (error) {
@@ -145,15 +115,15 @@ export function NewCollectorForm() {
   const isNextDisabled = () => {
     switch (currentPhase) {
       case 1:
-        return !formData.rulesAccepted.every((rule) => rule)
+        return !formData.rules_accepted.every((rule) => rule)
       case 2:
-        return !formData.firstName || !formData.lastName
+        return !formData.first_name || !formData.last_name
       case 3:
-        return !formData.collectionReason || !formData.interests
+        return !formData.collection_reason || !formData.interests
       case 4:
         return !formData.email
       case 5:
-        return formData.collectPreferences.length === 0
+        return formData.collect_preferences && formData.collect_preferences.length === 0
       default:
         return false
     }
@@ -282,9 +252,14 @@ export function NewCollectorForm() {
   )
 }
 
+const OGFormData: FormData = {
+  ...initialFormData,
+  is_returning_collector: true
+}
+
 export function OGCollectorForm() {
   const [currentPhase, setCurrentPhase] = useState(1);
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [formData, setFormData] = useState<FormData>(OGFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
@@ -298,7 +273,7 @@ export function OGCollectorForm() {
     },
   });
 
-  formData.isReturningCollector = true;
+  formData.is_returning_collector = true;
   const totalPhases = 4;
   const progressPercentage = (currentPhase / totalPhases) * 100
 
@@ -317,31 +292,8 @@ export function OGCollectorForm() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
 
-    formData.updated = new Date().toISOString()
-
-    const transformedData = {
-      email: formData.email,
-      phone_number: formData.phoneNumber,
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      created: formData.created,
-      updated: formData.updated,
-      marketing_consent: formData.marketingConsent,
-      discord_username: formData.discordUsername,
-      piece_count: formData.pieceCount,
-      favorite_variation: formData.favoriteVariation,
-      collect_preferences: formData.collectPreferences,
-      communication_preference: formData.communicationPreference,
-      instagram_handle: formData.instagramHandle,
-      collection_reason: formData.collectionReason,
-      interests: formData.interests,
-      first_piece: formData.firstPiece,
-      community_experience: formData.communityExperience,
-      improvements: formData.improvements
-    };
-
     try {
-      await mutation.mutateAsync({ data: transformedData });
+      await mutation.mutateAsync({ data: formData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
     } catch (error) {
@@ -355,13 +307,13 @@ export function OGCollectorForm() {
   const isNextDisabled = () => {
     switch (currentPhase) {
       case 1:
-        return !formData.firstName || !formData.lastName || !formData.discordUsername
+        return !formData.first_name || !formData.last_name
       case 2:
-        return !formData.pieceCount
+        return !formData.piece_count
       case 3:
-        return formData.collectPreferences.length === 0
+        return formData.collect_preferences && formData.collect_preferences.length === 0
       case 4:
-        return !formData.communityExperience || !formData.improvements
+        return !formData.community_experience || !formData.improvements
       default:
         return false
     }

@@ -12,7 +12,7 @@ interface CollectorTypeProps {
 
 export default function CollectorType({ formData, updateFormData }: CollectorTypeProps) {
   const handleSelection = (isReturning: boolean) => {
-    updateFormData({ isReturningCollector: isReturning })
+    updateFormData({ is_returning_collector: isReturning })
   }
 
   const containerVariants = {
@@ -46,11 +46,11 @@ export default function CollectorType({ formData, updateFormData }: CollectorTyp
 
       <motion.div variants={itemVariants} className="flex flex-col md:flex-row gap-6 justify-center mt-12">
         <Button
-          variant={formData.isReturningCollector === false ? "default" : "outline"}
+          variant={formData.is_returning_collector === false ? "default" : "outline"}
           size="lg"
           onClick={() => handleSelection(false)}
           className={`flex items-center gap-3 p-8 text-lg transition-all ${
-            formData.isReturningCollector === false
+            formData.is_returning_collector === false
               ? "bg-rose-600 hover:bg-rose-500 text-white scale-105"
               : "bg-rose-950/40 border-rose-400/30 text-rose-100 hover:bg-rose-800/50 hover:text-rose-50"
           }`}
@@ -60,11 +60,11 @@ export default function CollectorType({ formData, updateFormData }: CollectorTyp
         </Button>
 
         <Button
-          variant={formData.isReturningCollector === true ? "default" : "outline"}
+          variant={formData.is_returning_collector === true ? "default" : "outline"}
           size="lg"
           onClick={() => handleSelection(true)}
           className={`flex items-center gap-3 p-8 text-lg transition-all ${
-            formData.isReturningCollector === true
+            formData.is_returning_collector === true
               ? "bg-rose-600 hover:bg-rose-500 text-white scale-105"
               : "bg-rose-950/40 border-rose-400/30 text-rose-100 hover:bg-rose-800/50 hover:text-rose-50"
           }`}

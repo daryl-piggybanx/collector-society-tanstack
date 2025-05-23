@@ -15,11 +15,11 @@ interface CollectorPiecesProps {
 
 export default function CollectorPieces({ formData, updateFormData, variations }: CollectorPiecesProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateFormData({ pieceCount: e.target.value })
+    updateFormData({ piece_count: e.target.value })
   }
 
   const handleVariationChange = (value: string) => {
-    updateFormData({ favoriteVariation: value })
+    updateFormData({ favorite_variation: value })
   }
 
   const containerVariants = {
@@ -50,7 +50,7 @@ export default function CollectorPieces({ formData, updateFormData, variations }
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
         <Users size={28} className="text-rose-300" />
         <h2 className="text-2xl font-bold text-rose-100">
-          {formData.firstName ? `Hi ${formData.firstName}!` : "Your Collection"}
+          {formData.first_name ? `Hi ${formData.first_name}!` : "Your Collection"}
         </h2>
       </motion.div>
 
@@ -60,8 +60,8 @@ export default function CollectorPieces({ formData, updateFormData, variations }
           How many pieces do you currently have in your collection?
           </Label>
           <Input
-            id="pieceCount"
-            value={formData.pieceCount}
+            id="piece_count"
+            value={formData.piece_count}
             onChange={handleInputChange}
             placeholder="Enter the number of pieces"
             className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
@@ -72,8 +72,8 @@ export default function CollectorPieces({ formData, updateFormData, variations }
         <div className="space-y-3">
           <Label className="text-lg text-rose-200">What was the first Piggybanx Piece you ever acquired or bought directly from the studio?</Label>
           <Input
-            id="firstPiece"
-            value={formData.firstPiece}
+            id="first_piece"
+            value={formData.first_piece}
             onChange={handleInputChange}
             placeholder="Enter the name of your first piece"
             className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
@@ -85,7 +85,7 @@ export default function CollectorPieces({ formData, updateFormData, variations }
           <Label className="text-lg text-rose-200">What are your top 3 variations? (Optional)</Label>
 
           <RadioGroup
-            value={formData.favoriteVariation}
+            value={formData.favorite_variation}
             onValueChange={handleVariationChange}
             className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2"
           >
@@ -102,7 +102,7 @@ export default function CollectorPieces({ formData, updateFormData, variations }
                 <Label
                   htmlFor={`variation-${variation}`}
                   className={`flex items-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                    formData.favoriteVariation === variation
+                    formData.favorite_variation === variation
                       ? "border-rose-500 bg-rose-900/50"
                       : "border-rose-400/30 bg-rose-950/40 hover:border-rose-400/60"
                   }`}
@@ -116,7 +116,7 @@ export default function CollectorPieces({ formData, updateFormData, variations }
                     <Sparkles
                       size={18}
                       className={`mr-2 ${
-                        formData.favoriteVariation === variation ? "text-rose-300" : "text-rose-400/50"
+                        formData.favorite_variation === variation ? "text-rose-300" : "text-rose-400/50"
                       }`}
                     />
                     <span className="text-rose-100">{variation}</span>

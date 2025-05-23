@@ -15,7 +15,7 @@ interface CollectorReasonsProps {
 
 export default function CollectorReasons({ formData, updateFormData }: CollectorReasonsProps) {
   const handleCollectionReasonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updateFormData({ collectionReason: e.target.value })
+    updateFormData({ collection_reason: e.target.value })
   }
 
   const handleInterestsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -50,7 +50,7 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
         <Heart size={28} className="text-rose-300" />
         <h2 className="text-2xl font-bold text-rose-100">
-          {formData.firstName ? `${formData.firstName}, ` : ""}
+          {formData.first_name ? `${formData.first_name}, ` : ""}
           tell us more about your interest
         </h2>
       </motion.div>
@@ -61,8 +61,8 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
           Why do you want to collect our art?
           </Label>
           <Textarea
-            id="collectionReason"
-            value={formData.collectionReason}
+            id="collection_reason"
+            value={formData.collection_reason}
             onChange={handleCollectionReasonChange}
             placeholder="Share your motivation for collecting..."
             className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"

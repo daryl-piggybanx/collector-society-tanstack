@@ -44,7 +44,7 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
   }
 
   // Find the selected preference objects
-  const selectedPreferences = formData.collectPreferences?.map(
+  const selectedPreferences = formData.collect_preferences?.map(
     (name) => preferences.find((p) => p.name === name) || { name, icon: "target" },
   ) || [];
 
@@ -96,21 +96,21 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
               <div>
                 <h4 className="font-medium text-rose-200">Personal Info</h4>
                 <p className="text-rose-100">
-                  {formData.firstName} {formData.lastName}
+                  {formData.first_name} {formData.last_name}
                 </p>
-                <p className="text-rose-100/70 text-sm">{formData.discordUsername}</p>
+                <p className="text-rose-100/70 text-sm">{formData.discord_username}</p>
               </div>
             </div>
 
-            {formData.isReturningCollector && (
+            {formData.is_returning_collector && (
               <div className="flex items-start gap-3">
                 <MessageSquare size={20} className="text-rose-300 mt-1" />
                 <div>
                   <h4 className="font-medium text-rose-200">Collection Stats</h4>
-                  <p className="text-rose-100">{formData.pieceCount} pieces in collection</p>
-                  {formData.favoriteVariation && (
+                  <p className="text-rose-100">{formData.piece_count} pieces in collection</p>
+                  {formData.favorite_variation && (
                     <p className="text-rose-100/70">
-                      Favorite variation: <span className="text-rose-300">{formData.favoriteVariation}</span>
+                      Favorite variation: <span className="text-rose-300">{formData.favorite_variation}</span>
                     </p>
                   )}
                 </div>
@@ -136,12 +136,12 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
               </div>
             </div>
 
-            {formData.categoryToAdd && (
+            {formData.category_to_add && (
               <div className="flex items-start gap-3">
                 <Plus size={20} className="text-rose-300 mt-1" />
                 <div>
                   <h4 className="font-medium text-rose-200">Suggested Category</h4>
-                  <p className="text-rose-100">{formData.categoryToAdd}</p>
+                  <p className="text-rose-100">{formData.category_to_add}</p>
                 </div>
               </div>
             )}
@@ -153,7 +153,7 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
               <div>
                 <h4 className="font-medium text-rose-200">Contact Info</h4>
                 <p className="text-rose-100">{formData.email}</p>
-                {formData.phoneNumber && <p className="text-rose-100/70">{formData.phoneNumber}</p>}
+                {formData.phone_number && <p className="text-rose-100/70">{formData.phone_number}</p>}
               </div>
             </div>
 
@@ -161,7 +161,7 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
               <Phone size={20} className="text-rose-300 mt-1" />
               <div>
                 <h4 className="font-medium text-rose-200">Communication Preference</h4>
-                <p className="text-rose-100 capitalize">{formData.communicationPreference}</p>
+                <p className="text-rose-100 capitalize">{formData.communication_preference}</p>
               </div>
             </div>
 
@@ -170,7 +170,7 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
               <div>
                 <h4 className="font-medium text-rose-200">Collector Status</h4>
                 <p className="text-rose-100">
-                  {formData.isReturningCollector ? "Returning Collector" : "New Collector"}
+                  {formData.is_returning_collector ? "Returning Collector" : "New Collector"}
                 </p>
               </div>
             </div>

@@ -11,12 +11,12 @@ interface CommunityRulesProps {
 
 export default function CommunityRules({ formData, updateFormData, rules }: CommunityRulesProps) {
   const handleRuleCheck = (index: number, checked: boolean) => {
-    const updatedRules = [...formData.rulesAccepted]
+    const updatedRules = [...formData.rules_accepted]
     updatedRules[index] = checked
-    updateFormData({ rulesAccepted: updatedRules })
+    updateFormData({ rules_accepted: updatedRules })
   }
 
-  const allRulesAccepted = formData.rulesAccepted.every((rule) => rule)
+  const allRulesAccepted = formData.rules_accepted.every((rule) => rule)
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -46,12 +46,12 @@ export default function CommunityRules({ formData, updateFormData, rules }: Comm
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
         <ScrollText size={28} className="text-rose-300" />
         <h2 className="text-2xl font-bold text-rose-100">
-          {formData.isReturningCollector ? "Welcome back!" : "Before we get started"}
+          {formData.is_returning_collector ? "Welcome back!" : "Before we get started"}
         </h2>
       </motion.div>
 
       <motion.p variants={itemVariants} className="text-lg mb-8 text-rose-100/90">
-        {formData.isReturningCollector ? "Here is a reminder of our rules" : "Please review our collecting rules"}
+        {formData.is_returning_collector ? "Here is a reminder of our rules" : "Please review our collecting rules"}
       </motion.p>
 
       <motion.div variants={itemVariants} className="bg-rose-950/50 rounded-lg p-6 border border-rose-400/30">
@@ -69,7 +69,7 @@ export default function CommunityRules({ formData, updateFormData, rules }: Comm
             >
               <Checkbox
                 id={`rule-${index}`}
-                checked={formData.rulesAccepted[index]}
+                checked={formData.rules_accepted[index]}
                 onCheckedChange={(checked) => handleRuleCheck(index, checked === true)}
                 className="mt-1 data-[state=checked]:bg-rose-500 data-[state=checked]:text-white border-rose-400"
               />

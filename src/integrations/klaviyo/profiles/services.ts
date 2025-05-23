@@ -46,7 +46,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     first_name: z.string(),
     last_name: z.string(),
     created: z.string().optional(),
-    updated: z.string(),
+    updated: z.string().optional(),
     marketing_consent: z.boolean(),
     discord_username: z.string().optional(),
     piece_count: z.string().optional(),

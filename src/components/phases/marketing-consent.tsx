@@ -21,7 +21,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   }
 
   const handleCommunicationChange = (value: string) => {
-    updateFormData({ communicationPreference: value })
+    updateFormData({ communication_preference: value })
   }
 
   const containerVariants = {
@@ -49,7 +49,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
-      {!formData.isReturningCollector && (
+      {!formData.is_returning_collector && (
       <motion.p variants={itemVariants} className="text-rose-100/80 my-6">
         We'll use this information to keep you updated on new collections and events.
       </motion.p>
@@ -81,38 +81,38 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
           <div className="flex items-center">
             <Phone size={18} className="text-rose-300 mr-2" />
             <Input
-              id="phoneNumber"
-              name="phoneNumber"
+              id="phone_number"
+              name="phone_number"
               type="tel"
-              value={formData.phoneNumber}
+              value={formData.phone_number}
               onChange={(e) => {
                 const value = e.target.value;
                 // Only update if empty or valid phone number
                 if (!value || isValidPhoneNumber(value)) {
-                  updateFormData({ phoneNumber: value });
+                  updateFormData({ phone_number: value });
                 }
               }}
               placeholder="Phone Number (optional)"
               className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
             />
           </div>
-          {formData.phoneNumber && !isValidPhoneNumber(formData.phoneNumber) && (
+          {formData.phone_number && !isValidPhoneNumber(formData.phone_number) && (
             <p className="text-rose-400 text-sm mt-1">
               Please enter a valid phone number with country code (e.g., +12345678901)
             </p>
           )}
         </div>
 
-        {!formData.isReturningCollector && (
+        {!formData.is_returning_collector && (
         <>
         <div className="space-y-3">
               <Checkbox 
-            id="marketingConsent" 
-            checked={formData.marketingConsent}
-            onCheckedChange={(checked) => updateFormData({ marketingConsent: checked === true })}
+            id="marketing_consent" 
+            checked={formData.marketing_consent}
+            onCheckedChange={(checked) => updateFormData({ marketing_consent: checked === true })}
             className="mt-1 data-[state=checked]:bg-rose-500 data-[state=checked]:text-white border-rose-400 mr-2 cursor-pointer"
           />
-          <Label htmlFor="marketingConsent" className="text-rose-200 cursor-pointer">
+          <Label htmlFor="marketing_consent" className="text-rose-200 cursor-pointer">
             Check this box to also receive promotional marketing texts.
           </Label>
         </div>
@@ -125,7 +125,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
         <div className="space-y-3">
           <Label className="text-rose-200 mb-4">Communication Preference</Label>
           <RadioGroup
-            value={formData.communicationPreference}
+            value={formData.communication_preference}
             onValueChange={handleCommunicationChange}
             className="flex flex-row gap-4 md:gap-3 md:justify-start md:items-start"
           >

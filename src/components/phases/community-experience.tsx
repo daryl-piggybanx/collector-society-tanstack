@@ -15,7 +15,7 @@ interface CommunityExperienceProps {
 
 export default function CommunityExperience({ formData, updateFormData }: CommunityExperienceProps) {
   const handleCommunityExperienceChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updateFormData({ communityExperience: e.target.value })
+    updateFormData({ community_experience: e.target.value })
   }
 
   const handleImprovementsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -50,7 +50,7 @@ export default function CommunityExperience({ formData, updateFormData }: Commun
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
         <Users size={28} className="text-rose-300" />
         <h2 className="text-2xl font-bold text-rose-100">
-          {formData.firstName ? `${formData.firstName}, ` : ""}
+          {formData.first_name ? `${formData.first_name}, ` : ""}
           share your community experience
         </h2>
       </motion.div>
@@ -61,8 +61,8 @@ export default function CommunityExperience({ formData, updateFormData }: Commun
             What is your favorite part about collecting our work or about the community?
           </Label>
           <Textarea
-            id="communityExperience"
-            value={formData.communityExperience}
+            id="community_experience"
+            value={formData.community_experience}
             onChange={handleCommunityExperienceChange}
             placeholder="Tell us what you love most..."
             className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"

@@ -15,7 +15,7 @@ interface NewCategoriesProps {
 
 export default function NewCategories({ formData, updateFormData }: NewCategoriesProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updateFormData({ categoryToAdd: e.target.value })
+    updateFormData({ category_to_add: e.target.value })
   }
 
   const containerVariants = {
@@ -46,7 +46,7 @@ export default function NewCategories({ formData, updateFormData }: NewCategorie
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
         <PlusCircle size={28} className="text-rose-300" />
         <h2 className="text-2xl font-bold text-rose-100">
-          {formData.firstName ? `${formData.firstName}, ` : ""}
+          {formData.first_name ? `${formData.first_name}, ` : ""}
           what category would you want added?
         </h2>
       </motion.div>
@@ -60,8 +60,8 @@ export default function NewCategories({ formData, updateFormData }: NewCategorie
           Suggest a new category
         </Label>
         <Textarea
-          id="categoryToAdd"
-          value={formData.categoryToAdd}
+          id="category_to_add"
+          value={formData.category_to_add}
           onChange={handleInputChange}
           placeholder="Enter your suggestion here..."
           className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
