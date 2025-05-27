@@ -51,7 +51,7 @@ export default function FuturisticButton({ label, color, icon, href }: Futuristi
     >
       <a href={href} className="block">
         <div
-          className={`group relative flex h-14 w-full items-center justify-between gap-3 overflow-hidden rounded-lg border px-4 py-3 backdrop-blur-sm transition-all duration-300 sm:w-auto sm:min-w-[180px] 
+          className={`group relative flex h-18 md:h-14 w-full items-center justify-between gap-3 overflow-hidden rounded-lg border px-4 py-3 backdrop-blur-sm transition-all duration-300 sm:w-auto sm:min-w-[180px] 
             ${styles.bg} ${styles.border} ${styles.glow} ${styles.hoverBg} ${styles.hoverBorder} ${styles.hoverGlow} ${styles.activeBg}
             shadow-lg hover:shadow-xl`}
         >

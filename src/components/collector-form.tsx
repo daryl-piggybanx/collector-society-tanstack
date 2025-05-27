@@ -338,7 +338,7 @@ export function OGCollectorForm() {
   const isNextDisabled = () => {
     switch (currentPhase) {
       case 1:
-        return !formData.first_name || !formData.last_name
+        return !formData.first_name || !formData.last_name || !formData.email
       case 2:
         return !formData.piece_count
       case 3:

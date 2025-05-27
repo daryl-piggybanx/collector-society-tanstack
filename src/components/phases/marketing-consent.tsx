@@ -240,7 +240,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
                 <Label htmlFor="marketing_consent" className="text-rose-200 cursor-pointer leading-relaxed">
                   Check this box to also receive promotional marketing texts.
                 </Label>
-                { !phoneState.isTouched && (
+                { formData.marketing_consent && !phoneState.value && (
                   <p className="text-rose-300/70 text-sm mt-1">
                     Please enter a valid phone number
                   </p>
