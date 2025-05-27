@@ -61,7 +61,7 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label htmlFor="firstName" className="text-rose-200">
-              First Name
+              First Name*
             </Label>
             <div className="relative">
               <Input
@@ -81,7 +81,7 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
 
           <div className="space-y-2">
             <Label htmlFor="lastName" className="text-rose-200">
-              Last Name
+              Last Name*
             </Label>
             <div className="relative">
               <Input

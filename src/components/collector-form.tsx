@@ -25,6 +25,8 @@ import TopCategories from "@/components/phases/top-categories"
 import UserIdentity from "@/components/phases/user-identity"
 
 import SuccessPage from "@/components/phases/success-page"
+import { validatePhoneNumber } from "@/utils/validation"
+import { validateEmail } from "@/utils/validation"
 
 export type FormData = {
   is_returning_collector: boolean
@@ -81,7 +83,7 @@ export function NewCollectorForm() {
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
     onSuccess: (data) => {
-      console.log("Profile created/updated successfully")
+      // console.log("Profile created/updated successfully")
       // queryClient.invalidateQueries({ queryKey: ['profile', formData.email] });
       // queryClient.setQueryData(['profile', formData.email], data);
       setSharedData(formData);
@@ -129,7 +131,9 @@ export function NewCollectorForm() {
       case 3:
         return !formData.collection_reason || !formData.interests
       case 4:
-        return !formData.email
+        const emailValidation = validateEmail(formData.email);
+        const phoneValidation = validatePhoneNumber(formData.phone_number || "");
+        return !emailValidation.isValid || !phoneValidation.isValid
       case 5:
         return formData.collect_preferences && formData.collect_preferences.length === 0
       default:
@@ -284,7 +288,6 @@ const createInitialOGFormData = (sharedData: FormData | null): FormData => {
 
 export function OGCollectorForm() {
   const { sharedData, hasSharedData } = useSharedFormData();
-  console.log('hasSharedData', hasSharedData);
   const [formData, setFormData] = useState<FormData>(() => createInitialOGFormData(sharedData as FormData | null));
 
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -299,7 +302,7 @@ export function OGCollectorForm() {
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
     onSuccess: () => {
-      console.log("Profile created/updated successfully")
+      // console.log("Profile created/updated successfully")
     },
     onError: (error) => {
       console.error("Error creating/updating profile:", error)

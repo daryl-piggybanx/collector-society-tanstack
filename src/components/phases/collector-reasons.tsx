@@ -58,7 +58,7 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
       <motion.div variants={itemVariants} className="space-y-8">
         <div className="space-y-3">
           <Label htmlFor="collectionReason" className="text-lg text-rose-200">
-          Why do you want to collect our art?
+          Why do you want to collect our art?*
           </Label>
           <Textarea
             id="collection_reason"
@@ -71,7 +71,7 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
 
         <div className="space-y-3">
           <Label htmlFor="interests" className="text-lg text-rose-200">
-            What interests you the most about our work?
+            What interests you the most about our work?*
           </Label>
           <Textarea
             id="interests"

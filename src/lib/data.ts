@@ -115,10 +115,12 @@ export const collectionPreferences = [
   {
     name: "Comics/ Superheroes",
     icon: "sparkles",
+    klaviyoValue: "Comics/Superheroes",
   },
   {    
     name: "Cars/ Racing",
     icon: "car",
+    klaviyoValue: "Cars/Racing",
   },
   {
     name: "Galaxy Far Away",

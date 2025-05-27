@@ -7,6 +7,7 @@ interface Preference {
   name: string
   icon: string
   subcategories: string[]
+  klaviyoValue?: string
 }
 
 interface TopCategoriesProps {
@@ -29,8 +30,9 @@ export default function TopCategories({ formData, updateFormData, preferences }:
     setSelectedSubcategory(null)
     setShowSubcategories(false) // Always keep subcategories hidden
     
-    // Update form data with the main category only
-    updateFormData({ collect_preferences: [preference.name] })
+    // Update form data with the klaviyoValue if it exists, otherwise use the name
+    const valueForKlaviyo = preference.klaviyoValue || preference.name
+    updateFormData({ collect_preferences: [valueForKlaviyo] })
   }
 
   // COMMENTED OUT: Subcategory selection handler (keeping for future use)

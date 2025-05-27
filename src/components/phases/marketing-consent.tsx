@@ -1,5 +1,5 @@
 import type React from "react"
-
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Mail, Phone } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -7,7 +7,18 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { FormData } from "@/components/collector-form"
-import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
+import {
+  validateEmail,
+  validatePhoneNumber,
+  formatPhoneNumberAsYouType,
+  formatPhoneToE164,
+  getFormattedPhoneNumber,
+  isPhoneNumberPossible,
+  ensurePlusPrefix,
+  createFieldState,
+  updateFieldState,
+  type FieldValidationState
+} from "@/utils/validation"
 
 interface MarketingConsentProps {
   formData: FormData
@@ -15,13 +26,109 @@ interface MarketingConsentProps {
 }
 
 export default function MarketingConsent({ formData, updateFormData }: MarketingConsentProps) {
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    updateFormData({ [name]: value })
+  // local validation state
+  const [emailState, setEmailState] = useState<FieldValidationState>(() => 
+    createFieldState(formData.email)
+  )
+  const [phoneState, setPhoneState] = useState<FieldValidationState>(() => 
+    createFieldState(formData.phone_number || '')
+  )
+
+  // sync with form data when it changes externally
+  useEffect(() => {
+    if (formData.email !== emailState.value) {
+      setEmailState(prev => updateFieldState(prev, { value: formData.email }))
+    }
+  }, [formData.email])
+
+  useEffect(() => {
+    if (formData.phone_number !== phoneState.value) {
+      setPhoneState(prev => updateFieldState(prev, { value: formData.phone_number || '' }))
+    }
+  }, [formData.phone_number])
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    
+    // update local state immediately for responsive UI
+    setEmailState(prev => updateFieldState(prev, { 
+      value, 
+      isTouched: true 
+    }))
+    
+    // update form data
+    updateFormData({ email: value })
+  }
+
+  const handleEmailBlur = () => {
+    const validation = validateEmail(emailState.value)
+    setEmailState(prev => updateFieldState(prev, {
+      error: validation.error,
+      isValid: validation.isValid
+    }))
+  }
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value
+    
+    // ensure + prefix if user starts typing numbers
+    if (value && !value.startsWith('+') && /^\d/.test(value)) {
+      value = ensurePlusPrefix(value)
+    }
+    
+    // format as user types for better UX
+    const formattedForDisplay = formatPhoneNumberAsYouType(value, 'US')
+    
+    // real-time validation for immediate feedback
+    const isPossible = isPhoneNumberPossible(formattedForDisplay, 'US')
+    
+    // update local state with formatted display value
+    setPhoneState(prev => updateFieldState(prev, { 
+      value: formattedForDisplay,
+      isTouched: true,
+      isValid: isPossible || !formattedForDisplay.trim(), // Valid if possible or empty
+      error: isPossible || !formattedForDisplay.trim() ? undefined : 'Invalid phone number format'
+    }))
+    
+    // update form data with display value (will be converted to E.164 on blur)
+    updateFormData({ phone_number: formattedForDisplay })
+  }
+
+  const handlePhoneBlur = () => {
+    const validation = validatePhoneNumber(phoneState.value, 'US')
+    
+    // convert to E.164 format for Klaviyo if valid
+    const e164Value = validation.isValid && validation.formattedValue 
+      ? validation.formattedValue 
+      : phoneState.value
+
+    // update form data with E.164 format
+    if (validation.isValid && validation.formattedValue) {
+      updateFormData({ phone_number: e164Value })
+    }
+    
+    // update local validation state
+    setPhoneState(prev => updateFieldState(prev, {
+      value: e164Value,
+      error: validation.error,
+      isValid: validation.isValid
+    }))
   }
 
   const handleCommunicationChange = (value: string) => {
     updateFormData({ communication_preference: value })
+  }
+
+  // get display format for phone number
+  const getPhoneDisplayValue = () => {
+    if (!phoneState.value) return ''
+    
+    // if it's in E.164 format, show international format for better readability
+    if (phoneState.value.startsWith('+') && phoneState.value.length > 10) {
+      return getFormattedPhoneNumber(phoneState.value, 'international', 'US')
+    }
+    
+    return phoneState.value
   }
 
   const containerVariants = {
@@ -50,32 +157,45 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       {!formData.is_returning_collector && (
-      <motion.p variants={itemVariants} className="text-rose-100/80 my-6">
-        We'll use this information to keep you updated on new collections and events.
-      </motion.p>
+        <motion.p variants={itemVariants} className="text-rose-100/80 my-6">
+          We'll use this information to keep you updated on new collections and events.
+        </motion.p>
       )}
+      
       <motion.div variants={itemVariants} className="space-y-6 my-6">
+        {/* Email */}
         <div className="space-y-3">
           <Label htmlFor="email" className="text-rose-200">
-            Email Address
+            Email Address *
           </Label>
           <div className="flex items-center">
             <Mail size={18} className="text-rose-300 mr-2" />
             <Input
               id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleInputChange}
+              name="email"
+              type="email"
+              value={emailState.value}
+              onChange={handleEmailChange}
+              onBlur={handleEmailBlur}
               placeholder="Email Address"
-              className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
+              className={`border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 ${
+                emailState.isTouched && !emailState.isValid ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : ''
+              }`}
               required
+              aria-invalid={emailState.isTouched && !emailState.isValid}
+              aria-describedby={emailState.error ? "email-error" : undefined}
             />
           </div>
+          {emailState.isTouched && emailState.error && (
+            <p id="email-error" className="text-red-400 text-sm mt-1">
+              {emailState.error}
+            </p>
+          )}
         </div>
 
+        {/* Phone Number */}
         <div className="space-y-3">
-          <Label htmlFor="phoneNumber" className="text-rose-200">
+          <Label htmlFor="phone_number" className="text-rose-200">
             Phone Number
           </Label>
           <div className="flex items-center">
@@ -84,84 +204,114 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
               id="phone_number"
               name="phone_number"
               type="tel"
-              value={formData.phone_number}
-              onChange={(e) => {
-                const value = e.target.value;
-                // Only update if empty or valid phone number
-                if (!value || isValidPhoneNumber(value)) {
-                  updateFormData({ phone_number: value });
-                }
-              }}
-              placeholder="Phone Number (optional)"
-              className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
+              value={getPhoneDisplayValue()}
+              onChange={handlePhoneChange}
+              onBlur={handlePhoneBlur}
+              placeholder="Phone Number with country code"
+              className={`border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 ${
+                phoneState.isTouched && !phoneState.isValid ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : ''
+              }`}
+              aria-invalid={phoneState.isTouched && !phoneState.isValid}
+              aria-describedby={phoneState.error ? "phone-error" : undefined}
             />
           </div>
-          {formData.phone_number && !isValidPhoneNumber(formData.phone_number) && (
-            <p className="text-rose-400 text-sm mt-1">
-              Please enter a valid phone number with country code (e.g., +12345678901)
+          {phoneState.isTouched && phoneState.error && (
+            <p id="phone-error" className="text-red-400 text-sm mt-1">
+              {phoneState.error}
+            </p>
+          )}
+          {!phoneState.error && phoneState.value && phoneState.isValid && (
+            <p className="text-rose-300/70 text-sm mt-1">
+              ✓ Valid phone number
             </p>
           )}
         </div>
 
         {!formData.is_returning_collector && (
-        <>
-        <div className="space-y-3">
-              <Checkbox 
-            id="marketing_consent" 
-            checked={formData.marketing_consent}
-            onCheckedChange={(checked) => updateFormData({ marketing_consent: checked === true })}
-            className="mt-1 data-[state=checked]:bg-rose-500 data-[state=checked]:text-white border-rose-400 mr-2 cursor-pointer"
-          />
-          <Label htmlFor="marketing_consent" className="text-rose-200 cursor-pointer">
-            Check this box to also receive promotional marketing texts.
-          </Label>
-        </div>
-        <div className="space-y-3">
-          <p className="text-rose-100/80">
-            By submitting this form and signing up for texts, you consent to receive marketing text messages (e.g. promos, cart reminders) from PiggyBanx at the number provided, including messages sent by autodialer. Consent is not a condition of purchase. Msg & data rates may apply. Msg frequency varies. Unsubscribe at any time by replying STOP or clicking the unsubscribe link (where available). 
-          </p>
-        </div>
+          <>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <Checkbox 
+                  id="marketing_consent" 
+                  checked={formData.marketing_consent}
+                  onCheckedChange={(checked) => updateFormData({ marketing_consent: checked === true })}
+                  className="mt-1 data-[state=checked]:bg-rose-500 data-[state=checked]:text-white border-rose-400 cursor-pointer"
+                />
+                <Label htmlFor="marketing_consent" className="text-rose-200 cursor-pointer leading-relaxed">
+                  Check this box to also receive promotional marketing texts.
+                </Label>
+                { !phoneState.isTouched && (
+                  <p className="text-rose-300/70 text-sm mt-1">
+                    Please enter a valid phone number
+                  </p>
+                )}
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              <p className="text-rose-100/80 text-sm leading-relaxed">
+                By submitting this form and signing up for texts, you consent to receive marketing text messages (e.g. promos, cart reminders) from PiggyBanx at the number provided, including messages sent by autodialer. Consent is not a condition of purchase. Msg & data rates may apply. Msg frequency varies. Unsubscribe at any time by replying STOP or clicking the unsubscribe link (where available). 
+              </p>
+            </div>
 
-        <div className="space-y-3">
-          <Label className="text-rose-200 mb-4">Communication Preference</Label>
-          <RadioGroup
-            value={formData.communication_preference}
-            onValueChange={handleCommunicationChange}
-            className="flex flex-row gap-4 md:gap-3 md:justify-start md:items-start"
-          >
-            <div className="flex items-center gap-3">
-              <RadioGroupItem
-                value="Email"
-                id="comm-email"
-                className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
-              />
-              <Label htmlFor="comm-email" className="text-rose-100">
-                Email
-              </Label>
+            <div className="">
+              <Label className="text-rose-200 mb-4">Communication Preference</Label>
+              <RadioGroup
+                value={formData.communication_preference}
+                onValueChange={handleCommunicationChange}
+                className="flex flex-row gap-4 md:gap-3 md:justify-start md:items-start"
+              >
+                <div className="flex items-center gap-3">
+                  <RadioGroupItem
+                    value="Email"
+                    id="comm-email"
+                    className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
+                  />
+                  <Label htmlFor="comm-email" className="text-rose-100">
+                    Email
+                  </Label>
+                </div>
+                <div className="flex items-center gap-3">
+                  <RadioGroupItem
+                    value="Text"
+                    id="comm-phone"
+                    className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
+                  />
+                  <Label htmlFor="comm-phone" className="text-rose-100">
+                    Phone
+                  </Label>
+                </div>
+                <div className="flex items-center gap-3">
+                  <RadioGroupItem
+                    value="Both"
+                    id="comm-both"
+                    className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
+                  />
+                  <Label htmlFor="comm-both" className="text-rose-100">
+                    Both
+                  </Label>
+                </div>
+              </RadioGroup>
+              <div className="">
+                { formData.communication_preference === "Email" && !emailState.value && (
+                  <p className="text-rose-300/70 text-sm mt-1">
+                    Please enter a valid email address
+                  </p>
+                )}
+                { formData.communication_preference === "Text" && !phoneState.value && (
+                  <p className="text-rose-300/70 text-sm mt-1">
+                    Please enter a valid phone number
+                  </p>
+                )}
+                { formData.communication_preference === "Both" && (!emailState.value || !phoneState.value) && (
+                  <p className="text-rose-300/70 text-sm mt-1">
+                    Please enter a valid email address and phone number
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <RadioGroupItem
-                value="Phone Number"
-                id="comm-phone"
-                className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
-              />
-              <Label htmlFor="comm-phone" className="text-rose-100">
-                Phone
-              </Label>
-            </div>
-            <div className="flex items-center gap-3">
-              <RadioGroupItem
-                value="Both"
-                id="comm-both"
-                className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
-              />
-              <Label htmlFor="comm-both" className="text-rose-100">
-                Both
-              </Label>
-            </div>
-          </RadioGroup>
-        </div>
-        </>
+
+          </>
         )}
       </motion.div>
     </motion.div>
