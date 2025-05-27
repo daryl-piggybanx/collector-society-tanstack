@@ -1,15 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 
 import { getProfileByEmail, createUpdateProfile } from "@/integrations/klaviyo/profiles/services"
-import { useMutation } from "@tanstack/react-query"
+import type { KlaviyoProfile } from "@/integrations/klaviyo/profiles/types"
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query"
 import { collectionPreferences, collectionRules, collectionVariations } from "@/lib/data"
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+
+import { useSharedFormData } from "@/hooks/shared-data"
 
 import CollectorPieces from "@/components/phases/collector-pieces"
 import CollectorType from "@/components/phases/collector-type"
@@ -68,23 +71,28 @@ const initialFormData: FormData = {
 }
 
 export function NewCollectorForm() {
-  const [currentPhase, setCurrentPhase] = useState(1)
-  const [formData, setFormData] = useState<FormData>(initialFormData)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isComplete, setIsComplete] = useState(false)
+  const [currentPhase, setCurrentPhase] = useState(1);
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+
+  const { setSharedData } = useSharedFormData();
 
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
-    onSuccess: () => {
+    onSuccess: (data) => {
       console.log("Profile created/updated successfully")
+      // queryClient.invalidateQueries({ queryKey: ['profile', formData.email] });
+      // queryClient.setQueryData(['profile', formData.email], data);
+      setSharedData(formData);
     },
     onError: (error) => {
       console.error("Error creating/updating profile:", error)
     },
-  })
+  });
 
   const totalPhases = 5;
-  const progressPercentage = (currentPhase / totalPhases) * 100
+  const progressPercentage = (currentPhase / totalPhases) * 100;
 
   const handleNext = () => {
     setCurrentPhase((prev) => prev + 1)
@@ -252,16 +260,41 @@ export function NewCollectorForm() {
   )
 }
 
-const OGFormData: FormData = {
-  ...initialFormData,
-  is_returning_collector: true
-}
+// const OGFormData: FormData = {
+//   ...initialFormData,
+//   is_returning_collector: true
+// }
+const createInitialOGFormData = (sharedData: FormData | null): FormData => {
+  const baseData: FormData = {
+    ...initialFormData,
+    is_returning_collector: true
+  };
+
+  if (!sharedData) {
+    return baseData;
+  }
+
+  // simple merge - sharedData overwrites baseData properties
+  return {
+    ...baseData,
+    ...sharedData,
+    is_returning_collector: true
+  };
+};
 
 export function OGCollectorForm() {
+  const { sharedData, hasSharedData } = useSharedFormData();
+  console.log('hasSharedData', hasSharedData);
+  const [formData, setFormData] = useState<FormData>(() => createInitialOGFormData(sharedData as FormData | null));
+
   const [currentPhase, setCurrentPhase] = useState(1);
-  const [formData, setFormData] = useState<FormData>(OGFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+
+  const updateFormData = (data: Partial<FormData>) => {
+    setFormData((prev) => ({ ...prev, ...data }))
+  }
+
 
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
@@ -273,7 +306,6 @@ export function OGCollectorForm() {
     },
   });
 
-  formData.is_returning_collector = true;
   const totalPhases = 4;
   const progressPercentage = (currentPhase / totalPhases) * 100
 
@@ -283,10 +315,6 @@ export function OGCollectorForm() {
 
   const handleBack = () => {
     setCurrentPhase((prev) => prev - 1)
-  }
-
-  const updateFormData = (data: Partial<FormData>) => {
-    setFormData((prev) => ({ ...prev, ...data }))
   }
 
   const handleSubmit = async () => {
@@ -392,7 +420,7 @@ export function OGCollectorForm() {
                 <Button
                   onClick={handleNext}
                   disabled={isNextDisabled()}
-                  className="ml-auto flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-rose-50"
+                  className="ml-auto flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-rose-50 cursor-pointer"
                 >
                   Next
                   <ChevronRight size={16} />
@@ -403,7 +431,7 @@ export function OGCollectorForm() {
                 <Button
                   onClick={handleSubmit}
                   disabled={isNextDisabled() || isSubmitting}
-                  className="ml-auto flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-rose-50"
+                  className="ml-auto flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-rose-50 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>

@@ -28,8 +28,8 @@ export default function ActionButtons() {
     >
       <FuturisticButton label="Drop Site" color="red" icon="rocket" href="https://www.piggybanxinc.com/" />
       <FuturisticButton label="Club House" color="red" icon="home" href="https://www.piggybanx.com/" />
-      <FuturisticButton label="OG Form" color="red" icon="scroll" href="/collector/og" />
-      <FuturisticButton label="New Collector" color="red" icon="user-plus" href="/collector/new" />
+      <FuturisticButton label="Returning Collector Form" color="red" icon="scroll" href="/collector/og" />
+      <FuturisticButton label="New Collector Application" color="red" icon="user-plus" href="/collector/new" />
     </motion.div>
   )
 }

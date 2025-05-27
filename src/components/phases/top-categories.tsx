@@ -20,42 +20,42 @@ export default function TopCategories({ formData, updateFormData, preferences }:
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null)
   const [showSubcategories, setShowSubcategories] = useState(false)
 
-  const handlePreferenceToggle = (preference: Preference) => {
-    if (selectedPreference === preference.name) {
-      // If clicking the same preference, toggle subcategories
-      setShowSubcategories(!showSubcategories)
-      return
-    }
+  // TEMPORARILY DISABLED: Subcategory functionality
+  const ENABLE_SUBCATEGORIES = false
 
-    // Select new preference
+  const handlePreferenceToggle = (preference: Preference) => {
+    // Simplified logic - only select the main preference
     setSelectedPreference(preference.name)
     setSelectedSubcategory(null)
-    // Always show subcategories if the preference has them
-    setShowSubcategories(preference.subcategories.length > 0)
+    setShowSubcategories(false) // Always keep subcategories hidden
     
-    // Update form data with the main category
+    // Update form data with the main category only
     updateFormData({ collect_preferences: [preference.name] })
   }
 
-  const handleSubcategorySelect = (subcategory: string) => {
-    setSelectedSubcategory(subcategory)
-    // Update form data with the subcategory
-    updateFormData({ collect_preferences: [subcategory] })
-    // Keep the subcategories visible
-    setShowSubcategories(true)
-  }
+  // COMMENTED OUT: Subcategory selection handler (keeping for future use)
+  // const handleSubcategorySelect = (subcategory: string) => {
+  //   setSelectedSubcategory(subcategory)
+  //   updateFormData({ collect_preferences: [subcategory] })
+  //   setShowSubcategories(true)
+  // }
 
   // Initialize from form data if it exists
   useEffect(() => {
     if (formData.collect_preferences && formData.collect_preferences.length > 0) {
       const selected = formData.collect_preferences[0]
-      const preference = preferences.find(p => p.name === selected || p.subcategories.includes(selected))
+      const preference = preferences.find(p => p.name === selected)
       if (preference) {
         setSelectedPreference(preference.name)
-        if (preference.subcategories.includes(selected)) {
-          setSelectedSubcategory(selected)
-        }
       }
+      // DISABLED: Subcategory initialization
+      // const preference = preferences.find(p => p.name === selected || p.subcategories.includes(selected))
+      // if (preference) {
+      //   setSelectedPreference(preference.name)
+      //   if (preference.subcategories.includes(selected)) {
+      //     setSelectedSubcategory(selected)
+      //   }
+      // }
     }
   }, [formData.collect_preferences, preferences])
 
@@ -113,7 +113,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
         <Target size={28} className="text-rose-300" />
         <h2 className="text-2xl font-bold text-rose-100">
           {formData.first_name ? `${formData.first_name}, ` : ""}
-          what do you want to collect?
+          {formData.is_returning_collector ? "#1 category you're focused on collecting" : "What do you want to collect?"}
         </h2>
       </motion.div>
 
@@ -124,8 +124,9 @@ export default function TopCategories({ formData, updateFormData, preferences }:
       <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {preferences.map((preference, index) => {
           const isSelected = selectedPreference === preference.name
-          const hasSubcategories = preference.subcategories.length > 0
-          const isSubcategorySelected = preference.subcategories.includes(selectedSubcategory || '')
+          // DISABLED: Subcategory selection logic
+          // const hasSubcategories = preference.subcategories.length > 0
+          // const isSubcategorySelected = preference.subcategories.includes(selectedSubcategory || '')
 
           return (
             <motion.div
@@ -136,32 +137,33 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                 scale: 1,
                 transition: { delay: index * 0.05 + 0.2 },
               }}
-              whileHover={isSelected && showSubcategories ? {} : { scale: 1.05 }}
+              whileHover={{ scale: 1.05 }} // Simplified hover effect
               className="relative rounded-lg overflow-visible"
             >
               <button
                 onClick={() => handlePreferenceToggle(preference)}
                 className={`w-full h-full p-6 text-center transition-all ${
-                  (isSelected || isSubcategorySelected)
+                  isSelected
                     ? "bg-rose-800/60 border-2 border-rose-500"
                     : "bg-rose-950/40 border border-rose-400/30 hover:border-rose-400/60"
                 } rounded-lg flex flex-col items-center justify-center gap-3`}
               >
-                {renderIcon(preference.icon, isSelected || isSubcategorySelected)}
-                <span className={`font-medium ${(isSelected || isSubcategorySelected) ? "text-rose-200" : "text-rose-100/80"}`}>
+                {renderIcon(preference.icon, isSelected)}
+                <span className={`font-medium ${isSelected ? "text-rose-200" : "text-rose-100/80"}`}>
                   {preference.name}
                 </span>
-                {hasSubcategories && (
+                {/* DISABLED: ChevronDown icon for subcategories */}
+                {/* {hasSubcategories && (
                   <ChevronDown 
                     size={16} 
                     className={`transition-transform ${showSubcategories && isSelected ? 'rotate-180' : ''} text-rose-100/60`}
                   />
-                )}
+                )} */}
               </button>
 
-              {/* Subcategories dropdown */}
-              <AnimatePresence>
-                {isSelected && showSubcategories && hasSubcategories && (
+              {/* DISABLED: Subcategories dropdown (keeping for future use) */}
+              {/* <AnimatePresence>
+                {isSelected && showSubcategories && hasSubcategories && ENABLE_SUBCATEGORIES && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -169,7 +171,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                     transition={{ duration: 0.2 }}
                     className="absolute left-0 right-0 mt-2 bg-rose-950/90 border border-rose-400/30 rounded-lg overflow-hidden z-10 shadow-lg pointer-events-auto"
                   >
-                    <p className="text-rose-100/80 text-sm p-2">More specificic (optional)</p>
+                    <p className="text-rose-100/80 text-sm p-2">More specific (optional)</p>
                     <hr className="border-rose-400/30 mx-3" />
                     {preference.subcategories.map((subcategory) => (
                       <button
@@ -186,21 +188,17 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                     ))}
                   </motion.div>
                 )}
-              </AnimatePresence>
+              </AnimatePresence> */}
             </motion.div>
           )
         })}
       </motion.div>
 
       <motion.div variants={itemVariants} className="mt-6 text-center text-rose-100/80">
-        {(selectedPreference || selectedSubcategory) ? (
+        {selectedPreference ? (
           <div className="flex items-center justify-center gap-2 text-rose-300">
             <Check size={18} />
-            <span>
-              {selectedSubcategory 
-                ? `Selected: ${selectedSubcategory}`
-                : `Selected: ${selectedPreference}`}
-            </span>
+            <span>Selected: {selectedPreference}</span>
           </div>
         ) : (
           <span>Please select a category</span>

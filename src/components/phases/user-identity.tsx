@@ -42,21 +42,6 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
     exit: { opacity: 0, y: -20 },
   }
 
-  // Simulate pre-populated data for returning collectors
-  const isReturningWithData =
-    formData.is_returning_collector && !formData.first_name && !formData.last_name && !formData.discord_username
-
-  // If returning collector and no data entered yet, populate with mock data
-  if (isReturningWithData) {
-    setTimeout(() => {
-      updateFormData({
-        first_name: "Daryl",
-        last_name: "Banx",
-        discord_username: "MissPiggy",
-      })
-    }, 500)
-  }
-
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">

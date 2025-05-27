@@ -87,7 +87,7 @@ export default function CollectorPieces({ formData, updateFormData, variations }
           <RadioGroup
             value={formData.favorite_variation}
             onValueChange={handleVariationChange}
-            className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2"
+            className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-2"
           >
             {variations.map((variation, index) => (
               <motion.div

@@ -1,19 +1,50 @@
 // temp data file for collector form
 export const collectionRules = [
-  "I agree to follow all community guidelines",
-  "I understand that all trades are final",
-  "I will report any suspicious activity to moderators",
-  "I will maintain respectful communication with other collectors",
+  "I agree to follow all community guidelines.",
+  "No flipping.",
+  "Don't call them cards. These are pieces of art and should be referred to and treated as such.",
+  "I will maintain respectful communication with other collectors.",
 ]
 
 export const collectionVariations = [
+  "Angel Dust",
+  "Atomic",
+  "Beam",
+  "Bubble",
+  "Canvas",
+  "Chrome",
+  "Digit",
+  "Disco",
+  "Flash",
+  "Fractal",
+  "Galactic",
+  "Glass",
+  "Gold",
+  "Griddy",
+  "Groove",
+  "Holo",
+  "Hypnotic",
+  "Link",
+  "Matte",
+  "Metal",
+  "Plaid",
+  "Platinum",
   "Prism",
   "Radiant",
-  "Disco",
-  "Fractal",
+  "Razz",
+  "Refractor",
+  "Sequence",
+  "Scale",
+  "Snakeskin",
+  "Starburst",
+  "Titanium",
+  "Twill",
+  "Wave",
+  "Wire",
 ]
 
-export const collectionPreferences = [
+// Original collection preferences with subcategories (kept for potential future use)
+export const originalCollectionPreferences = [
   {
     name: "Sports/Athletes",
     icon: "trophy",
@@ -32,7 +63,7 @@ export const collectionPreferences = [
     name: "Pop Culture",
     icon: "sparkles",
     subcategories: [
-      "Comics/Superheroes",
+      "Comics/ Superheroes",
       "Titans of Industry"
     ]
   },
@@ -52,5 +83,45 @@ export const collectionPreferences = [
     name: "Cars/Racing",
     icon: "car",
     subcategories: [],
+  },
+]
+
+// New collection preferences without subcategories
+export const collectionPreferences = [
+  {
+    name: "Sports",
+    icon: "trophy",
+  },
+  {
+    name: "Music",
+    icon: "music",
+  },
+  {
+    name: "Movies",
+    icon: "film",
+  },
+  {
+    name: "Video Games",
+    icon: "gamepad-2",
+  },
+  {
+    name: "Anime",
+    icon: "palette",
+  },
+  {
+    name: "Pocket Monsters",
+    icon: "zap",
+  },
+  {
+    name: "Comics/ Superheroes",
+    icon: "sparkles",
+  },
+  {    
+    name: "Cars/ Racing",
+    icon: "car",
+  },
+  {
+    name: "Galaxy Far Away",
+    icon: "star",
   },
 ]
