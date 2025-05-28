@@ -51,6 +51,8 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     discord_username: z.string().optional(),
     piece_count: z.string().optional(),
     favorite_variation: z.string().optional(),
+    favorite_variation_2: z.string().optional(),
+    favorite_variation_3: z.string().optional(),
     collect_preferences: z.array(z.string()).optional(),
     communication_preference: z.string().optional(),
     instagram_handle: z.string().optional(),
@@ -86,6 +88,12 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     }
     if (data.favorite_variation) {
       properties['Favorite-Variation'] = data.favorite_variation;
+    }
+    if (data.favorite_variation_2) {
+      properties['Favorite-Variation-2'] = data.favorite_variation_2;
+    }
+    if (data.favorite_variation_3) {
+      properties['Favorite-Variation-3'] = data.favorite_variation_3;
     }
     if (data.collect_preferences?.[0]) {
       properties['Collection-Category-1'] = data.collect_preferences[0];

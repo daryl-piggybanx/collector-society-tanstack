@@ -55,6 +55,8 @@ export type FormData = {
   piece_count?: string
   first_piece?: string
   favorite_variation?: string
+  favorite_variation_2?: string
+  favorite_variation_3?: string
   collect_preferences?: string[] | undefined
   category_to_add?: string
   community_experience?: string
@@ -77,6 +79,8 @@ const initialFormData: FormData = {
   piece_count: "",
   first_piece: "",
   favorite_variation: "",
+  favorite_variation_2: "",
+  favorite_variation_3: "",
   collect_preferences: [],
   category_to_add: "",
   community_experience: "",

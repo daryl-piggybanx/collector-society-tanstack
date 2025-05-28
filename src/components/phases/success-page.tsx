@@ -48,6 +48,17 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
     (name) => preferences.find((p) => p.name === name) || { name, icon: "target" },
   ) || [];
 
+  // Helper function to get selected variations in order
+  const getSelectedVariations = (): string[] => {
+    const selected: string[] = [];
+    if (formData.favorite_variation) selected.push(formData.favorite_variation);
+    if (formData.favorite_variation_2) selected.push(formData.favorite_variation_2);
+    if (formData.favorite_variation_3) selected.push(formData.favorite_variation_3);
+    return selected;
+  }
+
+  const selectedVariations = getSelectedVariations();
+
   // Function to render the appropriate icon based on the icon name
   const renderIcon = (iconName: string) => {
     const iconClass = "text-rose-300"
@@ -108,9 +119,22 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
                 <div>
                   <h4 className="font-medium text-rose-200">Collection Stats</h4>
                   <p className="text-rose-100">{formData.piece_count} pieces in collection</p>
-                  {formData.favorite_variation && (
+                  {selectedVariations.length > 0 && (
                     <p className="text-rose-100/70">
-                      Favorite variation: <span className="text-rose-300">{formData.favorite_variation}</span>
+                      Favorite variation{selectedVariations.length > 1 ? 's' : ''}: {' '}
+                      <span className="text-rose-300">
+                        {selectedVariations.map((variation, index) => (
+                          <span key={variation}>
+                            {variation}
+                            {index < selectedVariations.length - 1 && ', '}
+                          </span>
+                        ))}
+                      </span>
+                    </p>
+                  )}
+                  {formData.first_piece && (
+                    <p className="text-rose-100/70">
+                      First piece: <span className="text-rose-300">{formData.first_piece}</span>
                     </p>
                   )}
                 </div>
