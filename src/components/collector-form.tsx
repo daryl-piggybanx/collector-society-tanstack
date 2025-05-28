@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
+import { Check, ChevronLeft, ChevronRight, Loader2, AlertTriangle } from "lucide-react"
+import { useRouter } from "@tanstack/react-router"
 
 import { getProfileByEmail, createUpdateProfile } from "@/integrations/klaviyo/profiles/services"
 import type { KlaviyoProfile } from "@/integrations/klaviyo/profiles/types"
@@ -11,6 +12,16 @@ import { collectionPreferences, collectionRules, collectionVariations } from "@/
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 import { useSharedFormData } from "@/hooks/shared-data"
 
@@ -72,13 +83,37 @@ const initialFormData: FormData = {
   improvements: "",
 }
 
+const createInitialNewCollectorFormData = (sharedData: FormData | null): FormData => {
+  const baseData: FormData = {
+    ...initialFormData,
+    is_returning_collector: false
+  };
+
+  if (!sharedData) {
+    return baseData;
+  }
+
+  // Only merge specific fields from phase 1 of OG form when redirected
+  return {
+    ...baseData,
+    first_name: sharedData.first_name || "",
+    last_name: sharedData.last_name || "",
+    email: sharedData.email || "",
+    phone_number: sharedData.phone_number || "",
+    marketing_consent: sharedData.marketing_consent || false,
+    communication_preference: sharedData.communication_preference || "",
+    discord_username: sharedData.discord_username || "",
+    instagram_handle: sharedData.instagram_handle || "",
+    is_returning_collector: false
+  };
+};
+
 export function NewCollectorForm() {
+  const { sharedData, clearSharedData, setSharedData } = useSharedFormData();
   const [currentPhase, setCurrentPhase] = useState(1);
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [formData, setFormData] = useState<FormData>(() => createInitialNewCollectorFormData(sharedData as FormData | null));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-
-  const { setSharedData } = useSharedFormData();
 
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
@@ -287,17 +322,22 @@ const createInitialOGFormData = (sharedData: FormData | null): FormData => {
 };
 
 export function OGCollectorForm() {
-  const { sharedData, hasSharedData } = useSharedFormData();
+  const { sharedData, hasSharedData, setSharedData, clearSharedData } = useSharedFormData();
   const [formData, setFormData] = useState<FormData>(() => createInitialOGFormData(sharedData as FormData | null));
 
   const [currentPhase, setCurrentPhase] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [showEmailErrorDialog, setShowEmailErrorDialog] = useState(false);
+  const [isValidatingEmail, setIsValidatingEmail] = useState(false);
+
+  const router = useRouter();
+
+  // console.log('formData', formData);
 
   const updateFormData = (data: Partial<FormData>) => {
     setFormData((prev) => ({ ...prev, ...data }))
   }
-
 
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
@@ -312,8 +352,26 @@ export function OGCollectorForm() {
   const totalPhases = 4;
   const progressPercentage = (currentPhase / totalPhases) * 100
 
-  const handleNext = () => {
-    setCurrentPhase((prev) => prev + 1)
+  const handleNext = async () => {
+    // phase 1 - validate email before proceeding
+    if (currentPhase === 1) {
+      setIsValidatingEmail(true);
+      
+      try {
+        const profile = await getProfileByEmail({ data: { email: formData.email } });
+        if (!profile) {
+          setShowEmailErrorDialog(true);
+        } else {
+          setCurrentPhase((prev) => prev + 1);
+        }
+      } catch (error) {
+        setShowEmailErrorDialog(true);
+      } finally {
+        setIsValidatingEmail(false);
+      }
+    } else {
+      setCurrentPhase((prev) => prev + 1);
+    }
   }
 
   const handleBack = () => {
@@ -334,11 +392,30 @@ export function OGCollectorForm() {
     }
   };
 
+  const handleRedirectToNewCollectorForm = () => {
+    // clear existing shared data
+    clearSharedData();
+    // only keep formData from phase 1
+    const phase1Data: Partial<FormData> = {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      email: formData.email,
+      phone_number: formData.phone_number,
+      marketing_consent: formData.marketing_consent,
+      communication_preference: formData.communication_preference,
+      discord_username: formData.discord_username,
+      instagram_handle: formData.instagram_handle,
+    };
+    // transfer current form data to shared data
+    setSharedData(phase1Data);
+    router.navigate({ to: '/collector/new' });
+  };
+
   // Determine if the next button should be disabled
   const isNextDisabled = () => {
     switch (currentPhase) {
       case 1:
-        return !formData.first_name || !formData.last_name || !formData.email
+        return !formData.first_name || !formData.last_name || !formData.email || isValidatingEmail
       case 2:
         return !formData.piece_count
       case 3:
@@ -360,7 +437,6 @@ export function OGCollectorForm() {
       >
         <div className="p-8 min-h-[500px]">
           <AnimatePresence mode="wait">
-
 
             {currentPhase === 1 && (
               <>
@@ -425,8 +501,17 @@ export function OGCollectorForm() {
                   disabled={isNextDisabled()}
                   className="ml-auto flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-rose-50 cursor-pointer"
                 >
-                  Next
-                  <ChevronRight size={16} />
+                  {isValidatingEmail ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Validating...
+                    </>
+                  ) : (
+                    <>
+                      Next
+                      <ChevronRight size={16} />
+                    </>
+                  )}
                 </Button>
               )}
 
@@ -463,6 +548,33 @@ export function OGCollectorForm() {
           </div>
         )}
       </motion.div>
+
+      {/* Email Error Alert Dialog */}
+      <AlertDialog open={showEmailErrorDialog} onOpenChange={setShowEmailErrorDialog}>
+        <AlertDialogContent className="bg-rose-950/90 border-rose-400/30 text-rose-100">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2 text-rose-200">
+              <AlertTriangle size={20} className="text-rose-400" />
+              Email Not Recognized
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-rose-200/80">
+              We couldn't find your email address in our system. This form is for returning collectors only.
+              Would you like to submit a New Collector Application instead?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-rose-950/40 border-rose-400/30 text-rose-100 hover:bg-rose-800/50">
+              Try Again
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleRedirectToNewCollectorForm}
+              className="bg-rose-600 hover:bg-rose-500 text-rose-50"
+            >
+              Submit New Application
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

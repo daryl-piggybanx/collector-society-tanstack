@@ -58,7 +58,8 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     interests: z.string().optional(),
     first_piece: z.string().optional(),
     community_experience: z.string().optional(),
-    improvements: z.string().optional()
+    improvements: z.string().optional(),
+    is_returning_collector: z.boolean().optional()
   }))
   .handler(async ({ data }) => {
     const url = 'https://a.klaviyo.com/api/profile-import';
@@ -66,7 +67,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     console.log('test data: ', data);
 
     const properties: Record<string, any> = {
-      '$source': 'New Collector Form',
+      '$source': data.is_returning_collector ? 'Returning Collector Form' : 'New Collector Form',
       '$consent_method': 'Custom Klaviyo Form',
       '$consent': data.phone_number ? ['email', 'sms'] : ['email'],
       '$consent_timestamp': new Date().toISOString(),

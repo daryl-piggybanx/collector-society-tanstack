@@ -14,12 +14,9 @@ interface CollectorReasonsProps {
 }
 
 export default function CollectorReasons({ formData, updateFormData }: CollectorReasonsProps) {
-  const handleCollectionReasonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updateFormData({ collection_reason: e.target.value })
-  }
-
-  const handleInterestsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updateFormData({ interests: e.target.value })
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    updateFormData({ [name]: value });
   }
 
   const containerVariants = {
@@ -62,8 +59,9 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
           </Label>
           <Textarea
             id="collection_reason"
+            name="collection_reason"
             value={formData.collection_reason}
-            onChange={handleCollectionReasonChange}
+            onChange={handleInputChange}
             placeholder="Share your motivation for collecting..."
             className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
           />
@@ -75,8 +73,9 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
           </Label>
           <Textarea
             id="interests"
+            name="interests"
             value={formData.interests}
-            onChange={handleInterestsChange}
+            onChange={handleInputChange}
             placeholder="Tell us what draws you to our art..."
             className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
           />

@@ -15,8 +15,8 @@ interface UserIdentityProps {
 
 export default function UserIdentity({ formData, updateFormData }: UserIdentityProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    updateFormData({ [name]: value })
+    const { name, value } = e.target;
+    updateFormData({ [name]: value });
   }
 
   const containerVariants = {

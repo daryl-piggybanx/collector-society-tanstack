@@ -15,7 +15,8 @@ interface CollectorPiecesProps {
 
 export default function CollectorPieces({ formData, updateFormData, variations }: CollectorPiecesProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateFormData({ piece_count: e.target.value })
+    const { name, value } = e.target;
+    updateFormData({ [name]: value });
   }
 
   const handleVariationChange = (value: string) => {
@@ -61,6 +62,7 @@ export default function CollectorPieces({ formData, updateFormData, variations }
           </Label>
           <Input
             id="piece_count"
+            name="piece_count"
             value={formData.piece_count}
             onChange={handleInputChange}
             placeholder="Enter the number of pieces"
@@ -73,6 +75,7 @@ export default function CollectorPieces({ formData, updateFormData, variations }
           <Label className="text-lg text-rose-200">What was the first Piggybanx Piece you ever acquired or bought directly from the studio?</Label>
           <Input
             id="first_piece"
+            name="first_piece"
             value={formData.first_piece}
             onChange={handleInputChange}
             placeholder="Enter the name of your first piece"

@@ -14,12 +14,9 @@ interface CommunityExperienceProps {
 }
 
 export default function CommunityExperience({ formData, updateFormData }: CommunityExperienceProps) {
-  const handleCommunityExperienceChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updateFormData({ community_experience: e.target.value })
-  }
-
-  const handleImprovementsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    updateFormData({ improvements: e.target.value })
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    updateFormData({ [name]: value });
   }
 
   const containerVariants = {
@@ -62,8 +59,9 @@ export default function CommunityExperience({ formData, updateFormData }: Commun
           </Label>
           <Textarea
             id="community_experience"
+            name="community_experience"
             value={formData.community_experience}
-            onChange={handleCommunityExperienceChange}
+            onChange={handleInputChange}
             placeholder="Tell us what you love most..."
             className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
           />
@@ -75,8 +73,9 @@ export default function CommunityExperience({ formData, updateFormData }: Commun
           </Label>
           <Textarea
             id="improvements"
+            name="improvements"
             value={formData.improvements}
-            onChange={handleImprovementsChange}
+            onChange={handleInputChange}
             placeholder="Share your ideas for improvement..."
             className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
           />
