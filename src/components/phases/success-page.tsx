@@ -118,7 +118,6 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
                 <MessageSquare size={20} className="text-rose-300 mt-1" />
                 <div>
                   <h4 className="font-medium text-rose-200">Collection Stats</h4>
-                  <p className="text-rose-100">{formData.piece_count} pieces in collection</p>
                   {selectedVariations.length > 0 && (
                     <p className="text-rose-100/70">
                       Favorite variation{selectedVariations.length > 1 ? 's' : ''}: {' '}

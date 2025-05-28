@@ -121,7 +121,7 @@ export function NewCollectorForm() {
 
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
-    onSuccess: (data) => {
+    onSuccess: () => {
       // console.log("Profile created/updated successfully")
       // queryClient.invalidateQueries({ queryKey: ['profile', formData.email] });
       // queryClient.setQueryData(['profile', formData.email], data);
@@ -346,6 +346,7 @@ export function OGCollectorForm() {
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
     onSuccess: () => {
+      setSharedData(formData);
       // console.log("Profile created/updated successfully")
     },
     onError: (error) => {
