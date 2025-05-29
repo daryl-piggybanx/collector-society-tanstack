@@ -151,18 +151,12 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Klaviyo API Error:', {
-          status: response.status,
-          statusText: response.statusText,
-          body: errorText
-        });
         throw new Error(`Klaviyo API Error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const json = await response.json();
       return json;
     } catch (error: unknown) {
-      console.error('Full error details:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       throw new Error(`Failed to create/update profile: ${errorMessage}`);
     }
@@ -210,7 +204,7 @@ const subscriptionService  = (async (profileData: KlaviyoConsent, listId: string
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
+        throw new Error(`${subscriptionType} subscription failed: HTTP ${response.status}: ${response.statusText} - ${errorText}`);
       }
 
       // handle 202 Accepted response (bulk operations return empty body)
@@ -238,12 +232,7 @@ const subscriptionService  = (async (profileData: KlaviyoConsent, listId: string
 
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-        console.error(`${subscriptionType} subscription error:`, errorMessage);
-        return {
-            success: false,
-            error: errorMessage,
-            subscriptionType: subscriptionType
-        }
+        throw new Error(`${subscriptionType} subscription error: ${errorMessage}`);
     }
   });
 
