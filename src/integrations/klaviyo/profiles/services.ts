@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import type { KlaviyoProfile } from './types'
+import type { KlaviyoProfile, KlaviyoConsent } from './types'
 import { z } from 'zod'
 import { parsePhoneNumber } from 'libphonenumber-js'
 
@@ -166,4 +166,130 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       throw new Error(`Failed to create/update profile: ${errorMessage}`);
     }
+  });
+
+const subscriptionService  = (async (profileData: KlaviyoConsent, listId: string, subscriptionType: string) => {
+    const url = 'https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/';
+    const klaviyoData  = {
+        "data": {
+            "type": "profile-subscription-bulk-create-job",
+            "attributes": {
+                "profiles": {
+                    "data": [
+                        {
+                            "type": "profile",
+                            "attributes": profileData
+                        }
+                    ]
+                }
+            },
+            "relationships": {
+                "list": {
+                    "data": {
+                        "type": "list",
+                        "id": listId
+                    }
+                }
+            }
+        }
+    };
+
+    const options = {
+        method: 'POST',
+        headers: {
+            accept: 'application/vnd.api+json',
+            revision: '2025-04-15',
+            'content-type': 'application/vnd.api+json',
+            Authorization: `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY}`,
+        },
+        body: JSON.stringify(klaviyoData )
+    };
+
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
+      }
+
+      // handle 202 Accepted response (bulk operations return empty body)
+      if (response.status === 202) {
+        return {
+          success: true,
+          message: `${subscriptionType} subscription request accepted and will be processed asynchronously`,
+          status: response.status
+        };
+      }
+
+      // if other successful responses, parse request body
+      const responseText = await response.text();
+      if (responseText.trim() === '') {
+          return {
+              success: true,
+              message: `${subscriptionType} request successful`,
+              status: response.status,
+              listId: listId
+          };
+      }
+
+      const json = JSON.parse(responseText);
+      return { ...json, status: response.status };
+
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        console.error(`${subscriptionType} subscription error:`, errorMessage);
+        return {
+            success: false,
+            error: errorMessage,
+            subscriptionType: subscriptionType
+        }
+    }
+  });
+
+export const subscribeProfile = createServerFn({ method: 'POST' })
+  .validator(z.object({
+    email: z.string().email(),
+    phone_number: z.string().optional(),
+    marketing_consent: z.boolean()
+  }))
+  .handler(async ({ data }) => {
+    const results = [];
+
+    const emailConsent : KlaviyoConsent = {
+      email: data.email,
+      subscriptions: {
+        email: {
+          marketing: {
+            consent: 'SUBSCRIBED'
+          }
+        }
+      }
+    }
+
+    const emailResult = await subscriptionService(emailConsent, process.env.KLAVIYO_EMAIL_LIST_ID!, 'Email');
+    results.push(emailResult);
+
+    const smsConsent : KlaviyoConsent = {
+      email: data.email,
+      phone_number: data.phone_number,
+      subscriptions: {
+        sms: {
+          marketing: {
+            consent: data.marketing_consent ? 'SUBSCRIBED' : 'UNSUBSCRIBED'
+          }
+        }
+      }
+    }
+
+    const smsResult = await subscriptionService(smsConsent, process.env.KLAVIYO_SMS_LIST_ID!, 'SMS');
+    results.push(smsResult);
+
+    return { 
+        success: results.every(r => r.success),
+        results: results,
+        message: results.every(r => r.success) ? 
+            'All subscriptions processed successfully' : 
+            'Some subscriptions failed'
+    };
   });

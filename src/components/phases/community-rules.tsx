@@ -51,7 +51,7 @@ export default function CommunityRules({ formData, updateFormData, rules }: Comm
       </motion.div>
 
       <motion.p variants={itemVariants} className="text-lg mb-8 text-rose-100/90">
-        {formData.is_returning_collector ? "Here is a reminder of our rules" : "Please review our collecting rules"}
+        {formData.is_returning_collector ? "Here is a reminder of our community guidelines" : "Please check the boxes below to confirm you’ve read and understand the community guidelines."}
       </motion.p>
 
       <motion.div variants={itemVariants} className="bg-rose-950/50 rounded-lg p-6 border border-rose-400/30">

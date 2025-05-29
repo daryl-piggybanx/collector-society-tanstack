@@ -10,3 +10,20 @@ export type KlaviyoProfile = {
     properties?: Record<string, any>
   }
 }
+
+export type KlaviyoConsent = {
+    email: string
+    phone_number?: string
+    subscriptions: {
+        email?: {
+            marketing: {
+                consent: string
+            }
+        }
+        sms?: {
+            marketing: {
+                consent: string
+            }
+        }
+    }
+}

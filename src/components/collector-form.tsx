@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Check, ChevronLeft, ChevronRight, Loader2, AlertTriangle } from "lucide-react"
 import { useRouter } from "@tanstack/react-router"
 
-import { getProfileByEmail, createUpdateProfile } from "@/integrations/klaviyo/profiles/services"
+import { getProfileByEmail, createUpdateProfile, subscribeProfile } from "@/integrations/klaviyo/profiles/services"
 import type { KlaviyoProfile } from "@/integrations/klaviyo/profiles/types"
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query"
 import { collectionPreferences, collectionRules, collectionVariations } from "@/lib/data"
@@ -122,15 +122,24 @@ export function NewCollectorForm() {
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
     onSuccess: () => {
-      // console.log("Profile created/updated successfully")
-      // queryClient.invalidateQueries({ queryKey: ['profile', formData.email] });
-      // queryClient.setQueryData(['profile', formData.email], data);
       setSharedData(formData);
+      // console.log("Profile created/updated successfully")
     },
     onError: (error) => {
       console.error("Error creating/updating profile:", error)
     },
   });
+
+  const mutationSubscribe = useMutation({
+    mutationFn: subscribeProfile,
+    onSuccess: () => {
+      // console.log("Subscriptions processed successfully")
+    },
+    onError: (error) => {
+      console.error("Error subscribing to profiles:", error)
+    },
+  });
+
 
   const totalPhases = 5;
   const progressPercentage = (currentPhase / totalPhases) * 100;
@@ -152,6 +161,7 @@ export function NewCollectorForm() {
 
     try {
       await mutation.mutateAsync({ data: formData });
+      await mutationSubscribe.mutateAsync({ data: formData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
     } catch (error) {

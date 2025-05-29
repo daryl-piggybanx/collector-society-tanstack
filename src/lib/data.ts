@@ -1,6 +1,6 @@
 // temp data file for collector form
 export const collectionRules = [
-  "I agree to follow all community guidelines.",
+  "I am here to collect and appreciate the the art as well as have a positive impact on the community.",
   "No flipping.",
   "Don't call them cards. These are pieces of art and should be referred to and treated as such.",
   "I will maintain respectful communication with other collectors.",
