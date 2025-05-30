@@ -14,6 +14,9 @@ const config = defineConfig({
       }),
       tailwindcss(),
     ],
+    ssr: {
+      noExternal: ["posthog-js", "posthog-js/react"],
+    },
   },
 })
 

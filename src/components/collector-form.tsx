@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Check, ChevronLeft, ChevronRight, Loader2, AlertTriangle } from "lucide-react"
 import { useRouter } from "@tanstack/react-router"
 
+import { usePostHog } from "posthog-js/react";
+
 import { getProfileByEmail, createUpdateProfile, subscribeProfile } from "@/integrations/klaviyo/profiles/services"
 import type { KlaviyoProfile } from "@/integrations/klaviyo/profiles/types"
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query"
@@ -113,6 +115,7 @@ const createInitialNewCollectorFormData = (sharedData: FormData | null): FormDat
 };
 
 export function NewCollectorForm() {
+  const posthog = usePostHog();
   const { sharedData, clearSharedData, setSharedData } = useSharedFormData();
   const [currentPhase, setCurrentPhase] = useState(1);
   const [formData, setFormData] = useState<FormData>(() => createInitialNewCollectorFormData(sharedData as FormData | null));
@@ -164,8 +167,12 @@ export function NewCollectorForm() {
       await mutationSubscribe.mutateAsync({ data: formData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
+      posthog.capture('new_collector_form_submission_success', formData);
+
     } catch (error) {
       console.error("Error submitting form:", error);
+      posthog.capture('new_collector_form_submission_fail', formData);
+
     } finally {
       setIsSubmitting(false);
     }
@@ -336,6 +343,7 @@ const createInitialOGFormData = (sharedData: FormData | null): FormData => {
 };
 
 export function OGCollectorForm() {
+  const posthog = usePostHog();
   const { sharedData, hasSharedData, setSharedData, clearSharedData } = useSharedFormData();
   const [formData, setFormData] = useState<FormData>(() => createInitialOGFormData(sharedData as FormData | null));
 
@@ -400,8 +408,12 @@ export function OGCollectorForm() {
       await mutation.mutateAsync({ data: formData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
+      posthog.capture('returning_collector_form_submission_success', formData);
+
     } catch (error) {
       console.error("Error submitting form:", error);
+      posthog.capture('returning_collector_form_submission_fail', formData);
+
     } finally {
       setIsSubmitting(false);
     }
@@ -423,6 +435,7 @@ export function OGCollectorForm() {
     };
     // transfer current form data to shared data
     setSharedData(phase1Data);
+    posthog.capture('returning_collector_form_redirected', formData);
     router.navigate({ to: '/collector/new' });
   };
 

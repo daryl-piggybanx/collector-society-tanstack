@@ -17,6 +17,8 @@ import type { QueryClient } from '@tanstack/react-query'
 import type { TRPCRouter } from '@/integrations/trpc/router'
 import type { TRPCOptionsProxy } from '@trpc/tanstack-react-query'
 
+import { PostHogClientProvider } from '@/integrations/posthog/provider'
+
 interface MyRouterContext {
   queryClient: QueryClient
 
@@ -52,12 +54,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
   component: () => (
     <RootDocument>
-      <Header />
+      <PostHogClientProvider>
+        <Header />
 
-      <Outlet />
-      <TanStackRouterDevtools />
+        <Outlet />
+        <TanStackRouterDevtools />
 
-      <TanstackQueryLayout />
+        <TanstackQueryLayout />
+      </PostHogClientProvider>
     </RootDocument>
   ),
 })
