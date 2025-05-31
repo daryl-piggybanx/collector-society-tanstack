@@ -3,6 +3,8 @@ import logo from '../logo.svg'
 import ParticleBackground from "@/components/particle-background"
 import ActionButtons from "@/components/action-buttons"
 import { Button } from "@/components/ui/button"
+import VideoBackground from '@/components/video-background'
+import ParticleTwinkleBackground from '@/components/particle-background-twinkle'
 
 
 export const Route = createFileRoute('/')({
@@ -11,10 +13,12 @@ export const Route = createFileRoute('/')({
 
 function App() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-950 via-gray-700 to-zinc-900">
-      {/* Particle effect background */}
-      <ParticleBackground />
+    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-zinc-950">
 
+      {/* <ParticleBackground />  */}
+      {/* <VideoBackground />  */}
+      <ParticleTwinkleBackground />
+      
       {/* Content overlay */}
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center">
         <div className="max-w-3xl space-y-6">
