@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
+import { Route as DemoHoloCardsImport } from './routes/demo.holo-cards'
 import { Route as CollectorOgImport } from './routes/collector.og'
 import { Route as CollectorNewImport } from './routes/collector.new'
 import { Route as DemoStartServerFuncsImport } from './routes/demo.start.server-funcs'
@@ -31,6 +32,12 @@ const IndexRoute = IndexImport.update({
 const DemoTanstackQueryRoute = DemoTanstackQueryImport.update({
   id: '/demo/tanstack-query',
   path: '/demo/tanstack-query',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DemoHoloCardsRoute = DemoHoloCardsImport.update({
+  id: '/demo/holo-cards',
+  path: '/demo/holo-cards',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectorOgImport
       parentRoute: typeof rootRoute
     }
+    '/demo/holo-cards': {
+      id: '/demo/holo-cards'
+      path: '/demo/holo-cards'
+      fullPath: '/demo/holo-cards'
+      preLoaderRoute: typeof DemoHoloCardsImport
+      parentRoute: typeof rootRoute
+    }
     '/demo/tanstack-query': {
       id: '/demo/tanstack-query'
       path: '/demo/tanstack-query'
@@ -139,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
+  '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
@@ -150,6 +165,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
+  '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
@@ -162,6 +178,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
+  '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
@@ -175,6 +192,7 @@ export interface FileRouteTypes {
     | '/'
     | '/collector/new'
     | '/collector/og'
+    | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/demo/form/address'
     | '/demo/form/simple'
@@ -185,6 +203,7 @@ export interface FileRouteTypes {
     | '/'
     | '/collector/new'
     | '/collector/og'
+    | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/demo/form/address'
     | '/demo/form/simple'
@@ -195,6 +214,7 @@ export interface FileRouteTypes {
     | '/'
     | '/collector/new'
     | '/collector/og'
+    | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/demo/form/address'
     | '/demo/form/simple'
@@ -207,6 +227,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CollectorNewRoute: typeof CollectorNewRoute
   CollectorOgRoute: typeof CollectorOgRoute
+  DemoHoloCardsRoute: typeof DemoHoloCardsRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
   DemoFormSimpleRoute: typeof DemoFormSimpleRoute
@@ -218,6 +239,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CollectorNewRoute: CollectorNewRoute,
   CollectorOgRoute: CollectorOgRoute,
+  DemoHoloCardsRoute: DemoHoloCardsRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
   DemoFormSimpleRoute: DemoFormSimpleRoute,
@@ -238,6 +260,7 @@ export const routeTree = rootRoute
         "/",
         "/collector/new",
         "/collector/og",
+        "/demo/holo-cards",
         "/demo/tanstack-query",
         "/demo/form/address",
         "/demo/form/simple",
@@ -253,6 +276,9 @@ export const routeTree = rootRoute
     },
     "/collector/og": {
       "filePath": "collector.og.tsx"
+    },
+    "/demo/holo-cards": {
+      "filePath": "demo.holo-cards.tsx"
     },
     "/demo/tanstack-query": {
       "filePath": "demo.tanstack-query.tsx"

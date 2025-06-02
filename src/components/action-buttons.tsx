@@ -21,14 +21,14 @@ export default function ActionButtons() {
 
   return (
     <motion.div
-      className={`${isMobile ? "grid grid-cols-2 gap-3" : "flex flex-row flex-wrap"} justify-center gap-4 pt-6`}
+      className={`${isMobile ? "grid grid-cols-2 gap-3" : "flex flex-row flex-wrap md:max-w-2xl"} justify-center gap-4 pt-6`}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <FuturisticButton label="Drop Site" color="red" icon="rocket" href="https://www.piggybanxinc.com/" />
       <FuturisticButton label="Club House" color="red" icon="home" href="https://www.piggybanx.com/" />
-      <FuturisticButton label="Returning Collector Form" color="red" icon="scroll" href="/collector/og" />
+      {/* <FuturisticButton label="Returning Collector Form" color="red" icon="scroll" href="/collector/og" /> */}
       <FuturisticButton label="New Collector Application" color="red" icon="user-plus" href="/collector/new" />
     </motion.div>
   )
