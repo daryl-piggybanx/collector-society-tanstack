@@ -12,16 +12,32 @@ interface HolographicCardProps {
 export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isHovered, setIsHovered] = useState(false)
+  const [isTouched, setIsTouched] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Utility function to get coordinates from mouse or touch events
+  const getEventCoordinates = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    if ('touches' in e && e.touches.length > 0) {
+      return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }
+    }
+    return { clientX: (e as React.MouseEvent).clientX, clientY: (e as React.MouseEvent).clientY }
+  }
+
+  // Update position for both mouse and touch
+  const updatePosition = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     if (!cardRef.current) return
 
     const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    const { clientX, clientY } = getEventCoordinates(e)
+    const x = clientX - rect.left
+    const y = clientY - rect.top
 
     setMousePosition({ x, y })
+  }
+
+  // Mouse event handlers (existing functionality)
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    updatePosition(e)
   }
 
   const handleMouseEnter = () => {
@@ -33,8 +49,30 @@ export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardP
     setMousePosition({ x: 0, y: 0 })
   }
 
+  // Touch event handlers (new mobile functionality)
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.preventDefault() // Prevent scrolling when touching the card
+    setIsTouched(true)
+    updatePosition(e)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.preventDefault() // Prevent scrolling when moving on the card
+    if (isTouched) {
+      updatePosition(e)
+    }
+  }
+
+  const handleTouchEnd = () => {
+    setIsTouched(false)
+    setMousePosition({ x: 0, y: 0 })
+  }
+
+  // Check if the card should be active (hovered or touched)
+  const isActive = isHovered || isTouched
+
   const getTransform = () => {
-    if (!cardRef.current || !isHovered) return "perspective(1000px) rotateX(0deg) rotateY(0deg)"
+    if (!cardRef.current || !isActive) return "perspective(1000px) rotateX(0deg) rotateY(0deg)"
 
     const rect = cardRef.current.getBoundingClientRect()
     const centerX = rect.width / 2
@@ -47,7 +85,7 @@ export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardP
   }
 
   const getGradientStyle = () => {
-    if (!cardRef.current || !isHovered) return {}
+    if (!cardRef.current || !isActive) return {}
 
     const rect = cardRef.current.getBoundingClientRect()
     const x = (mousePosition.x / rect.width) * 100
@@ -78,12 +116,12 @@ export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardP
           transparent 80%
         )
       `,
-      opacity: isHovered ? 1 : 0,
+      opacity: isActive ? 1 : 0,
     }
   }
 
   const getShineStyle = () => {
-    if (!cardRef.current || !isHovered) return {}
+    if (!cardRef.current || !isActive) return {}
 
     const rect = cardRef.current.getBoundingClientRect()
     const x = (mousePosition.x / rect.width) * 100
@@ -91,7 +129,7 @@ export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardP
 
     return {
       background: `linear-gradient(${x * 2}deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%)`,
-      opacity: isHovered ? 0.6 : 0,
+      opacity: isActive ? 0.6 : 0,
       transform: `translateX(${(x - 50) * 0.5}px) translateY(${(y - 50) * 0.5}px)`,
     }
   }
@@ -100,7 +138,7 @@ export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardP
     <div className="relative">
       <div
         ref={cardRef}
-        className="relative w-80 h-[480px] cursor-pointer transition-all duration-300 ease-out"
+        className="relative w-80 h-[480px] cursor-pointer transition-all duration-300 ease-out touch-none"
         style={{
           transform: getTransform(),
           transformStyle: "preserve-3d",
@@ -108,6 +146,9 @@ export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardP
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Main card */}
         <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-white/20">
@@ -129,7 +170,7 @@ export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardP
           {/* Rainbow gradient overlay */}
           <div
             className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${
-              isHovered ? "opacity-30" : "opacity-0"
+              isActive ? "opacity-30" : "opacity-0"
             }`}
             style={{
               background: `
@@ -153,7 +194,7 @@ export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardP
           {/* Prismatic effect */}
           <div
             className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${
-              isHovered ? "opacity-20" : "opacity-0"
+              isActive ? "opacity-20" : "opacity-0"
             }`}
             style={{
               background: `
@@ -174,7 +215,7 @@ export default function HolographicCard({ imageSrc, imageAlt }: HolographicCardP
         {/* Glow effect */}
         <div
           className={`absolute inset-0 rounded-2xl transition-opacity duration-300 -z-10 ${
-            isHovered ? "opacity-60" : "opacity-0"
+            isActive ? "opacity-60" : "opacity-0"
           }`}
           style={{
             background: `
