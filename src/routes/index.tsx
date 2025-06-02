@@ -14,12 +14,12 @@ export const Route = createFileRoute('/')({
 
 function App() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-950 via-gray-950 to-zinc-950">
+    <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-950 to-zinc-950">
 
       {/* <ParticleBackground />  */}
       {/* <VideoBackground />  */}
       <ParticleTwinkleBackground />
-      
+      <div className="relative z-10 min-h-screen pt-32 md:pt-24 pb-8">
       {/* Content overlay */}
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center">
         <div className="max-w-3xl space-y-6">
@@ -43,6 +43,7 @@ function App() {
           <p className="text-sm text-amber-200/70">Scroll down to explore</p>
           <div className="mt-2 animate-bounce text-amber-200/70">↓</div>
         </div> */}
+      </div>
       </div>
     </main>
   )

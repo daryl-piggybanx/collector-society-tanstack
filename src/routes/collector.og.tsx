@@ -1,8 +1,8 @@
 import { getProfileByEmail } from '@/integrations/klaviyo/profiles/services'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
-import { OGCollectorForm } from '@/components/collector-form'
-import ParticleBackground from '@/components/particle-background'
+import { OGCollectorForm } from '@/components/form/og'
+import ParticleTwinkleBackground from '@/components/particle-background-twinkle'
 
 export const Route = createFileRoute('/collector/og')({
     /*
@@ -42,7 +42,7 @@ function RouteComponent() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-950 to-zinc-950">
-      <ParticleBackground />
+      <ParticleTwinkleBackground />
 
       <div className="relative z-10 min-h-screen pt-32 md:pt-24 pb-8">
         <div className="container mx-auto px-4 h-full">

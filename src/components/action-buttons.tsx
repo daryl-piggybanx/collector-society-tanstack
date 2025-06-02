@@ -28,7 +28,7 @@ export default function ActionButtons() {
     >
       {/* <FuturisticButton label="Drop Site" color="red" icon="rocket" href="https://www.piggybanxinc.com/" /> */}
       {/* <FuturisticButton label="Club House" color="red" icon="falling" href="https://www.piggybanx.com/" /> */}
-      {/* <FuturisticButton label="Returning Collector Form" color="red" icon="scroll" href="/collector/og" /> */}
+      <FuturisticButton label="Returning Collector Form" color="red" icon="scroll" href="/collector/og" />
       <FuturisticButton label="New Collector Application" color="red" icon="user-plus" href="/collector/new" />
       <FuturisticButton label="Update Collector Profile" color="red" icon="user-check" href="/collector/verified" />
       <FuturisticButton label="Discord Verification" color="red" icon="discord" href="/collector/discord" />
