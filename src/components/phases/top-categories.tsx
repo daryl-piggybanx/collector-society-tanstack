@@ -86,7 +86,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
 
   // Function to render the appropriate icon based on the icon name
   const renderIcon = (iconName: string, isSelected: boolean) => {
-    const iconClass = isSelected ? "text-rose-200" : "text-rose-100/60"
+    const iconClass = isSelected ? "text-red-200" : "text-red-100/60"
     const iconSize = 24
 
     switch (iconName) {
@@ -112,14 +112,14 @@ export default function TopCategories({ formData, updateFormData, preferences }:
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <Target size={28} className="text-rose-300" />
-        <h2 className="text-2xl font-bold text-rose-100">
+        <Target size={28} className="text-red-300" />
+        <h2 className="text-2xl font-bold text-red-100">
           {formData.first_name ? `${formData.first_name}, ` : ""}
           {formData.is_returning_collector ? "#1 category you're focused on collecting" : "What do you want to collect?"}
         </h2>
       </motion.div>
 
-      <motion.p variants={itemVariants} className="text-rose-100/80 mb-6">
+      <motion.p variants={itemVariants} className="text-red-100/80 mb-6">
         Select one category that interests you
       </motion.p>
 
@@ -146,19 +146,19 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                 onClick={() => handlePreferenceToggle(preference)}
                 className={`w-full h-full p-6 text-center transition-all ${
                   isSelected
-                    ? "bg-rose-800/60 border-2 border-rose-500"
-                    : "bg-rose-950/40 border border-rose-400/30 hover:border-rose-400/60"
+                    ? "bg-red-800/60 border-2 border-red-500"
+                    : "bg-red-950/40 border border-red-400/30 hover:border-red-400/60"
                 } rounded-lg flex flex-col items-center justify-center gap-3`}
               >
                 {renderIcon(preference.icon, isSelected)}
-                <span className={`font-medium ${isSelected ? "text-rose-200" : "text-rose-100/80"}`}>
+                <span className={`font-medium ${isSelected ? "text-red-200" : "text-red-100/80"}`}>
                   {preference.name}
                 </span>
                 {/* DISABLED: ChevronDown icon for subcategories */}
                 {/* {hasSubcategories && (
                   <ChevronDown 
                     size={16} 
-                    className={`transition-transform ${showSubcategories && isSelected ? 'rotate-180' : ''} text-rose-100/60`}
+                    className={`transition-transform ${showSubcategories && isSelected ? 'rotate-180' : ''} text-red-100/60`}
                   />
                 )} */}
               </button>
@@ -171,18 +171,18 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute left-0 right-0 mt-2 bg-rose-950/90 border border-rose-400/30 rounded-lg overflow-hidden z-10 shadow-lg pointer-events-auto"
+                    className="absolute left-0 right-0 mt-2 bg-red-950/90 border border-red-400/30 rounded-lg overflow-hidden z-10 shadow-lg pointer-events-auto"
                   >
-                    <p className="text-rose-100/80 text-sm p-2">More specific (optional)</p>
-                    <hr className="border-rose-400/30 mx-3" />
+                    <p className="text-red-100/80 text-sm p-2">More specific (optional)</p>
+                    <hr className="border-red-400/30 mx-3" />
                     {preference.subcategories.map((subcategory) => (
                       <button
                         key={subcategory}
                         onClick={() => handleSubcategorySelect(subcategory)}
                         className={`w-full p-3 text-left transition-all ${
                           selectedSubcategory === subcategory
-                            ? "bg-rose-800/60 text-rose-200"
-                            : "text-rose-100/80 hover:bg-rose-800/30"
+                            ? "bg-red-800/60 text-red-200"
+                            : "text-red-100/80 hover:bg-red-800/30"
                         }`}
                       >
                         {subcategory}
@@ -196,9 +196,9 @@ export default function TopCategories({ formData, updateFormData, preferences }:
         })}
       </motion.div>
 
-      <motion.div variants={itemVariants} className="mt-6 text-center text-rose-100/80">
+      <motion.div variants={itemVariants} className="mt-6 text-center text-red-100/80">
         {selectedPreference ? (
-          <div className="flex items-center justify-center gap-2 text-rose-300">
+          <div className="flex items-center justify-center gap-2 text-red-300">
             <Check size={18} />
             <span>Selected: {selectedPreference}</span>
           </div>

@@ -200,7 +200,7 @@ export function NewCollectorForm() {
   return (
     <div className="w-full max-w-3xl">
       <motion.div
-        className="bg-rose-950/30 backdrop-blur-sm border border-rose-400/20 rounded-2xl shadow-xl overflow-hidden relative pt-4"
+        className="bg-red-950/30 backdrop-blur-sm border border-red-400/20 rounded-2xl shadow-xl overflow-hidden relative pt-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -265,7 +265,7 @@ export function NewCollectorForm() {
                 <Button
                   variant="outline"
                   onClick={handleBack}
-                  className="flex items-center gap-2 bg-rose-950/40 border-rose-400/30 text-rose-100 hover:bg-rose-800/50 hover:text-rose-50"
+                  className="flex items-center gap-2 bg-red-950/40 border-red-400/30 text-red-100 hover:bg-red-800/50 hover:text-red-50 cursor-pointer"
                 >
                   <ChevronLeft size={16} />
                   Back
@@ -276,7 +276,7 @@ export function NewCollectorForm() {
                 <Button
                   onClick={handleNext}
                   disabled={isNextDisabled()}
-                  className="ml-auto flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-rose-50"
+                  className="ml-auto flex items-center gap-2 bg-red-600 hover:bg-red-500 cursor-pointer"
                 >
                   Next
                   <ChevronRight size={16} />
@@ -287,7 +287,7 @@ export function NewCollectorForm() {
                 <Button
                   onClick={handleSubmit}
                   disabled={isNextDisabled() || isSubmitting}
-                  className="ml-auto flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-rose-50"
+                  className="ml-auto flex items-center gap-2 bg-red-600 hover:bg-red-500 text-red-50 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
@@ -310,7 +310,7 @@ export function NewCollectorForm() {
         {!isComplete && (
           <div className="px-8 pb-6">
             <Progress value={progressPercentage} className="h-2" />
-            <div className="text-xs text-rose-200/80 mt-2">
+            <div className="text-xs text-red-200/80 mt-2">
               Step {currentPhase} of {totalPhases}
             </div>
           </div>
@@ -458,7 +458,7 @@ export function OGCollectorForm() {
   return (
     <div className="w-full max-w-3xl">
       <motion.div
-        className="bg-rose-950/30 backdrop-blur-sm border border-rose-400/20 rounded-2xl shadow-xl overflow-hidden relative"
+        className="bg-red-950/30 backdrop-blur-sm border border-red-400/20 rounded-2xl shadow-xl overflow-hidden relative"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -516,7 +516,7 @@ export function OGCollectorForm() {
                 <Button
                   variant="outline"
                   onClick={handleBack}
-                  className="flex items-center gap-2 bg-rose-950/40 border-rose-400/30 text-rose-100 hover:bg-rose-800/50 hover:text-rose-50"
+                  className="flex items-center gap-2 bg-red-950/40 border-red-400/30 text-red-100 hover:bg-red-800/50 hover:text-red-50 cursor-pointer"
                 >
                   <ChevronLeft size={16} />
                   Back
@@ -527,7 +527,7 @@ export function OGCollectorForm() {
                 <Button
                   onClick={handleNext}
                   disabled={isNextDisabled()}
-                  className="ml-auto flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-rose-50 cursor-pointer"
+                  className="ml-auto flex items-center gap-2 bg-red-600 hover:bg-red-500 text-red-50 cursor-pointer"
                 >
                   {isValidatingEmail ? (
                     <>
@@ -547,7 +547,7 @@ export function OGCollectorForm() {
                 <Button
                   onClick={handleSubmit}
                   disabled={isNextDisabled() || isSubmitting}
-                  className="ml-auto flex items-center gap-2 bg-rose-600 hover:bg-rose-500 text-rose-50 cursor-pointer"
+                  className="ml-auto flex items-center gap-2 bg-red-600 hover:bg-red-500 text-red-50 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
@@ -570,7 +570,7 @@ export function OGCollectorForm() {
         {!isComplete && (
           <div className="px-8 pb-6">
             <Progress value={progressPercentage} className="h-2" />
-            <div className="text-xs text-rose-200/80 mt-2">
+            <div className="text-xs text-red-200/80 mt-2">
               Step {currentPhase} of {totalPhases}
             </div>
           </div>
@@ -579,24 +579,24 @@ export function OGCollectorForm() {
 
       {/* Email Error Alert Dialog */}
       <AlertDialog open={showEmailErrorDialog} onOpenChange={setShowEmailErrorDialog}>
-        <AlertDialogContent className="bg-rose-950/90 border-rose-400/30 text-rose-100">
+        <AlertDialogContent className="bg-red-950/90 border-red-400/30 text-red-100">
           <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2 text-rose-200">
-              <AlertTriangle size={20} className="text-rose-400" />
+            <AlertDialogTitle className="flex items-center gap-2 text-red-200">
+              <AlertTriangle size={20} className="text-red-400" />
               Email Not Recognized
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-rose-200/80">
+            <AlertDialogDescription className="text-red-200/80">
               We couldn't find your email address in our system. This form is for returning collectors only.
               Would you like to submit a New Collector Application instead?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="bg-rose-950/40 border-rose-400/30 text-rose-100 hover:bg-rose-800/50">
+            <AlertDialogCancel className="bg-red-950/40 border-red-400/30 text-red-100 hover:bg-red-800/50">
               Try Again
             </AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleRedirectToNewCollectorForm}
-              className="bg-rose-600 hover:bg-rose-500 text-rose-50"
+              className="bg-red-600 hover:bg-red-500 text-red-50 cursor-pointer"
             >
               Submit New Application
             </AlertDialogAction>

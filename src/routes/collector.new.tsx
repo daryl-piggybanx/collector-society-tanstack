@@ -9,7 +9,7 @@ export const Route = createFileRoute('/collector/new')({
 
 function RouteComponent() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-zinc-950">
+    <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-950 to-zinc-950">
       <ParticleBackground />
 
       <div className="relative z-10 min-h-screen pt-32 md:pt-24 pb-8">

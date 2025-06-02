@@ -45,8 +45,8 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <Heart size={28} className="text-rose-300" />
-        <h2 className="text-2xl font-bold text-rose-100">
+        <Heart size={28} className="text-red-300" />
+        <h2 className="text-2xl font-bold text-red-100">
           {formData.first_name ? `${formData.first_name}, ` : ""}
           tell us more about your interest
         </h2>
@@ -54,7 +54,7 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
 
       <motion.div variants={itemVariants} className="space-y-8">
         <div className="space-y-3">
-          <Label htmlFor="collectionReason" className="text-lg text-rose-200">
+          <Label htmlFor="collectionReason" className="text-lg text-red-200">
           Why do you want to collect our art?*
           </Label>
           <Textarea
@@ -63,12 +63,12 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
             value={formData.collection_reason}
             onChange={handleInputChange}
             placeholder="Share your motivation for collecting..."
-            className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
+            className="min-h-[120px] border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400"
           />
         </div>
 
         <div className="space-y-3">
-          <Label htmlFor="interests" className="text-lg text-rose-200">
+          <Label htmlFor="interests" className="text-lg text-red-200">
             What interests you the most about our work?*
           </Label>
           <Textarea
@@ -77,7 +77,7 @@ export default function CollectorReasons({ formData, updateFormData }: Collector
             value={formData.interests}
             onChange={handleInputChange}
             placeholder="Tell us what draws you to our art..."
-            className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
+            className="min-h-[120px] border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400"
           />
         </div>
       </motion.div>

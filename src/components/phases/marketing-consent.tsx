@@ -157,7 +157,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       {!formData.is_returning_collector && (
-        <motion.p variants={itemVariants} className="text-rose-100/80 my-6">
+        <motion.p variants={itemVariants} className="text-red-100/80 my-6">
           We'll use this information to keep you updated on new collections and events.
         </motion.p>
       )}
@@ -165,11 +165,11 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
       <motion.div variants={itemVariants} className="space-y-6 my-6">
         {/* Email */}
         <div className="space-y-3">
-          <Label htmlFor="email" className="text-rose-200">
+          <Label htmlFor="email" className="text-red-200">
             Email Address *
           </Label>
           <div className="flex items-center">
-            <Mail size={18} className="text-rose-300 mr-2" />
+            <Mail size={18} className="text-red-300 mr-2" />
             <Input
               id="email"
               name="email"
@@ -178,7 +178,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
               onChange={handleEmailChange}
               onBlur={handleEmailBlur}
               placeholder="Email Address"
-              className={`border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 ${
+              className={`border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 ${
                 emailState.isTouched && !emailState.isValid ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : ''
               }`}
               required
@@ -195,11 +195,11 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
 
         {/* Phone Number */}
         <div className="space-y-3">
-          <Label htmlFor="phone_number" className="text-rose-200">
+          <Label htmlFor="phone_number" className="text-red-200">
             Phone Number
           </Label>
           <div className="flex items-center">
-            <Phone size={18} className="text-rose-300 mr-2" />
+            <Phone size={18} className="text-red-300 mr-2" />
             <Input
               id="phone_number"
               name="phone_number"
@@ -208,7 +208,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
               onChange={handlePhoneChange}
               onBlur={handlePhoneBlur}
               placeholder="Phone Number with country code"
-              className={`border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 ${
+              className={`border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 ${
                 phoneState.isTouched && !phoneState.isValid ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : ''
               }`}
               aria-invalid={phoneState.isTouched && !phoneState.isValid}
@@ -221,7 +221,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
             </p>
           )}
           {!phoneState.error && phoneState.value && phoneState.isValid && (
-            <p className="text-rose-300/70 text-sm mt-1">
+            <p className="text-red-300/70 text-sm mt-1">
               ✓ Valid phone number
             </p>
           )}
@@ -235,13 +235,13 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
                   id="marketing_consent" 
                   checked={formData.marketing_consent}
                   onCheckedChange={(checked) => updateFormData({ marketing_consent: checked === true })}
-                  className="mt-1 data-[state=checked]:bg-rose-500 data-[state=checked]:text-white border-rose-400 cursor-pointer"
+                  className="mt-1 data-[state=checked]:bg-red-500 data-[state=checked]:text-white border-red-400 cursor-pointer"
                 />
-                <Label htmlFor="marketing_consent" className="text-rose-200 cursor-pointer leading-relaxed">
+                <Label htmlFor="marketing_consent" className="text-red-200 cursor-pointer leading-relaxed">
                   Check this box to also receive promotional marketing texts.
                 </Label>
                 { formData.marketing_consent && !phoneState.value && (
-                  <p className="text-rose-300/70 text-sm mt-1">
+                  <p className="text-red-300/70 text-sm mt-1">
                     Please enter a valid phone number
                   </p>
                 )}
@@ -249,13 +249,13 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
             </div>
             
             <div className="space-y-3">
-              <p className="text-rose-100/80 text-sm leading-relaxed">
+              <p className="text-red-100/80 text-sm leading-relaxed">
                 By submitting this form and signing up for texts, you consent to receive marketing text messages (e.g. promos, cart reminders) from PiggyBanx at the number provided, including messages sent by autodialer. Consent is not a condition of purchase. Msg & data rates may apply. Msg frequency varies. Unsubscribe at any time by replying STOP or clicking the unsubscribe link (where available). 
               </p>
             </div>
 
             <div className="">
-              <Label className="text-rose-200 mb-4">Communication Preference</Label>
+              <Label className="text-red-200 mb-4">Communication Preference</Label>
               <RadioGroup
                 value={formData.communication_preference}
                 onValueChange={handleCommunicationChange}
@@ -265,9 +265,9 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
                   <RadioGroupItem
                     value="Email"
                     id="comm-email"
-                    className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
+                    className="data-[state=checked]:border-red-500 data-[state=checked]:text-red-500"
                   />
-                  <Label htmlFor="comm-email" className="text-rose-100">
+                  <Label htmlFor="comm-email" className="text-red-100">
                     Email
                   </Label>
                 </div>
@@ -275,9 +275,9 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
                   <RadioGroupItem
                     value="Text"
                     id="comm-phone"
-                    className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
+                    className="data-[state=checked]:border-red-500 data-[state=checked]:text-red-500"
                   />
-                  <Label htmlFor="comm-phone" className="text-rose-100">
+                  <Label htmlFor="comm-phone" className="text-red-100">
                     Phone
                   </Label>
                 </div>
@@ -285,26 +285,26 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
                   <RadioGroupItem
                     value="Both"
                     id="comm-both"
-                    className="data-[state=checked]:border-rose-500 data-[state=checked]:text-rose-500"
+                    className="data-[state=checked]:border-red-500 data-[state=checked]:text-red-500"
                   />
-                  <Label htmlFor="comm-both" className="text-rose-100">
+                  <Label htmlFor="comm-both" className="text-red-100">
                     Both
                   </Label>
                 </div>
               </RadioGroup>
               <div className="">
                 { formData.communication_preference === "Email" && !emailState.value && (
-                  <p className="text-rose-300/70 text-sm mt-1">
+                  <p className="text-red-300/70 text-sm mt-1">
                     Please enter a valid email address
                   </p>
                 )}
                 { formData.communication_preference === "Text" && !phoneState.value && (
-                  <p className="text-rose-300/70 text-sm mt-1">
+                  <p className="text-red-300/70 text-sm mt-1">
                     Please enter a valid phone number
                   </p>
                 )}
                 { formData.communication_preference === "Both" && (!emailState.value || !phoneState.value) && (
-                  <p className="text-rose-300/70 text-sm mt-1">
+                  <p className="text-red-300/70 text-sm mt-1">
                     Please enter a valid email address and phone number
                   </p>
                 )}

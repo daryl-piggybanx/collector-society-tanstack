@@ -13,7 +13,7 @@ export const Route = createFileRoute('/')({
 
 function App() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-950 via-gray-900 to-zinc-950">
+    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-gray-950 via-gray-950 to-zinc-950">
 
       {/* <ParticleBackground />  */}
       {/* <VideoBackground />  */}
@@ -24,7 +24,7 @@ function App() {
         <div className="max-w-3xl space-y-6">
           <h1 className="text-4xl font-bold tracking-tighter text-gray-200/90 sm:text-5xl md:text-6xl lg:text-7xl">
             Into the <br />
-            <span className="text-rose-600">PiggyVerse</span>
+            <span className="text-red-600">PiggyVerse</span>
           </h1>
 
           <p className="mx-auto max-w-xl text-lg text-gray-200/90 md:text-xl [text-shadow:_0_0_10px_rgb(225_29_72_/_0.5)]">

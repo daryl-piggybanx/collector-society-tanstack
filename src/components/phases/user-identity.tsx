@@ -45,14 +45,14 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <User size={28} className="text-rose-300" />
-        <h2 className="text-2xl font-bold text-rose-100">
+        <User size={28} className="text-red-300" />
+        <h2 className="text-2xl font-bold text-red-100">
           {formData.is_returning_collector ? "Welcome back!" : "Tell us about yourself"}
         </h2>
       </motion.div>
 
       {/* {formData.isReturningCollector && (
-        <motion.p variants={itemVariants} className="text-rose-100/80 mb-6">
+        <motion.p variants={itemVariants} className="text-red-100/80 mb-6">
           We've found your information. Feel free to update if needed.
         </motion.p>
       )} */}
@@ -60,7 +60,7 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
       <motion.div variants={itemVariants} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="firstName" className="text-rose-200">
+            <Label htmlFor="firstName" className="text-red-200">
               First Name*
             </Label>
             <div className="relative">
@@ -70,17 +70,17 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
                 value={formData.first_name}
                 onChange={handleInputChange}
                 placeholder="First Name"
-                className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
+                className="border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 pl-3 pr-10"
                 required
               />
               {formData.is_returning_collector && (
-                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
+                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-red-300" />
               )}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-rose-200">
+            <Label htmlFor="lastName" className="text-red-200">
               Last Name*
             </Label>
             <div className="relative">
@@ -90,17 +90,17 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
                 value={formData.last_name}
                 onChange={handleInputChange}
                 placeholder="Last Name"
-                className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
+                className="border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 pl-3 pr-10"
                 required
               />
               {formData.is_returning_collector && (
-                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
+                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-red-300" />
               )}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="discordUsername" className="text-rose-200">
+            <Label htmlFor="discordUsername" className="text-red-200">
               Discord Username
             </Label>
             <div className="relative">
@@ -110,17 +110,17 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
                 value={formData.discord_username}
                 onChange={handleInputChange}
                 placeholder="Discord Username (optional)"
-                className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
+                className="border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 pl-3 pr-10"
                 required
               />
               {formData.is_returning_collector && (
-                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
+                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-red-300" />
               )}
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="instagramHandle" className="text-rose-200">
+            <Label htmlFor="instagramHandle" className="text-red-200">
               Instagram Handle
             </Label>
             <div className="relative">
@@ -130,11 +130,11 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
                 value={formData.instagram_handle}
                 onChange={handleInputChange}
                 placeholder="Instagram Handle (optional)"
-                className="border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400 pl-3 pr-10"
+                className="border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 pl-3 pr-10"
                 required
               />
               {formData.is_returning_collector && (
-                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300" />
+                <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-red-300" />
               )}
             </div>
           </div>

@@ -61,7 +61,7 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
 
   // Function to render the appropriate icon based on the icon name
   const renderIcon = (iconName: string) => {
-    const iconClass = "text-rose-300"
+    const iconClass = "text-red-300"
     const iconSize = 18
 
     switch (iconName) {
@@ -88,40 +88,40 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="text-center">
       <motion.div variants={itemVariants} className="mb-8 flex flex-col items-center">
         <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4 w-100">
-          <CheckCircle size={40} className="text-rose-100" />
+          <CheckCircle size={40} className="text-red-100" />
         </div>
-        <h2 className="text-3xl font-bold text-rose-100">Success!</h2>
-        <p className="text-rose-100/80 mt-2">Thank you for completing your collector profile.</p>
+        <h2 className="text-3xl font-bold text-red-100">Success!</h2>
+        <p className="text-red-100/80 mt-2">Thank you for completing your collector profile.</p>
       </motion.div>
 
       <motion.div
         variants={itemVariants}
-        className="bg-gradient-to-br from-rose-900/40 to-orange-800/40 rounded-xl p-6 border border-rose-400/30 mb-8 backdrop-blur-sm"
+        className="bg-gradient-to-br from-red-900/40 to-orange-800/40 rounded-xl p-6 border border-red-400/30 mb-8 backdrop-blur-sm"
       >
-        <h3 className="text-xl font-semibold text-rose-200 mb-4">Your Collector Character Sheet</h3>
+        <h3 className="text-xl font-semibold text-red-200 mb-4">Your Collector Character Sheet</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <User size={20} className="text-rose-300 mt-1" />
+              <User size={20} className="text-red-300 mt-1" />
               <div>
-                <h4 className="font-medium text-rose-200">Personal Info</h4>
-                <p className="text-rose-100">
+                <h4 className="font-medium text-red-200">Personal Info</h4>
+                <p className="text-red-100">
                   {formData.first_name} {formData.last_name}
                 </p>
-                <p className="text-rose-100/70 text-sm">{formData.discord_username}</p>
+                <p className="text-red-100/70 text-sm">{formData.discord_username}</p>
               </div>
             </div>
 
             {formData.is_returning_collector && (
               <div className="flex items-start gap-3">
-                <MessageSquare size={20} className="text-rose-300 mt-1" />
+                <MessageSquare size={20} className="text-red-300 mt-1" />
                 <div>
-                  <h4 className="font-medium text-rose-200">Collection Stats</h4>
+                  <h4 className="font-medium text-red-200">Collection Stats</h4>
                   {selectedVariations.length > 0 && (
-                    <p className="text-rose-100/70">
+                    <p className="text-red-100/70">
                       Favorite variation{selectedVariations.length > 1 ? 's' : ''}: {' '}
-                      <span className="text-rose-300">
+                      <span className="text-red-300">
                         {selectedVariations.map((variation, index) => (
                           <span key={variation}>
                             {variation}
@@ -132,8 +132,8 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
                     </p>
                   )}
                   {formData.first_piece && (
-                    <p className="text-rose-100/70">
-                      First piece: <span className="text-rose-300">{formData.first_piece}</span>
+                    <p className="text-red-100/70">
+                      First piece: <span className="text-red-300">{formData.first_piece}</span>
                     </p>
                   )}
                 </div>
@@ -141,14 +141,14 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
             )}
 
             <div className="flex items-start gap-3">
-              <Target size={20} className="text-rose-300 mt-1" />
+              <Target size={20} className="text-red-300 mt-1" />
               <div>
-                <h4 className="font-medium text-rose-200">Collection Interests</h4>
+                <h4 className="font-medium text-red-200">Collection Interests</h4>
                 <div className="flex flex-wrap gap-2 mt-1">
                   {selectedPreferences.map((preference, index) => (
                     <div
                       key={preference.name}
-                      className="inline-flex items-center gap-1 bg-rose-800/60 text-rose-100 px-2 py-1 rounded-full text-sm"
+                      className="inline-flex items-center gap-1 bg-red-800/60 text-red-100 px-2 py-1 rounded-full text-sm"
                     >
                       <span>{index + 1}. </span>
                       {renderIcon(preference.icon)}
@@ -161,10 +161,10 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
 
             {formData.category_to_add && (
               <div className="flex items-start gap-3">
-                <Plus size={20} className="text-rose-300 mt-1" />
+                <Plus size={20} className="text-red-300 mt-1" />
                 <div>
-                  <h4 className="font-medium text-rose-200">Suggested Category</h4>
-                  <p className="text-rose-100">{formData.category_to_add}</p>
+                  <h4 className="font-medium text-red-200">Suggested Category</h4>
+                  <p className="text-red-100">{formData.category_to_add}</p>
                 </div>
               </div>
             )}
@@ -172,27 +172,27 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
 
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <Mail size={20} className="text-rose-300 mt-1" />
+              <Mail size={20} className="text-red-300 mt-1" />
               <div>
-                <h4 className="font-medium text-rose-200">Contact Info</h4>
-                <p className="text-rose-100">{formData.email}</p>
-                {formData.phone_number && <p className="text-rose-100/70">{formData.phone_number}</p>}
+                <h4 className="font-medium text-red-200">Contact Info</h4>
+                <p className="text-red-100">{formData.email}</p>
+                {formData.phone_number && <p className="text-red-100/70">{formData.phone_number}</p>}
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <Phone size={20} className="text-rose-300 mt-1" />
+              <Phone size={20} className="text-red-300 mt-1" />
               <div>
-                <h4 className="font-medium text-rose-200">Communication Preference</h4>
-                <p className="text-rose-100 capitalize">{formData.communication_preference}</p>
+                <h4 className="font-medium text-red-200">Communication Preference</h4>
+                <p className="text-red-100 capitalize">{formData.communication_preference}</p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <Star size={20} className="text-rose-300 mt-1" />
+              <Star size={20} className="text-red-300 mt-1" />
               <div>
-                <h4 className="font-medium text-rose-200">Collector Status</h4>
-                <p className="text-rose-100">
+                <h4 className="font-medium text-red-200">Collector Status</h4>
+                <p className="text-red-100">
                   {formData.is_returning_collector ? "Returning Collector" : "New Collector"}
                 </p>
               </div>
@@ -201,7 +201,7 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
         </div>
       </motion.div>
 
-      <motion.p variants={itemVariants} className="text-rose-100/80">
+      <motion.p variants={itemVariants} className="text-red-100/80">
         We'll be in touch soon with exciting collection opportunities!
       </motion.p>
     </motion.div>

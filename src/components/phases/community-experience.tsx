@@ -45,8 +45,8 @@ export default function CommunityExperience({ formData, updateFormData }: Commun
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
-        <Users size={28} className="text-rose-300" />
-        <h2 className="text-2xl font-bold text-rose-100">
+        <Users size={28} className="text-red-300" />
+        <h2 className="text-2xl font-bold text-red-100">
           {formData.first_name ? `${formData.first_name}, ` : ""}
           share your community experience
         </h2>
@@ -54,7 +54,7 @@ export default function CommunityExperience({ formData, updateFormData }: Commun
 
       <motion.div variants={itemVariants} className="space-y-8">
         <div className="space-y-3">
-          <Label htmlFor="communityExperience" className="text-lg text-rose-200">
+          <Label htmlFor="communityExperience" className="text-lg text-red-200">
             What is your favorite part about collecting our work or about the community?
           </Label>
           <Textarea
@@ -63,12 +63,12 @@ export default function CommunityExperience({ formData, updateFormData }: Commun
             value={formData.community_experience}
             onChange={handleInputChange}
             placeholder="Tell us what you love most..."
-            className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
+            className="min-h-[120px] border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400"
           />
         </div>
 
         <div className="space-y-3">
-          <Label htmlFor="improvements" className="text-lg text-rose-200">
+          <Label htmlFor="improvements" className="text-lg text-red-200">
             What would make this collecting experience even better?
           </Label>
           <Textarea
@@ -77,7 +77,7 @@ export default function CommunityExperience({ formData, updateFormData }: Commun
             value={formData.improvements}
             onChange={handleInputChange}
             placeholder="Share your ideas for improvement..."
-            className="min-h-[120px] border-rose-400/30 bg-rose-950/40 text-rose-100 placeholder:text-rose-300/50 focus:border-rose-400 focus:ring-rose-400"
+            className="min-h-[120px] border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400"
           />
         </div>
       </motion.div>
