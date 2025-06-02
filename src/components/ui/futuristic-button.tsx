@@ -1,11 +1,13 @@
 "use client"
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Package, Home, Users, UserPlus, ExternalLink } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Package, Home, Users, UserPlus, ExternalLink, UserCheck } from "lucide-react";
+import { FaDiscord } from "react-icons/fa";
+import { GiFalling } from "react-icons/gi";
 
-type ButtonColor = "red"
-type ButtonIcon = "rocket" | "home" | "scroll" | "user-plus"
+type ButtonColor = "red";
+type ButtonIcon = "rocket" | "home" | "scroll" | "user-plus" | "user-check" | "discord";
 
 interface FuturisticButtonProps {
   label: string
@@ -32,6 +34,9 @@ const iconMap = {
   home: Home,
   scroll: Users,
   "user-plus": UserPlus,
+  "user-check": UserCheck,
+  discord: FaDiscord,
+  falling: GiFalling,
 }
 
 export default function FuturisticButton({ label, color, icon, href }: FuturisticButtonProps) {
@@ -49,9 +54,9 @@ export default function FuturisticButton({ label, color, icon, href }: Futuristi
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
-      <a href={href} className="block">
+      <a href={href} className="flex justify-center">
         <div
-          className={`group relative flex h-18 md:h-14 w-full items-center justify-between gap-3 overflow-hidden rounded-lg border px-4 py-3 backdrop-blur-sm transition-all duration-300 sm:w-auto sm:min-w-[180px] 
+          className={`group relative flex justify-center h-18 items-center justify-between gap-3 overflow-hidden rounded-lg border px-4 py-3 backdrop-blur-sm transition-all duration-300 w-[275px] 
             ${styles.bg} ${styles.border} ${styles.glow} ${styles.hoverBg} ${styles.hoverBorder} ${styles.hoverGlow} ${styles.activeBg}
             shadow-lg hover:shadow-xl`}
         >
@@ -73,13 +78,13 @@ export default function FuturisticButton({ label, color, icon, href }: Futuristi
           </span>
 
           {/* Arrow indicator */}
-          <motion.div
+          {/* <motion.div
             animate={{ x: isHovered ? 5 : 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
             className={`${styles.text} transition-colors duration-300 group-hover:text-white`}
           >
             <ExternalLink size={16} />
-          </motion.div>
+          </motion.div> */}
 
           {/* Pulse effect on hover */}
           {isHovered && (

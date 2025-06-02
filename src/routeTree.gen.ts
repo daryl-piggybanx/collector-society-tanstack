@@ -14,8 +14,10 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
 import { Route as DemoHoloCardsImport } from './routes/demo.holo-cards'
+import { Route as CollectorVerifiedImport } from './routes/collector.verified'
 import { Route as CollectorOgImport } from './routes/collector.og'
 import { Route as CollectorNewImport } from './routes/collector.new'
+import { Route as CollectorDiscordImport } from './routes/collector.discord'
 import { Route as DemoStartServerFuncsImport } from './routes/demo.start.server-funcs'
 import { Route as DemoStartApiRequestImport } from './routes/demo.start.api-request'
 import { Route as DemoFormSimpleImport } from './routes/demo.form.simple'
@@ -41,6 +43,12 @@ const DemoHoloCardsRoute = DemoHoloCardsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CollectorVerifiedRoute = CollectorVerifiedImport.update({
+  id: '/collector/verified',
+  path: '/collector/verified',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const CollectorOgRoute = CollectorOgImport.update({
   id: '/collector/og',
   path: '/collector/og',
@@ -50,6 +58,12 @@ const CollectorOgRoute = CollectorOgImport.update({
 const CollectorNewRoute = CollectorNewImport.update({
   id: '/collector/new',
   path: '/collector/new',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CollectorDiscordRoute = CollectorDiscordImport.update({
+  id: '/collector/discord',
+  path: '/collector/discord',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/collector/discord': {
+      id: '/collector/discord'
+      path: '/collector/discord'
+      fullPath: '/collector/discord'
+      preLoaderRoute: typeof CollectorDiscordImport
+      parentRoute: typeof rootRoute
+    }
     '/collector/new': {
       id: '/collector/new'
       path: '/collector/new'
@@ -100,6 +121,13 @@ declare module '@tanstack/react-router' {
       path: '/collector/og'
       fullPath: '/collector/og'
       preLoaderRoute: typeof CollectorOgImport
+      parentRoute: typeof rootRoute
+    }
+    '/collector/verified': {
+      id: '/collector/verified'
+      path: '/collector/verified'
+      fullPath: '/collector/verified'
+      preLoaderRoute: typeof CollectorVerifiedImport
       parentRoute: typeof rootRoute
     }
     '/demo/holo-cards': {
@@ -151,8 +179,10 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/collector/discord': typeof CollectorDiscordRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
+  '/collector/verified': typeof CollectorVerifiedRoute
   '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -163,8 +193,10 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/collector/discord': typeof CollectorDiscordRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
+  '/collector/verified': typeof CollectorVerifiedRoute
   '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -176,8 +208,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/collector/discord': typeof CollectorDiscordRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
+  '/collector/verified': typeof CollectorVerifiedRoute
   '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -190,8 +224,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/collector/discord'
     | '/collector/new'
     | '/collector/og'
+    | '/collector/verified'
     | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -201,8 +237,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/collector/discord'
     | '/collector/new'
     | '/collector/og'
+    | '/collector/verified'
     | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -212,8 +250,10 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/collector/discord'
     | '/collector/new'
     | '/collector/og'
+    | '/collector/verified'
     | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -225,8 +265,10 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CollectorDiscordRoute: typeof CollectorDiscordRoute
   CollectorNewRoute: typeof CollectorNewRoute
   CollectorOgRoute: typeof CollectorOgRoute
+  CollectorVerifiedRoute: typeof CollectorVerifiedRoute
   DemoHoloCardsRoute: typeof DemoHoloCardsRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
@@ -237,8 +279,10 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CollectorDiscordRoute: CollectorDiscordRoute,
   CollectorNewRoute: CollectorNewRoute,
   CollectorOgRoute: CollectorOgRoute,
+  CollectorVerifiedRoute: CollectorVerifiedRoute,
   DemoHoloCardsRoute: DemoHoloCardsRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
@@ -258,8 +302,10 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/collector/discord",
         "/collector/new",
         "/collector/og",
+        "/collector/verified",
         "/demo/holo-cards",
         "/demo/tanstack-query",
         "/demo/form/address",
@@ -271,11 +317,17 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
+    "/collector/discord": {
+      "filePath": "collector.discord.tsx"
+    },
     "/collector/new": {
       "filePath": "collector.new.tsx"
     },
     "/collector/og": {
       "filePath": "collector.og.tsx"
+    },
+    "/collector/verified": {
+      "filePath": "collector.verified.tsx"
     },
     "/demo/holo-cards": {
       "filePath": "demo.holo-cards.tsx"

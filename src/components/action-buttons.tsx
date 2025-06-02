@@ -21,15 +21,17 @@ export default function ActionButtons() {
 
   return (
     <motion.div
-      className={`${isMobile ? "grid grid-cols-2 gap-3" : "flex flex-row flex-wrap md:max-w-2xl"} justify-center gap-4 pt-6`}
+      className={`${isMobile ? "grid grid-cols-1 gap-3" : "grid grid-cols-1 gap-3"} justify-center gap-4 pt-6`}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
-      <FuturisticButton label="Drop Site" color="red" icon="rocket" href="https://www.piggybanxinc.com/" />
-      <FuturisticButton label="Club House" color="red" icon="home" href="https://www.piggybanx.com/" />
+      {/* <FuturisticButton label="Drop Site" color="red" icon="rocket" href="https://www.piggybanxinc.com/" /> */}
+      {/* <FuturisticButton label="Club House" color="red" icon="falling" href="https://www.piggybanx.com/" /> */}
       {/* <FuturisticButton label="Returning Collector Form" color="red" icon="scroll" href="/collector/og" /> */}
       <FuturisticButton label="New Collector Application" color="red" icon="user-plus" href="/collector/new" />
+      <FuturisticButton label="Update Collector Profile" color="red" icon="user-check" href="/collector/verified" />
+      <FuturisticButton label="Discord Verification" color="red" icon="discord" href="/collector/discord" />
     </motion.div>
   )
 }

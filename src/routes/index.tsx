@@ -5,6 +5,7 @@ import ActionButtons from "@/components/action-buttons"
 import { Button } from "@/components/ui/button"
 import VideoBackground from '@/components/video-background'
 import ParticleTwinkleBackground from '@/components/particle-background-twinkle'
+import RedirectButtons from '@/components/redirect-buttons'
 
 
 export const Route = createFileRoute('/')({
@@ -28,8 +29,9 @@ function App() {
           </h1>
 
           <p className="mx-auto max-w-xl text-lg text-gray-200/90 md:text-xl [text-shadow:_0_0_10px_rgb(225_29_72_/_0.5)]">
-            Your gateway into a collector's club like no other—different from anything that has come before. Don't call them cards, these artworks are handcrafted, often imitated but never replicated.
+            Your gateway into a collector's club like no other, different from anything that has come before. Don't call them cards, these artworks are handcrafted, often imitated but never replicated.
           </p>
+          <RedirectButtons />
 
           <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
             <ActionButtons />
