@@ -7,6 +7,7 @@ import { User, Edit } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import type { FormData } from "@/components/collector-form"
+import { useLocation } from "@tanstack/react-router"
 
 interface UserIdentityProps {
   formData: FormData
@@ -14,6 +15,12 @@ interface UserIdentityProps {
 }
 
 export default function UserIdentity({ formData, updateFormData }: UserIdentityProps) {
+  const location = useLocation()
+  const isUpdateRoute = location.pathname === '/collector/update';
+  const isDiscordRoute = location.pathname === '/collector/discord';
+  const isReservationRoute = location.pathname === '/collector/reservation';
+
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     updateFormData({ [name]: value });
@@ -98,7 +105,7 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
               )}
             </div>
           </div>
-
+          {!isUpdateRoute && (
           <div className="space-y-2">
             <Label htmlFor="discordUsername" className="text-red-200">
               Discord Username
@@ -113,12 +120,12 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
                 className="border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 pl-3 pr-10"
                 required
               />
-              {formData.is_returning_collector && (
+              {formData.is_returning_collector && isUpdateRoute && (
                 <Edit size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-red-300" />
               )}
             </div>
           </div>
-
+          )}
           <div className="space-y-2">
             <Label htmlFor="instagramHandle" className="text-red-200">
               Instagram Handle

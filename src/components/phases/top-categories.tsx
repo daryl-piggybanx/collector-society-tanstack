@@ -115,7 +115,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
         <Target size={28} className="text-red-300" />
         <h2 className="text-2xl font-bold text-red-100">
           {formData.first_name ? `${formData.first_name}, ` : ""}
-          {formData.is_returning_collector ? "#1 category you're focused on collecting" : "What do you want to collect?"}
+          {formData.is_returning_collector ? "#1 category you're focused on collecting" : "what do you want to collect?"}
         </h2>
       </motion.div>
 
@@ -147,7 +147,7 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                 className={`w-full h-full p-6 text-center transition-all ${
                   isSelected
                     ? "bg-red-800/60 border-2 border-red-500"
-                    : "bg-red-950/40 border border-red-400/30 hover:border-red-400/60"
+                    : "bg-red-950/40 border-2 border-red-400/30 hover:border-red-400/60"
                 } rounded-lg flex flex-col items-center justify-center gap-3`}
               >
                 {renderIcon(preference.icon, isSelected)}

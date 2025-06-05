@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Package, Home, Users, UserPlus, ExternalLink, UserCheck } from "lucide-react";
+import { Package, Home, Users, UserPlus, ExternalLink, UserCheck, Wallpaper } from "lucide-react";
 import { FaDiscord } from "react-icons/fa";
 import { GiFalling } from "react-icons/gi";
 
 type ButtonColor = "red";
-type ButtonIcon = "rocket" | "home" | "scroll" | "user-plus" | "user-check" | "discord";
+type ButtonIcon = "rocket" | "home" | "scroll" | "user-plus" | "user-check" | "discord" | "wallpaper";
 
 interface FuturisticButtonProps {
   label: string
@@ -37,6 +37,7 @@ const iconMap = {
   "user-check": UserCheck,
   discord: FaDiscord,
   falling: GiFalling,
+  wallpaper: Wallpaper,
 }
 
 export default function FuturisticButton({ label, color, icon, href }: FuturisticButtonProps) {
@@ -56,7 +57,7 @@ export default function FuturisticButton({ label, color, icon, href }: Futuristi
     >
       <a href={href} className="flex justify-center">
         <div
-          className={`group relative flex justify-center h-18 items-center justify-between gap-3 overflow-hidden rounded-lg border px-4 py-3 backdrop-blur-sm transition-all duration-300 w-[275px] 
+          className={`group relative flex justify-center h-12 items-center justify-between gap-3 overflow-hidden rounded-lg border px-4 py-3 backdrop-blur-sm transition-all duration-300 w-[275px] 
             ${styles.bg} ${styles.border} ${styles.glow} ${styles.hoverBg} ${styles.hoverBorder} ${styles.hoverGlow} ${styles.activeBg}
             shadow-lg hover:shadow-xl`}
         >
@@ -67,7 +68,7 @@ export default function FuturisticButton({ label, color, icon, href }: Futuristi
 
           {/* Icon */}
           <div
-            className={`flex h-8 w-8 items-center justify-center rounded-full ${styles.bg} transition-colors duration-300 ${styles.text} group-hover:text-white`}
+            className={`flex h-4 w-8 items-center justify-center rounded-full ${styles.bg} transition-colors duration-300 ${styles.text} group-hover:text-white`}
           >
             <IconComponent size={18} />
           </div>

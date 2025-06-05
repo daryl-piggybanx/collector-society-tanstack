@@ -69,7 +69,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     console.log('test data: ', data);
 
     const properties: Record<string, any> = {
-      '$source': data.is_returning_collector ? 'Returning Collector Form' : 'New Collector Form',
+      '$source': data.is_returning_collector ? 'Update Collector Profile' : 'New Collector Form',
       '$consent_method': 'Custom Klaviyo Form',
       '$consent': data.phone_number ? ['email', 'sms'] : ['email'],
       '$consent_timestamp': new Date().toISOString(),

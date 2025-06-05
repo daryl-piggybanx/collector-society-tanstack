@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { VerificationCollectorForm } from '@/components/form/verification'
+import { ReservationForm } from '@/components/form/reservation'
 import ParticleTwinkleBackground from '@/components/particle-background-twinkle'
 
-export const Route = createFileRoute('/collector/discord')({
+export const Route = createFileRoute('/collector/reservation')({
   component: RouteComponent,
 })
 
@@ -16,7 +16,7 @@ function RouteComponent() {
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-center items-start min-h-full">
             <div className="w-full max-w-3xl">
-              <VerificationCollectorForm />
+              <ReservationForm />
             </div>
           </div>
         </div>
@@ -24,3 +24,4 @@ function RouteComponent() {
     </main>
   )
 }
+

@@ -110,6 +110,7 @@ export default function SuccessPage({ formData, preferences, variations }: Succe
                   {formData.first_name} {formData.last_name}
                 </p>
                 <p className="text-red-100/70 text-sm">{formData.discord_username}</p>
+                <p className="text-red-100/70 text-sm">{formData.instagram_handle}</p>
               </div>
             </div>
 

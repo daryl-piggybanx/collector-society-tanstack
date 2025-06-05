@@ -14,7 +14,8 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
 import { Route as DemoHoloCardsImport } from './routes/demo.holo-cards'
-import { Route as CollectorVerifiedImport } from './routes/collector.verified'
+import { Route as CollectorUpdateImport } from './routes/collector.update'
+import { Route as CollectorReservationImport } from './routes/collector.reservation'
 import { Route as CollectorOgImport } from './routes/collector.og'
 import { Route as CollectorNewImport } from './routes/collector.new'
 import { Route as CollectorDiscordImport } from './routes/collector.discord'
@@ -43,9 +44,15 @@ const DemoHoloCardsRoute = DemoHoloCardsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const CollectorVerifiedRoute = CollectorVerifiedImport.update({
-  id: '/collector/verified',
-  path: '/collector/verified',
+const CollectorUpdateRoute = CollectorUpdateImport.update({
+  id: '/collector/update',
+  path: '/collector/update',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CollectorReservationRoute = CollectorReservationImport.update({
+  id: '/collector/reservation',
+  path: '/collector/reservation',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -123,11 +130,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollectorOgImport
       parentRoute: typeof rootRoute
     }
-    '/collector/verified': {
-      id: '/collector/verified'
-      path: '/collector/verified'
-      fullPath: '/collector/verified'
-      preLoaderRoute: typeof CollectorVerifiedImport
+    '/collector/reservation': {
+      id: '/collector/reservation'
+      path: '/collector/reservation'
+      fullPath: '/collector/reservation'
+      preLoaderRoute: typeof CollectorReservationImport
+      parentRoute: typeof rootRoute
+    }
+    '/collector/update': {
+      id: '/collector/update'
+      path: '/collector/update'
+      fullPath: '/collector/update'
+      preLoaderRoute: typeof CollectorUpdateImport
       parentRoute: typeof rootRoute
     }
     '/demo/holo-cards': {
@@ -182,7 +196,8 @@ export interface FileRoutesByFullPath {
   '/collector/discord': typeof CollectorDiscordRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
-  '/collector/verified': typeof CollectorVerifiedRoute
+  '/collector/reservation': typeof CollectorReservationRoute
+  '/collector/update': typeof CollectorUpdateRoute
   '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -196,7 +211,8 @@ export interface FileRoutesByTo {
   '/collector/discord': typeof CollectorDiscordRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
-  '/collector/verified': typeof CollectorVerifiedRoute
+  '/collector/reservation': typeof CollectorReservationRoute
+  '/collector/update': typeof CollectorUpdateRoute
   '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -211,7 +227,8 @@ export interface FileRoutesById {
   '/collector/discord': typeof CollectorDiscordRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
-  '/collector/verified': typeof CollectorVerifiedRoute
+  '/collector/reservation': typeof CollectorReservationRoute
+  '/collector/update': typeof CollectorUpdateRoute
   '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/form/address': typeof DemoFormAddressRoute
@@ -227,7 +244,8 @@ export interface FileRouteTypes {
     | '/collector/discord'
     | '/collector/new'
     | '/collector/og'
-    | '/collector/verified'
+    | '/collector/reservation'
+    | '/collector/update'
     | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -240,7 +258,8 @@ export interface FileRouteTypes {
     | '/collector/discord'
     | '/collector/new'
     | '/collector/og'
-    | '/collector/verified'
+    | '/collector/reservation'
+    | '/collector/update'
     | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -253,7 +272,8 @@ export interface FileRouteTypes {
     | '/collector/discord'
     | '/collector/new'
     | '/collector/og'
-    | '/collector/verified'
+    | '/collector/reservation'
+    | '/collector/update'
     | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/demo/form/address'
@@ -268,7 +288,8 @@ export interface RootRouteChildren {
   CollectorDiscordRoute: typeof CollectorDiscordRoute
   CollectorNewRoute: typeof CollectorNewRoute
   CollectorOgRoute: typeof CollectorOgRoute
-  CollectorVerifiedRoute: typeof CollectorVerifiedRoute
+  CollectorReservationRoute: typeof CollectorReservationRoute
+  CollectorUpdateRoute: typeof CollectorUpdateRoute
   DemoHoloCardsRoute: typeof DemoHoloCardsRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
@@ -282,7 +303,8 @@ const rootRouteChildren: RootRouteChildren = {
   CollectorDiscordRoute: CollectorDiscordRoute,
   CollectorNewRoute: CollectorNewRoute,
   CollectorOgRoute: CollectorOgRoute,
-  CollectorVerifiedRoute: CollectorVerifiedRoute,
+  CollectorReservationRoute: CollectorReservationRoute,
+  CollectorUpdateRoute: CollectorUpdateRoute,
   DemoHoloCardsRoute: DemoHoloCardsRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
@@ -305,7 +327,8 @@ export const routeTree = rootRoute
         "/collector/discord",
         "/collector/new",
         "/collector/og",
-        "/collector/verified",
+        "/collector/reservation",
+        "/collector/update",
         "/demo/holo-cards",
         "/demo/tanstack-query",
         "/demo/form/address",
@@ -326,8 +349,11 @@ export const routeTree = rootRoute
     "/collector/og": {
       "filePath": "collector.og.tsx"
     },
-    "/collector/verified": {
-      "filePath": "collector.verified.tsx"
+    "/collector/reservation": {
+      "filePath": "collector.reservation.tsx"
+    },
+    "/collector/update": {
+      "filePath": "collector.update.tsx"
     },
     "/demo/holo-cards": {
       "filePath": "demo.holo-cards.tsx"

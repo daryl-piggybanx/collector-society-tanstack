@@ -21,7 +21,7 @@ export default function RedirectButtons() {
     return (
         <>
       <motion.div
-        className={`${isMobile ? "flex flex-row flex-wrap" : "flex flex-row flex-wrap"} justify-center gap-8 pt-6`}
+        className={`${isMobile ? "flex flex-row flex-wrap" : "flex flex-row flex-wrap"} justify-center gap-8 m-0`}
         variants={containerVariants}
         initial="hidden"
         animate="visible"

@@ -23,12 +23,12 @@ function App() {
       {/* Content overlay */}
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center">
         <div className="max-w-3xl space-y-6">
-          <h1 className="text-4xl font-bold tracking-tighter text-gray-200/90 sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="text-5xl font-bold tracking-tighter text-gray-200/90 sm:text-5xl md:text-6xl lg:text-7xl">
             Into the <br />
             <span className="text-red-600">PiggyVerse</span>
           </h1>
 
-          <p className="mx-auto max-w-xl text-lg text-gray-200/90 md:text-xl [text-shadow:_0_0_10px_rgb(225_29_72_/_0.5)]">
+          <p className="mx-auto max-w-xl text-[16px] text-gray-200/90 md:text-xl [text-shadow:_0_0_10px_rgb(225_29_72_/_0.5)]">
             Your gateway into a collector's club like no other, different from anything that has come before. Don't call them cards, these artworks are handcrafted, often imitated but never replicated.
           </p>
           <RedirectButtons />
