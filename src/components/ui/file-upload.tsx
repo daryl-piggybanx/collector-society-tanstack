@@ -7,10 +7,12 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { useServerFn } from '@tanstack/react-start';
 import { uploadAsset, getFolderWithLastAsset } from "@/integrations/webflow/assets/services";
+import type { FormData } from "@/components/form/types";
 
 type FileUploadProps = {
     formData?: any;
-    updateFormData?: (data: any) => void;
+    updateFormData: (data: Partial<FormData>) => void;
+    onFilesChange?: (fileCount: number) => void;
 }
 
 type UploadedFile = {
@@ -21,10 +23,12 @@ type UploadedFile = {
     error?: string;
 }
 
-export type UploadedFiles = UploadedFile[];
+type UploadedFiles = UploadedFile[];
 
 export type FileUploadRef = {
-    uploadAllFiles: () => Promise<boolean>;
+    uploadAllFiles: () => Promise<{ success: boolean; urls: string[] }>;
+    hasFiles: () => boolean;
+    getUploadedFiles: () => UploadedFiles;
 }
 
 const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
@@ -43,20 +47,32 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
     useImperativeHandle(ref, () => ({
         uploadAllFiles: async () => {
             const pendingFiles = uploadedFiles.filter(f => f.status === 'pending');
-            if (pendingFiles.length === 0) return true;
+            if (pendingFiles.length === 0) return { success: true, urls: [] };
 
             let allSuccessful = true;
+            const uploadedUrls: string[] = [];
 
-            // Upload all pending files
+            // Upload all pending files and collect URLs directly from results
             for (let i = 0; i < uploadedFiles.length; i++) {
                 if (uploadedFiles[i].status === 'pending') {
-                    const success = await uploadFile(i);
-                    if (!success) allSuccessful = false;
+                    const result = await uploadFile(i);
+                    if (!result.success) {
+                        allSuccessful = false;
+                    } else {
+                        // Get the URL directly from the upload result
+                        if (result.asset?.hostedUrl) {
+                            uploadedUrls.push(result.asset.hostedUrl);
+                        }
+                    }
                 }
             }
 
-            return allSuccessful;
-        }
+            console.log('Collected URLs:', uploadedUrls);
+
+            return { success: allSuccessful, urls: uploadedUrls };
+        },
+        hasFiles: () => uploadedFiles.length > 0,
+        getUploadedFiles: () => uploadedFiles
     }));
 
     // Test folder with last asset function
@@ -130,14 +146,19 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
         });
 
         if (newFiles.length > 0) {
-            setUploadedFiles(prev => [...prev, ...newFiles]);
+            setUploadedFiles(prev => {
+                const newList = [...prev, ...newFiles];
+                // Notify parent of file count change
+                props.onFilesChange?.(newList.length);
+                return newList;
+            });
         }
-    }, [uploadedFiles.length]);
+    }, [uploadedFiles.length, props]);
 
     // upload individual file
-    const uploadFile = async (fileIndex: number): Promise<boolean> => {
+    const uploadFile = async (fileIndex: number): Promise<any> => {
         const fileData = uploadedFiles[fileIndex];
-        if (!fileData || fileData.status === 'uploading') return false;
+        if (!fileData || fileData.status === 'uploading') return { success: false };
 
         // Update status to uploading
         setUploadedFiles(prev => prev.map((f, i) => 
@@ -174,14 +195,8 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
                 } : f
             ));
 
-            // Update form data if upload was successful
-            if (result.success && result.asset && props.updateFormData) {
-                props.updateFormData({
-                    discord_verification_image: result.asset.url
-                });
-            }
-
-            return result.success;
+            // Return the result directly
+            return result;
 
         } catch (error) {
             console.error('Upload error:', error);
@@ -192,7 +207,7 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
                     error: error instanceof Error ? error.message : 'Upload failed'
                 } : f
             ));
-            return false;
+            return { success: false, error: error instanceof Error ? error.message : 'Upload failed' };
         }
     };
 
@@ -202,6 +217,8 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
             const newFiles = [...prev];
             URL.revokeObjectURL(newFiles[index].preview);
             newFiles.splice(index, 1);
+            // Notify parent of file count change
+            props.onFilesChange?.(newFiles.length);
             return newFiles;
         });
     };
@@ -263,7 +280,7 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
             <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
                 <Image size={28} className="text-red-300" />
                 <h2 className="text-2xl font-bold text-red-100">
-                    Upload Discord Verification
+                    Upload Proof of Piece
                 </h2>
             </motion.div>
 
@@ -386,7 +403,7 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
                     ) : (
                         <>
                             <p className="text-red-100 text-lg font-medium mb-2">
-                                Drop your Discord verification images here
+                                Drop your proof of pieces images here
                             </p>
                             <p className="text-red-200/80 text-sm">
                                 or click to browse files
@@ -395,7 +412,7 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
                                 Supports: PNG, JPEG, GIF, SVG, WebP (max 4MB each)
                             </p>
                             <p className="text-red-300/60 text-xs">
-                                Maximum 3 files ({uploadedFiles.length}/3 selected)
+                                At least 1 file required • Maximum 3 files ({uploadedFiles.length}/3 selected)
                             </p>
                         </>
                     )}
@@ -481,6 +498,12 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
                 {error && (
                     <div className="text-red-400 text-sm">
                         {error}
+                    </div>
+                )}
+
+                {uploadedFiles.length === 0 && (
+                    <div className="text-red-400 text-sm text-center">
+                        At least one image is required to proceed
                     </div>
                 )}
 

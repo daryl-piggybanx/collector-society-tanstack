@@ -59,6 +59,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     collection_reason: z.string().optional(),
     interests: z.string().optional(),
     first_piece: z.string().optional(),
+    proof_of_piece: z.array(z.string()).optional(),
     community_experience: z.string().optional(),
     improvements: z.string().optional(),
     is_returning_collector: z.boolean().optional()
@@ -112,6 +113,9 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     }
     if (data.first_piece) {
       properties['First Piece'] = data.first_piece;
+    }
+    if (data.proof_of_piece) {
+      properties['Proof of Piece'] = data.proof_of_piece;
     }
     if (data.community_experience) {
       properties['Community Experience'] = data.community_experience;

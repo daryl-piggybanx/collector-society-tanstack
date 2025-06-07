@@ -64,6 +64,7 @@ export function VerificationCollectorForm() {
   const [isComplete, setIsComplete] = useState(false);
   const [showEmailErrorDialog, setShowEmailErrorDialog] = useState(false);
   const [isValidatingEmail, setIsValidatingEmail] = useState(false);
+  const [fileCount, setFileCount] = useState(0);
 
   const router = useRouter();
   const fileUploadRef = useRef<FileUploadRef>(null);
@@ -118,18 +119,31 @@ export function VerificationCollectorForm() {
     setIsSubmitting(true);
 
     try {
+      let finalFormData = { ...formData };
+
       // Upload files first if there are any
       if (fileUploadRef.current) {
-        const uploadSuccess = await fileUploadRef.current.uploadAllFiles();
-        if (!uploadSuccess) {
+        const uploadResult = await fileUploadRef.current.uploadAllFiles();
+        if (!uploadResult.success) {
           throw new Error('File upload failed');
         }
+        
+        // Update form data with uploaded URLs
+        if (uploadResult.urls.length > 0) {
+          finalFormData = {
+            ...finalFormData,
+            proof_of_piece: uploadResult.urls
+          };
+          console.log('Updated form data:', finalFormData);
+        }
       }
+      
+      console.log('formData after upload:', finalFormData);
 
-      await mutation.mutateAsync({ data: formData });
+      await mutation.mutateAsync({ data: finalFormData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
-      posthog.capture('discord_verification_form_submission_success', formData);
+      posthog.capture('discord_verification_form_submission_success', finalFormData);
 
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -166,7 +180,7 @@ export function VerificationCollectorForm() {
       case 1:
         return !formData.first_name || !formData.last_name || !formData.email || isValidatingEmail
       case 2:
-        return !formData.piece_count
+        return !formData.piece_count || fileCount === 0
       default:
         return false
     }
@@ -202,7 +216,8 @@ export function VerificationCollectorForm() {
                   key="file-upload" 
                   ref={fileUploadRef}
                   formData={formData} 
-                  updateFormData={updateFormData} 
+                  updateFormData={updateFormData}
+                  onFilesChange={setFileCount}
                 />
               </>
             )}
@@ -233,7 +248,7 @@ export function VerificationCollectorForm() {
               {currentPhase < totalPhases && (
                 <Button
                   onClick={handleNext}
-                  disabled={isNextDisabled()}
+                  disabled={isNextDisabled() || isSubmitting}
                   className="ml-auto flex items-center gap-2 bg-red-600 hover:bg-red-500 text-red-50 cursor-pointer"
                 >
                   {isValidatingEmail ? (

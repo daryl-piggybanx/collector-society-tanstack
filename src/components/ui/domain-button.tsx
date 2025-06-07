@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { GiFalling } from "react-icons/gi"
 import { Home } from "lucide-react"
@@ -37,38 +37,51 @@ function bounceEase(x: number) {
 
 export function DomainButton({ label, icon, href, description }: DomainButtonProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const [hasLoaded, setHasLoaded] = useState(false)
   const IconComponent = iconMap[icon]
 
-  // Define dramatic icon-specific animations
+  useEffect(() => {
+    // Trigger load animation after a slight delay
+    const timer = setTimeout(() => setHasLoaded(true), 200)
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Define dramatic icon-specific animations for load and hover
   const getIconAnimation = () => {
     if (icon === "falling") {
       return {
-        y: isHovered ? [-20, -15, -8, 0, 8, 15, 20, 10, 0] : 0,
-        rotate: isHovered ? [0, -8, -12, -8, 0, 8, 12, 8, 0] : 0,
-        scale: isHovered ? [1, 0.95, 0.9, 0.95, 1, 1.05, 1.1, 1.05, 1] : 1,
+        y: hasLoaded || isHovered ? [-20, -15, -8, 0, 8, 15, 20, 10, 0] : 0,
+        rotate: hasLoaded || isHovered ? [0, -8, -12, -8, 0, 8, 12, 8, 0] : 0,
+        scale: hasLoaded || isHovered ? [1, 0.95, 0.9, 0.95, 1, 1.05, 1.1, 1.05, 1] : 1,
       }
     } else if (icon === "home") {
       return {
-        rotate: isHovered ? [0, -10, 10, -8, 8, -5, 5, -2, 2, 0] : 0,
-        y: isHovered ? [0, -5, -8, -6, -4, -2, -1, 0] : 0,
-        scale: isHovered ? [1, 1.1, 1.2, 1.15, 1.1, 1.05, 1.02, 1] : 1,
+        rotate: hasLoaded || isHovered ? [0, -10, 10, -8, 8, -5, 5, -2, 2, 0] : 0,
+        y: hasLoaded || isHovered ? [0, -5, -8, -6, -4, -2, -1, 0] : 0,
+        scale: hasLoaded || isHovered ? [1, 1.1, 1.2, 1.15, 1.1, 1.05, 1.02, 1] : 1,
       }
     }
     return {}
   }
 
   const getIconTransition = () => {
+    const shouldRepeat = isHovered ? Number.POSITIVE_INFINITY : (hasLoaded ? 1 : 0)
+    
     if (icon === "falling") {
       return {
         duration: 2,
-        ease: [0.4, 0, 0.2, 1], // Smoother cubic-bezier easing
+        ease: [0.4, 0, 0.2, 1],
         times: [0, 0.15, 0.25, 0.4, 0.55, 0.7, 0.8, 0.9, 1],
+        repeat: shouldRepeat,
+        repeatDelay: 0.5,
       }
     } else if (icon === "home") {
       return {
         duration: 2.2,
-        ease: [0.25, 0.1, 0.25, 1], // More natural easing
+        ease: [0.25, 0.1, 0.25, 1],
         times: [0, 0.12, 0.25, 0.38, 0.5, 0.62, 0.75, 0.88, 1],
+        repeat: shouldRepeat,
+        repeatDelay: 0.3,
       }
     }
     return { duration: 0.6, ease: [0.4, 0, 0.2, 1] }
@@ -92,7 +105,7 @@ export function DomainButton({ label, icon, href, description }: DomainButtonPro
           <motion.div
             className="absolute inset-0 bg-gradient-to-br from-neutral-50 to-neutral-200 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
             initial={false}
-            animate={{ opacity: isHovered ? 1 : 0 }}
+            animate={{ opacity: hasLoaded || isHovered ? 1 : 0 }}
             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
           />
 
@@ -116,12 +129,12 @@ export function DomainButton({ label, icon, href, description }: DomainButtonPro
             className="absolute inset-0 rounded-xl bg-gray-300"
             initial={{ scale: 0, opacity: 0 }}
             animate={{
-              scale: isHovered ? [0, 1.1, 1.3] : 0,
-              opacity: isHovered ? [0, 0.15, 0] : 0,
+              scale: hasLoaded || isHovered ? [0, 1.1, 1.3] : 0,
+              opacity: hasLoaded || isHovered ? [0, 0.15, 0] : 0,
             }}
             transition={{
               duration: 1.2,
-              repeat: isHovered ? Number.POSITIVE_INFINITY : 0,
+              repeat: (hasLoaded || isHovered) ? Number.POSITIVE_INFINITY : 0,
               ease: [0.4, 0, 0.2, 1],
             }}
           />
@@ -130,12 +143,12 @@ export function DomainButton({ label, icon, href, description }: DomainButtonPro
           <motion.div
             className="absolute inset-0 rounded-xl border-2 border-gray-400"
             animate={{
-              opacity: isHovered ? [0, 0.3, 0] : 0,
-              scale: isHovered ? [1, 1.02, 1] : 1,
+              opacity: hasLoaded || isHovered ? [0, 0.3, 0] : 0,
+              scale: hasLoaded || isHovered ? [1, 1.02, 1] : 1,
             }}
             transition={{
               duration: 1.8,
-              repeat: isHovered ? Number.POSITIVE_INFINITY : 0,
+              repeat: (hasLoaded || isHovered) ? Number.POSITIVE_INFINITY : 0,
               ease: [0.4, 0, 0.2, 1],
             }}
           />
@@ -145,10 +158,15 @@ export function DomainButton({ label, icon, href, description }: DomainButtonPro
         <div className="flex flex-col items-center space-y-1 text-center">
           <motion.h3
             className="text-lg font-bold text-neutral-100 transition-colors duration-300 group-hover:text-white sm:text-xl"
+            initial={{ scale: 1 }}
             animate={{
-              scale: isHovered ? [1, 1.03, 1] : 1,
+              scale: hasLoaded || isHovered ? [1, 1.03, 1] : 1,
             }}
-            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ 
+              duration: 0.4, 
+              ease: [0.4, 0, 0.2, 1],
+              repeat: hasLoaded ? 1 : (isHovered ? Number.POSITIVE_INFINITY : 0),
+            }}
           >
             {label}
           </motion.h3>
@@ -158,10 +176,14 @@ export function DomainButton({ label, icon, href, description }: DomainButtonPro
               className="text-xs text-neutral-100 transition-colors duration-300 group-hover:text-white sm:text-sm"
               initial={{ opacity: 0.7 }}
               animate={{
-                opacity: isHovered ? 1 : 0.7,
-                y: isHovered ? [0, -1, 0] : 0,
+                opacity: hasLoaded || isHovered ? 1 : 0.7,
+                y: hasLoaded || isHovered ? [0, -1, 0] : 0,
               }}
-              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              transition={{ 
+                duration: 0.3, 
+                ease: [0.4, 0, 0.2, 1],
+                repeat: hasLoaded ? 1 : (isHovered ? Number.POSITIVE_INFINITY : 0),
+              }}
             >
               {description}
             </motion.p>
@@ -174,49 +196,51 @@ export function DomainButton({ label, icon, href, description }: DomainButtonPro
 
 export function DomainButtonV2({ label, icon, href, description }: DomainButtonProps) {
   const [isHovered, setIsHovered] = useState(false)
+  const [hasLoaded, setHasLoaded] = useState(false)
   const IconComponent = iconMap[icon]
+
+  useEffect(() => {
+    // Trigger load animation after a slight delay
+    const timer = setTimeout(() => setHasLoaded(true), 300)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Define dramatic icon-specific animations with bounce easing for falling
   const getIconAnimation = () => {
     if (icon === "falling") {
       return {
         // Fall from top (-32px) to bottom (32px) of the container with bounce
-        y: isHovered ? -32 : 10,
-        rotate: isHovered ? [0, -15, 15, -10, 10, -5, 5, 0] : 0,
-        scale: isHovered ? [1, 0.9, 1.1, 0.95, 1.05, 1] : 1,
+        y: hasLoaded || isHovered ? -32 : 10,
+        rotate: hasLoaded || isHovered ? [0, -15, 15, -10, 10, -5, 5, 0] : 0,
+        scale: hasLoaded || isHovered ? [1, 0.9, 1.1, 0.95, 1.05, 1] : 1,
       }
     } else if (icon === "home") {
       return {
-        rotate: isHovered ? [0, -10, 10, -8, 8, -5, 5, -2, 2, 0] : 0,
-        y: isHovered ? [0, -5, -8, -6, -4, -2, -1, 0] : 0,
-        scale: isHovered ? [1, 1.1, 1.2, 1.15, 1.1, 1.05, 1.02, 1] : 1,
+        rotate: hasLoaded || isHovered ? [0, -10, 10, -8, 8, -5, 5, -2, 2, 0] : 0,
+        y: hasLoaded || isHovered ? [0, -5, -8, -6, -4, -2, -1, 0] : 0,
+        scale: hasLoaded || isHovered ? [1, 1.1, 1.2, 1.15, 1.1, 1.05, 1.02, 1] : 1,
       }
     }
     return {}
   }
 
   const getIconTransition = () => {
+    const shouldRepeat = isHovered ? Number.POSITIVE_INFINITY : (hasLoaded ? 1 : 0)
+    
     if (icon === "falling") {
       return {
         duration: 1.2,
         ease: bounceEase,
-        // For rotate and scale, use different timing
-        rotate: {
-          duration: 1.2,
-          ease: [0.4, 0, 0.2, 1],
-          times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
-        },
-        scale: {
-          duration: 1.2,
-          ease: [0.4, 0, 0.2, 1],
-          times: [0, 0.2, 0.4, 0.6, 0.8, 1],
-        }
+        repeat: shouldRepeat,
+        repeatDelay: 0.8,
       }
     } else if (icon === "home") {
       return {
         duration: 2.2,
         ease: [0.25, 0.1, 0.25, 1],
         times: [0, 0.12, 0.25, 0.38, 0.5, 0.62, 0.75, 0.88, 1],
+        repeat: shouldRepeat,
+        repeatDelay: 0.5,
       }
     }
     return { duration: 0.6, ease: [0.4, 0, 0.2, 1] }
@@ -252,28 +276,40 @@ export function DomainButtonV2({ label, icon, href, description }: DomainButtonP
               <motion.div
                 className="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-white/20"
                 animate={{
-                  scale: isHovered ? [1, 1.2, 1] : 1,
-                  x: isHovered ? [0, 5, 0] : 0,
-                  y: isHovered ? [0, -5, 0] : 0,
+                  scale: hasLoaded || isHovered ? [1, 1.2, 1] : 1,
+                  x: hasLoaded || isHovered ? [0, 5, 0] : 0,
+                  y: hasLoaded || isHovered ? [0, -5, 0] : 0,
                 }}
-                transition={{ duration: 2, repeat: isHovered ? Number.POSITIVE_INFINITY : 0 }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: (hasLoaded || isHovered) ? Number.POSITIVE_INFINITY : 0,
+                  delay: 0.2,
+                }}
               />
               <motion.div
                 className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-white/15"
                 animate={{
-                  scale: isHovered ? [1, 0.8, 1] : 1,
-                  x: isHovered ? [0, -3, 0] : 0,
-                  y: isHovered ? [0, 3, 0] : 0,
+                  scale: hasLoaded || isHovered ? [1, 0.8, 1] : 1,
+                  x: hasLoaded || isHovered ? [0, -3, 0] : 0,
+                  y: hasLoaded || isHovered ? [0, 3, 0] : 0,
                 }}
-                transition={{ duration: 2.5, repeat: isHovered ? Number.POSITIVE_INFINITY : 0 }}
+                transition={{ 
+                  duration: 2.5, 
+                  repeat: (hasLoaded || isHovered) ? Number.POSITIVE_INFINITY : 0,
+                  delay: 0.4,
+                }}
               />
               <motion.div
                 className="absolute top-1/2 left-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/10"
                 animate={{
-                  scale: isHovered ? [1, 1.3, 1] : 1,
-                  rotate: isHovered ? [0, 180, 360] : 0,
+                  scale: hasLoaded || isHovered ? [1, 1.3, 1] : 1,
+                  rotate: hasLoaded || isHovered ? [0, 180, 360] : 0,
                 }}
-                transition={{ duration: 3, repeat: isHovered ? Number.POSITIVE_INFINITY : 0 }}
+                transition={{ 
+                  duration: 3, 
+                  repeat: (hasLoaded || isHovered) ? Number.POSITIVE_INFINITY : 0,
+                  delay: 0.6,
+                }}
               />
             </div>
           </div>
@@ -296,9 +332,12 @@ export function DomainButtonV2({ label, icon, href, description }: DomainButtonP
             <motion.div
               className="space-y-1"
               animate={{
-                scale: isHovered ? [1, 1.02, 1] : 1,
+                scale: hasLoaded || isHovered ? [1, 1.02, 1] : 1,
               }}
-              transition={{ duration: 0.4 }}
+              transition={{ 
+                duration: 0.4,
+                repeat: hasLoaded ? 1 : (isHovered ? Number.POSITIVE_INFINITY : 0),
+              }}
             >
               <h3 className={`text-sm font-bold uppercase tracking-wider ${icon === "falling" ? "text-neutral-100" : "text-neutral-950"} drop-shadow-md sm:text-base`}>
                 {label}
@@ -310,7 +349,7 @@ export function DomainButtonV2({ label, icon, href, description }: DomainButtonP
           <motion.div
             className="absolute inset-0 rounded-3xl bg-white/20"
             initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
+            animate={{ opacity: hasLoaded || isHovered ? 1 : 0 }}
             transition={{ duration: 0.3 }}
           />
 
@@ -318,12 +357,12 @@ export function DomainButtonV2({ label, icon, href, description }: DomainButtonP
           <motion.div
             className="absolute inset-0 rounded-3xl border-2 border-white/40"
             animate={{
-              opacity: isHovered ? [0, 0.6, 0] : 0,
-              scale: isHovered ? [1, 1.02, 1] : 1,
+              opacity: hasLoaded || isHovered ? [0, 0.6, 0] : 0,
+              scale: hasLoaded || isHovered ? [1, 1.02, 1] : 1,
             }}
             transition={{
               duration: 1.5,
-              repeat: isHovered ? Number.POSITIVE_INFINITY : 0,
+              repeat: (hasLoaded || isHovered) ? Number.POSITIVE_INFINITY : 0,
               ease: "easeInOut",
             }}
           />
