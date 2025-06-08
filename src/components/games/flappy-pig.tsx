@@ -60,8 +60,8 @@ export default function FlappyPigGame() {
     setPipes([])
     resetPig()
 
-    // Set initial delay for first pipe spawn (4 seconds from now)
-    lastPipeRef.current = Date.now() + 3000 // Add 3 seconds to the normal interval
+    // Set initial delay for first pipe spawn (3 seconds from now)
+    lastPipeRef.current = Date.now() + 2000 // Add 2 seconds to the normal interval
 
     // Start playing after a brief delay
     setTimeout(() => {
@@ -240,7 +240,7 @@ export default function FlappyPigGame() {
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
             <div className="text-center text-white">
               <h2 className="text-2xl font-bold mb-2">Get Ready!</h2>
-              <p className="text-sm">Tap or press Space to flap</p>
+              <p className="text-sm">Tap or press Space to fire thrusters</p>
             </div>
           </div>
         )}

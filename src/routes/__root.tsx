@@ -3,6 +3,7 @@ import {
   HeadContent,
   Scripts,
   createRootRouteWithContext,
+  useRouter,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
@@ -52,18 +53,26 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
 
-  component: () => (
-    <RootDocument>
-      {/* <PostHogClientProvider> */}
-        <Header />
+  component: () => {
+    const router = useRouter()
+    const currentPath = router.state.location.pathname
+    
+    // Exclude routes that start with '/play' from showing the header
+    const shouldShowHeader = !currentPath.startsWith('/play')
 
-        <Outlet />
-        <TanStackRouterDevtools />
+    return (
+      <RootDocument>
+        {/* <PostHogClientProvider> */}
+          {shouldShowHeader && <Header />}
 
-        <TanstackQueryLayout />
-      {/* </PostHogClientProvider> */}
-    </RootDocument>
-  ),
+          <Outlet />
+          <TanStackRouterDevtools />
+
+          <TanstackQueryLayout />
+        {/* </PostHogClientProvider> */}
+      </RootDocument>
+    )
+  },
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {

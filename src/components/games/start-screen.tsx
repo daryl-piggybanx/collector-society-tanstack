@@ -1,6 +1,9 @@
 "use client"
+import { Link } from '@tanstack/react-router'
+import logo from '@/assets/logo-white.png'
 
 import { Button } from "@/components/ui/button"
+
 
 type StartScreenProps = {
   onStart: () => void
@@ -10,6 +13,13 @@ type StartScreenProps = {
 export default function StartScreen({ onStart, highScore }: StartScreenProps) {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white">
+          <Link to="/" className="block">
+            <img 
+              src={logo} 
+              alt="PiggyBanx Logo" 
+              className="h-20 w-20 object-contain transition-opacity duration-200 backdrop-blur-sm rounded-full" 
+            />
+          </Link>
       <div className="text-center space-y-6">
         <h1 className="text-4xl md:text-5xl font-bold text-red-600 drop-shadow-lg">Into the PiggyVerse</h1>
 

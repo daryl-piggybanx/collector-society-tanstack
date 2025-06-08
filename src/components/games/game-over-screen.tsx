@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Link } from "@tanstack/react-router"
+import logo from '@/assets/logo-white.png'
 
 type GameOverScreenProps = {
   score: number
@@ -32,6 +34,15 @@ export default function GameOverScreen({ score, highScore, onRestart }: GameOver
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/50 bg-opacity-60">
       <Card className="bg-black p-6 text-center space-y-4 shadow-2xl border-4 border-red-600">
+        <div className="flex justify-center">
+          <Link to="/" className="block">
+            <img 
+              src={logo} 
+              alt="PiggyBanx Logo" 
+              className="h-20 w-20 object-contain" 
+            />
+          </Link>
+        </div>
         <h2 className="text-3xl font-bold text-red-600">Game Over!</h2>
 
         <div className="space-y-2">
