@@ -112,7 +112,7 @@ export default function GameOverScreen({ score, highScore, onRestart, onModalSta
             </Button>
           </div>
 
-          {canRestart && highScore > 0 && (
+          {canRestart && score > 0 && (
             <Button
               onClick={handleAddToLeaderboard}
               className="w-full bg-red-700 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-full shadow-lg transform hover:scale-105 transition-all"

@@ -33,7 +33,7 @@ const PIG_POSITION_X = GAME_WIDTH * 0.25 // Position pig at 1/4 of screen width
 export default function FlappyPigGame() {
   const [gameState, setGameState] = useState<GameState>("menu")
   const [score, setScore] = useState(0)
-  const [highScore, setHighScore] = useState(0)
+  const [savedHighScore, setSavedHighScore] = useState(0)
   const [pipes, setPipes] = useState<PipeData[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const gameAreaRef = useRef<HTMLDivElement>(null)
@@ -45,18 +45,26 @@ export default function FlappyPigGame() {
     clearExpiredItems()
     
     const savedHighScore = getWithExpiration<number>("flappy-pig-high-score")
+    console.log("savedHighScore", savedHighScore)
     if (savedHighScore !== null) {
-      setHighScore(savedHighScore)
+      // ✅ Ensure it's actually a valid number to prevent NaN errors
+      const numericHighScore = Number(savedHighScore)
+      if (!isNaN(numericHighScore) && numericHighScore >= 0) {
+        setSavedHighScore(numericHighScore)
+      }
     }
   }, [])
 
-  // Save high score when it changes
+  // ✅ Calculate current high score during rendering with additional safety
+  const currentHighScore = Math.max(score || 0, savedHighScore || 0)
+  
+  // ✅ Update localStorage when we detect a new high score (proper useEffect)
   useEffect(() => {
-    if (score > highScore) {
-      setHighScore(score)
-      setWithExpiration("flappy-pig-high-score", score) // Uses default 3-day expiration
+    if (score > savedHighScore && score > 0 && !isNaN(score)) {
+      setSavedHighScore(score)
+      setWithExpiration("flappy-pig-high-score", score)
     }
-  }, [score, highScore])
+  }, [score, savedHighScore])
 
   const { pigY, pigVelocity, flap, resetPig } = useGamePhysics(gameState === "playing")
 
@@ -240,7 +248,7 @@ export default function FlappyPigGame() {
         {(gameState === "playing" || gameState === "gameOver") && <ScoreDisplay score={score} />}
 
         {/* Game State Overlays */}
-        {gameState === "menu" && <StartScreen onStart={startGame} highScore={highScore} />}
+        {gameState === "menu" && <StartScreen onStart={startGame} highScore={currentHighScore} />}
 
         {gameState === "ready" && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
@@ -251,7 +259,7 @@ export default function FlappyPigGame() {
           </div>
         )}
 
-        {gameState === "gameOver" && <GameOverScreen score={score} highScore={highScore} onRestart={restartGame} onModalStateChange={setIsModalOpen} />}
+        {gameState === "gameOver" && <GameOverScreen score={score} highScore={currentHighScore} onRestart={restartGame} onModalStateChange={setIsModalOpen} />}
       </div>
     </Card>
   )
