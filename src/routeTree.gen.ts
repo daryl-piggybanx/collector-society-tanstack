@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as PlayLeaderboardImport } from './routes/play.leaderboard'
 import { Route as PlayFlappyPigImport } from './routes/play.flappy-pig'
 import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
 import { Route as DemoHoloCardsImport } from './routes/demo.holo-cards'
@@ -30,6 +31,12 @@ import { Route as DemoFormAddressImport } from './routes/demo.form.address'
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PlayLeaderboardRoute = PlayLeaderboardImport.update({
+  id: '/play/leaderboard',
+  path: '/play/leaderboard',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -172,6 +179,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayFlappyPigImport
       parentRoute: typeof rootRoute
     }
+    '/play/leaderboard': {
+      id: '/play/leaderboard'
+      path: '/play/leaderboard'
+      fullPath: '/play/leaderboard'
+      preLoaderRoute: typeof PlayLeaderboardImport
+      parentRoute: typeof rootRoute
+    }
     '/demo/form/address': {
       id: '/demo/form/address'
       path: '/demo/form/address'
@@ -215,6 +229,7 @@ export interface FileRoutesByFullPath {
   '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/play/flappy-pig': typeof PlayFlappyPigRoute
+  '/play/leaderboard': typeof PlayLeaderboardRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -231,6 +246,7 @@ export interface FileRoutesByTo {
   '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/play/flappy-pig': typeof PlayFlappyPigRoute
+  '/play/leaderboard': typeof PlayLeaderboardRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -248,6 +264,7 @@ export interface FileRoutesById {
   '/demo/holo-cards': typeof DemoHoloCardsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/play/flappy-pig': typeof PlayFlappyPigRoute
+  '/play/leaderboard': typeof PlayLeaderboardRoute
   '/demo/form/address': typeof DemoFormAddressRoute
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -266,6 +283,7 @@ export interface FileRouteTypes {
     | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/play/flappy-pig'
+    | '/play/leaderboard'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/demo/start/api-request'
@@ -281,6 +299,7 @@ export interface FileRouteTypes {
     | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/play/flappy-pig'
+    | '/play/leaderboard'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/demo/start/api-request'
@@ -296,6 +315,7 @@ export interface FileRouteTypes {
     | '/demo/holo-cards'
     | '/demo/tanstack-query'
     | '/play/flappy-pig'
+    | '/play/leaderboard'
     | '/demo/form/address'
     | '/demo/form/simple'
     | '/demo/start/api-request'
@@ -313,6 +333,7 @@ export interface RootRouteChildren {
   DemoHoloCardsRoute: typeof DemoHoloCardsRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   PlayFlappyPigRoute: typeof PlayFlappyPigRoute
+  PlayLeaderboardRoute: typeof PlayLeaderboardRoute
   DemoFormAddressRoute: typeof DemoFormAddressRoute
   DemoFormSimpleRoute: typeof DemoFormSimpleRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -329,6 +350,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoHoloCardsRoute: DemoHoloCardsRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   PlayFlappyPigRoute: PlayFlappyPigRoute,
+  PlayLeaderboardRoute: PlayLeaderboardRoute,
   DemoFormAddressRoute: DemoFormAddressRoute,
   DemoFormSimpleRoute: DemoFormSimpleRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
@@ -354,6 +376,7 @@ export const routeTree = rootRoute
         "/demo/holo-cards",
         "/demo/tanstack-query",
         "/play/flappy-pig",
+        "/play/leaderboard",
         "/demo/form/address",
         "/demo/form/simple",
         "/demo/start/api-request",
@@ -386,6 +409,9 @@ export const routeTree = rootRoute
     },
     "/play/flappy-pig": {
       "filePath": "play.flappy-pig.tsx"
+    },
+    "/play/leaderboard": {
+      "filePath": "play.leaderboard.tsx"
     },
     "/demo/form/address": {
       "filePath": "demo.form.address.tsx"

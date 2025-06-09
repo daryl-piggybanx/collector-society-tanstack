@@ -14,7 +14,7 @@ interface CommunityExperienceProps {
 }
 
 export default function CommunityExperience({ formData, updateFormData }: CommunityExperienceProps) {
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => { 
     const { name, value } = e.target;
     updateFormData({ [name]: value });
   }
