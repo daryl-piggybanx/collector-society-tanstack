@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import supabase from './client'
+import { createServerClient } from './client'
 import type { LeaderboardEntry } from './types'
 import { z } from 'zod'
 
@@ -12,6 +12,7 @@ export const submitScore = createServerFn({ method: 'POST' })
   }))
   .handler(async ({ data }) => {
     try {
+      const supabase = createServerClient()
       const { data: result, error } = await supabase
         .from('leaderboard')
         .insert({
@@ -33,6 +34,7 @@ export const submitScore = createServerFn({ method: 'POST' })
 export const getLeaderboard = createServerFn({ method: 'GET' })
   .handler(async () => {
     try {
+      const supabase = createServerClient()
       const { data, error } = await supabase
         .from('leaderboard')
         .select('username, score, created_at')
@@ -54,6 +56,7 @@ export const getLeaderboard = createServerFn({ method: 'GET' })
   }))
   .handler(async ({ data }) => {
     try {
+      const supabase = createServerClient()
       const { data: result, error } = await supabase
         .from('leaderboard')
         .select('username, score, created_at')
