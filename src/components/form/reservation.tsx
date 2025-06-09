@@ -16,6 +16,7 @@ import { useSharedFormData } from "@/hooks/shared-data"
 
 import MarketingConsent from "@/components/phases/marketing-consent"
 import UserIdentity from "@/components/phases/user-identity"
+import ShippingAddress from "@/components/phases/shipping-address"
 
 import PieceSelection from "@/components/phases/piece-selection"
 
@@ -122,7 +123,7 @@ export function ReservationForm() {
         const phoneValidation = validatePhoneNumber(formData.phone_number || "");
         return !formData.first_name || !formData.last_name || !emailValidation.isValid || !phoneValidation.isValid
       case 2:
-        return !formData.collection_reason || !formData.interests
+        return !formData.wall_piece_1
       default:
         return false
     }
@@ -143,6 +144,7 @@ export function ReservationForm() {
               <>
                 <UserIdentity key="user-identity" formData={formData} updateFormData={updateFormData} />
                 <MarketingConsent key="marketing-consent" formData={formData} updateFormData={updateFormData} />
+                {/* <ShippingAddress key="shipping-address" formData={formData} updateFormData={updateFormData} /> */}
               </>
             )}
 

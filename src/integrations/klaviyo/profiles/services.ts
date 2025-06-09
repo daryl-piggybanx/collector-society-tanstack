@@ -129,19 +129,19 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       properties['Improve Experience'] = data.improvements;
     }
     if (data.wall_piece_1) {
-      properties['Wall Piece 1'] = data.wall_piece_1;
+      properties['Wall-Piece-1'] = data.wall_piece_1;
     }
     if (data.wall_piece_2) {
-      properties['Wall Piece 2'] = data.wall_piece_2;
+      properties['Wall-Piece-2'] = data.wall_piece_2;
     }
     if (data.wall_piece_3) {
-      properties['Wall Piece 3'] = data.wall_piece_3;
+      properties['Wall-Piece-3'] = data.wall_piece_3;
     }
     if (data.wall_piece_4) {
-      properties['Wall Piece 4'] = data.wall_piece_4;
+      properties['Wall-Piece-4'] = data.wall_piece_4;
     }
     if (data.wall_piece_5) {
-      properties['Wall Piece 5'] = data.wall_piece_5;
+      properties['Wall-Piece-5'] = data.wall_piece_5;
     }
 
     const klaviyoData = {

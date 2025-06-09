@@ -161,6 +161,127 @@ export const ensurePlusPrefix = (phoneNumber: string): string => {
   return cleaned ? `+${cleaned}` : ''
 }
 
+
+export const validateStreetAddress = (address: string): ValidationResult => {
+  if (!address.trim()) {
+    return { isValid: false, error: 'Street address is required' }
+  }
+
+  if (address.trim().length < 5) {
+    return { isValid: false, error: 'Please enter a complete street address' }
+  }
+
+  return { isValid: true }
+}
+
+export const validateCity = (city: string): ValidationResult => {
+  if (!city.trim()) {
+    return { isValid: false, error: 'City is required' }
+  }
+
+  if (city.trim().length < 2) {
+    return { isValid: false, error: 'Please enter a valid city name' }
+  }
+
+  // Basic check for valid characters (letters, spaces, apostrophes, hyphens)
+  const cityRegex = /^[a-zA-Z\s'-]+$/
+  if (!cityRegex.test(city.trim())) {
+    return { isValid: false, error: 'City name contains invalid characters' }
+  }
+
+  return { isValid: true }
+}
+
+export const validateState = (state: string, country: string = 'US'): ValidationResult => {
+  if (!state.trim()) {
+    return { isValid: false, error: 'State/Province is required' }
+  }
+
+  if (country === 'US') {
+    // US state validation (2-letter code or full name)
+    const usStates = [
+      'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+      'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+      'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+      'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+      'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY',
+      'DC' // District of Columbia
+    ]
+    
+    const upperState = state.trim().toUpperCase()
+    if (state.length === 2 && !usStates.includes(upperState)) {
+      return { isValid: false, error: 'Please enter a valid US state code' }
+    }
+  }
+
+  return { isValid: true }
+}
+
+export const validatePostalCode = (postalCode: string, country: string = 'US'): ValidationResult => {
+  if (!postalCode.trim()) {
+    return { isValid: false, error: 'ZIP/Postal code is required' }
+  }
+
+  if (country === 'US') {
+    // US ZIP code validation (5 digits or 5+4 format)
+    const zipRegex = /^\d{5}(-\d{4})?$/
+    if (!zipRegex.test(postalCode.trim())) {
+      return { isValid: false, error: 'Please enter a valid US ZIP code (e.g., 12345 or 12345-6789)' }
+    }
+  } else if (country === 'CA') {
+    // Canadian postal code validation (A1A 1A1 format)
+    const canadaRegex = /^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/i
+    if (!canadaRegex.test(postalCode.trim())) {
+      return { isValid: false, error: 'Please enter a valid Canadian postal code (e.g., A1A 1A1)' }
+    }
+  } else {
+    // Generic postal code validation for other countries
+    if (postalCode.trim().length < 3 || postalCode.trim().length > 10) {
+      return { isValid: false, error: 'Please enter a valid postal code' }
+    }
+  }
+
+  return { isValid: true }
+}
+
+export const validateCountry = (country: string): ValidationResult => {
+  if (!country.trim()) {
+    return { isValid: false, error: 'Country is required' }
+  }
+
+  return { isValid: true }
+}
+
+// Helper function to convert country code to full country name for Klaviyo
+export const getCountryNameForKlaviyo = (countryCode: string): string => {
+  const countryMap: Record<string, string> = {
+    'US': 'United States',
+    'CA': 'Canada',
+    'GB': 'United Kingdom',
+    'AU': 'Australia',
+    'DE': 'Germany',
+    'FR': 'France',
+    'JP': 'Japan',
+  }
+  
+  return countryMap[countryCode] || countryCode
+}
+
+// Helper function to format state for Klaviyo (US states should be 2-letter codes)
+export const formatStateForKlaviyo = (state: string, country: string = 'US'): string => {
+  if (country === 'US') {
+    // Convert to uppercase 2-letter code if it's a US state
+    const stateUpper = state.trim().toUpperCase()
+    if (stateUpper.length === 2) {
+      return stateUpper
+    }
+    // If it's a full state name, we could add mapping logic here
+    return state.trim()
+  }
+  
+  return state.trim()
+}
+
 // validation state management helpers
 export const createFieldState = (initialValue: string = ''): FieldValidationState => ({
   value: initialValue,

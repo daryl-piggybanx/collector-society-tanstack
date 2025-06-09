@@ -26,6 +26,12 @@ export type FormData = {
   wall_piece_3?: string
   wall_piece_4?: string
   wall_piece_5?: string
+  street_address?: string
+  address_line_2?: string
+  city?: string
+  state?: string
+  postal_code?: string
+  country?: string
 }
 
 export const initialFormData: FormData = {

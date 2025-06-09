@@ -19,6 +19,7 @@ import {
   updateFieldState,
   type FieldValidationState
 } from "@/utils/validation"
+import { useLocation } from "@tanstack/react-router"
 
 interface MarketingConsentProps {
   formData: FormData
@@ -26,6 +27,10 @@ interface MarketingConsentProps {
 }
 
 export default function MarketingConsent({ formData, updateFormData }: MarketingConsentProps) {
+  const location = useLocation()
+  const isDiscordRoute = location.pathname === '/collector/discord';
+  const isReservationRoute = location.pathname === '/collector/reservation';
+
   // local validation state
   const [emailState, setEmailState] = useState<FieldValidationState>(() => 
     createFieldState(formData.email)
@@ -227,7 +232,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
           )}
         </div>
 
-        {!formData.is_returning_collector && (
+        {!formData.is_returning_collector && !isDiscordRoute && !isReservationRoute && (
           <>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
