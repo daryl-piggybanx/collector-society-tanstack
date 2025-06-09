@@ -19,7 +19,7 @@ function App() {
       {/* <ParticleBackground />  */}
       {/* <VideoBackground />  */}
       <ParticleTwinkleBackground />
-      <div className="relative z-10 min-h-screen pt-32 md:pt-24 pb-8">
+      <div className="relative z-10 min-h-screen pt-32 md:pt-28 pb-8">
       {/* Content overlay */}
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center">
         <div className="max-w-3xl space-y-6">

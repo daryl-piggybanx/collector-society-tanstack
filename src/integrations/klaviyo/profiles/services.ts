@@ -67,7 +67,9 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     wall_piece_2: z.string().optional(),
     wall_piece_3: z.string().optional(),
     wall_piece_4: z.string().optional(),
-    wall_piece_5: z.string().optional()
+    wall_piece_5: z.string().optional(),
+    shipping_address_line_1: z.string().optional(),
+    shipping_address_line_2: z.string().optional(),
   }))
   .handler(async ({ data }) => {
     const url = 'https://a.klaviyo.com/api/profile-import';
@@ -142,6 +144,12 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     }
     if (data.wall_piece_5) {
       properties['Wall-Piece-5'] = data.wall_piece_5;
+    }
+    if (data.shipping_address_line_1 && data.shipping_address_line_2) {
+      properties['Shipping-Address'] = `${data.shipping_address_line_1} ${data.shipping_address_line_2}`;
+    }
+    if (data.shipping_address_line_1 && !data.shipping_address_line_2) {
+      properties['Shipping-Address'] = data.shipping_address_line_1;
     }
 
     const klaviyoData = {

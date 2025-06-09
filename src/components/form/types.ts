@@ -26,12 +26,8 @@ export type FormData = {
   wall_piece_3?: string
   wall_piece_4?: string
   wall_piece_5?: string
-  street_address?: string
-  address_line_2?: string
-  city?: string
-  state?: string
-  postal_code?: string
-  country?: string
+  shipping_address_line_1?: string
+  shipping_address_line_2?: string
 }
 
 export const initialFormData: FormData = {
@@ -62,4 +58,6 @@ export const initialFormData: FormData = {
   wall_piece_3: "",
   wall_piece_4: "",
   wall_piece_5: "",
+  shipping_address_line_1: "",
+  shipping_address_line_2: "",
 } 

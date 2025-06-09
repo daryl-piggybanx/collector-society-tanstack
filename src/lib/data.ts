@@ -6,6 +6,13 @@ export const collectionRules = [
   "I will maintain respectful communication with other collectors.",
 ]
 
+export const wallPieceRules = [
+  "Each 1,000% Wall-Piece is priced at $15,000 USD.",
+  "Each piece is an original 1-of-1 artwork, signed by the Artist.",
+  "The Studio reserves the right to produce proofs for studio or gallery use.",
+  "Artworks with the highest demand will be listed in a private auction for interested collectors.",
+]
+
 export const collectionVariations = [
   "Angel Dust",
   "Atomic",

@@ -168,8 +168,9 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
       )}
       
       <motion.div variants={itemVariants} className="space-y-6 my-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Email */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Label htmlFor="email" className="text-red-200">
             Email Address *
           </Label>
@@ -199,7 +200,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
         </div>
 
         {/* Phone Number */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Label htmlFor="phone_number" className="text-red-200">
             Phone Number
           </Label>
@@ -231,6 +232,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
             </p>
           )}
         </div>
+      </div>
 
         {!formData.is_returning_collector && !isDiscordRoute && !isReservationRoute && (
           <>

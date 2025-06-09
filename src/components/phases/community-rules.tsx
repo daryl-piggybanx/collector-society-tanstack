@@ -2,6 +2,7 @@ import { motion } from "framer-motion"
 import { Check, ScrollText } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { FormData } from "@/components/collector-form"
+import { useLocation } from "@tanstack/react-router"
 
 interface CommunityRulesProps {
   formData: FormData
@@ -10,6 +11,9 @@ interface CommunityRulesProps {
 }
 
 export default function CommunityRules({ formData, updateFormData, rules }: CommunityRulesProps) {
+  const location = useLocation()
+  const isReservationRoute = location.pathname === '/collector/reservation';
+
   const handleRuleCheck = (index: number, checked: boolean) => {
     const updatedRules = [...formData.rules_accepted]
     updatedRules[index] = checked
@@ -46,12 +50,15 @@ export default function CommunityRules({ formData, updateFormData, rules }: Comm
       <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
         <ScrollText size={28} className="text-red-300" />
         <h2 className="text-2xl font-bold text-red-100">
-          {formData.is_returning_collector ? "Welcome back!" : "Before we get started"}
+          {isReservationRoute ? "Before you continue" : formData.is_returning_collector ? "Before you continue" : "Before we get started"}
         </h2>
       </motion.div>
 
       <motion.p variants={itemVariants} className="text-lg mb-8 text-red-100/90">
-        {formData.is_returning_collector ? "Here is a reminder of our community guidelines" : "Please check the boxes below to confirm you’ve read and understand the community guidelines."}
+        {isReservationRoute 
+          ? "Please check the boxes below to confirm you’ve read and understand the guidelines for this collection."
+          : formData.is_returning_collector ? "Here is a reminder of our community guidelines"
+          : "Please check the boxes below to confirm you've read and understand the community guidelines."}
       </motion.p>
 
       <motion.div variants={itemVariants} className="bg-red-950/50 rounded-lg p-6 border border-red-400/30">

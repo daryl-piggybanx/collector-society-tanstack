@@ -13,11 +13,12 @@ import { Progress } from "@/components/ui/progress"
 
 import { useSharedFormData } from "@/hooks/shared-data"
 
+import { wallPieceRules } from "@/lib/data"
 
+import CommunityRules from "@/components/phases/community-rules"
 import MarketingConsent from "@/components/phases/marketing-consent"
 import UserIdentity from "@/components/phases/user-identity"
 import ShippingAddress from "@/components/phases/shipping-address"
-
 import PieceSelection from "@/components/phases/piece-selection"
 
 import ConfirmationPage from "@/components/phases/confirmation-page"
@@ -81,7 +82,7 @@ export function ReservationForm() {
     },
   });
 
-  const totalPhases = 2;
+  const totalPhases = 3;
   const progressPercentage = (currentPhase / totalPhases) * 100;
 
   const handleNext = () => {
@@ -119,10 +120,12 @@ export function ReservationForm() {
   const isNextDisabled = () => {
     switch (currentPhase) {
       case 1:
+        return !formData.rules_accepted.every((rule) => rule)
+      case 2:
         const emailValidation = validateEmail(formData.email);
         const phoneValidation = validatePhoneNumber(formData.phone_number || "");
-        return !formData.first_name || !formData.last_name || !emailValidation.isValid || !phoneValidation.isValid
-      case 2:
+        return !formData.first_name || !formData.last_name || !emailValidation.isValid || !phoneValidation.isValid || !formData.shipping_address_line_1
+      case 3:
         return !formData.wall_piece_1
       default:
         return false
@@ -141,14 +144,23 @@ export function ReservationForm() {
           <AnimatePresence mode="wait">
 
             {currentPhase === 1 && (
-              <>
-                <UserIdentity key="user-identity" formData={formData} updateFormData={updateFormData} />
-                <MarketingConsent key="marketing-consent" formData={formData} updateFormData={updateFormData} />
-                {/* <ShippingAddress key="shipping-address" formData={formData} updateFormData={updateFormData} /> */}
-              </>
+              <CommunityRules
+                key="community-rules"
+                formData={formData}
+                updateFormData={updateFormData}
+                rules={wallPieceRules}
+              />
             )}
 
             {currentPhase === 2 && (
+              <>
+                <UserIdentity key="user-identity" formData={formData} updateFormData={updateFormData} />
+                <MarketingConsent key="marketing-consent" formData={formData} updateFormData={updateFormData} />
+                <ShippingAddress key="shipping-address" formData={formData} updateFormData={updateFormData} />
+              </>
+            )}
+
+            {currentPhase === 3 && (
               <>
                 <PieceSelection key="piece-selection" formData={formData} updateFormData={updateFormData} />
               </>
