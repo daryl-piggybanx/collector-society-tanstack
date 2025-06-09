@@ -1,5 +1,7 @@
 "use client"
 
+import { setWithExpiration, getWithExpiration, clearExpiredItems } from "@/utils/localStorage"
+
 import { useState, useEffect, useCallback, useRef } from "react"
 import { Card } from "@/components/ui/card"
 import SpacePig from "@/components/sprites/space-pig"
@@ -37,11 +39,14 @@ export default function FlappyPigGame() {
   const gameAreaRef = useRef<HTMLDivElement>(null)
   const lastPipeRef = useRef(0)
 
-  // Load high score from localStorage
+  // Load high score from localStorage and clean up expired items
   useEffect(() => {
-    const savedHighScore = localStorage.getItem("flappy-pig-high-score")
-    if (savedHighScore) {
-      setHighScore(Number.parseInt(savedHighScore))
+    // Clean up any expired localStorage items on app start
+    clearExpiredItems()
+    
+    const savedHighScore = getWithExpiration<number>("flappy-pig-high-score")
+    if (savedHighScore !== null) {
+      setHighScore(savedHighScore)
     }
   }, [])
 
@@ -49,7 +54,7 @@ export default function FlappyPigGame() {
   useEffect(() => {
     if (score > highScore) {
       setHighScore(score)
-      localStorage.setItem("flappy-pig-high-score", score.toString())
+      setWithExpiration("flappy-pig-high-score", score) // Uses default 3-day expiration
     }
   }, [score, highScore])
 
