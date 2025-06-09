@@ -1,14 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getLeaderboard } from '@/integrations/supabase/services'
+import { getLeaderboard, getLeaderBoardStats } from '@/integrations/supabase/services'
 import ParticleTwinkleBackground from '@/components/particle-background-twinkle'
 import LeaderboardPage from '@/components/games/leaderboard'
 
 export const Route = createFileRoute('/play/leaderboard')({
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery({
+    await Promise.all([
+      context.queryClient.prefetchQuery({
         queryKey: ['leaderboard'],
         queryFn: () => getLeaderboard(),
-    })
+      }),
+      context.queryClient.prefetchQuery({
+        queryKey: ['leaderboardStats'],
+        queryFn: () => getLeaderBoardStats(),
+      })
+    ])
     // await context.queryClient.prefetchQuery({
     //     queryKey: ['userBest'],
     //     queryFn: () => getUserBest(),

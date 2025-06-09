@@ -73,3 +73,40 @@ export const getLeaderboard = createServerFn({ method: 'GET' })
       return { success: false, error: 'Failed to fetch personal best' }
     }
   })
+
+export const getLeaderBoardStats = createServerFn({ method: 'GET' })
+  .handler(async () => {
+    try {
+      const supabase = createServerClient()
+      
+      // Get total count of entries
+      const { count: totalEntries, error: countError } = await supabase
+        .from('leaderboard')
+        .select('*', { count: 'exact', head: true })
+
+      if (countError) throw countError
+
+      // Get average score
+      const { data: scoreData, error: scoreError } = await supabase
+        .from('leaderboard')
+        .select('score')
+
+      if (scoreError) throw scoreError
+
+      const averageScore = scoreData && scoreData.length > 0 
+        ? Math.round(scoreData.reduce((sum, entry) => sum + entry.score, 0) / scoreData.length)
+        : 0
+
+      console.log('Leaderboard stats fetched successfully:', { totalEntries, averageScore })
+      return { 
+        success: true, 
+        data: { 
+          totalEntries: totalEntries || 0, 
+          averageScore 
+        } 
+      }
+    } catch (error) {
+      console.error('Error fetching leaderboard stats:', error)
+      return { success: false, error: 'Failed to fetch leaderboard stats' }
+    }
+  })
