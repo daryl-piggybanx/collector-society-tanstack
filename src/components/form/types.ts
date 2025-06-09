@@ -21,6 +21,11 @@ export type FormData = {
   category_to_add?: string
   community_experience?: string
   improvements?: string
+  wall_piece_1?: string
+  wall_piece_2?: string
+  wall_piece_3?: string
+  wall_piece_4?: string
+  wall_piece_5?: string
 }
 
 export const initialFormData: FormData = {
@@ -46,4 +51,9 @@ export const initialFormData: FormData = {
   category_to_add: "",
   community_experience: "",
   improvements: "",
+  wall_piece_1: "",
+  wall_piece_2: "",
+  wall_piece_3: "",
+  wall_piece_4: "",
+  wall_piece_5: "",
 } 

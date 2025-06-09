@@ -6,8 +6,9 @@ import {
   User,
   Mail,
   Phone,
+  Palette,
 } from "lucide-react"
-import type { FormData } from "@/components/collector-form"
+import type { FormData } from "@/components/form/types"
 
 interface ConfirmationPageProps {
   formData: FormData
@@ -65,6 +66,32 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
               </div>
             </div>
 
+            {isReservation && (
+              <div className="flex items-start gap-3">
+                <Palette size={20} className="text-red-300 mt-1" />
+                                  <div>
+                    <h4 className="font-medium text-red-200">Design Preferences</h4>
+                    <div className="space-y-1">
+                      {formData.wall_piece_1 && (
+                        <p className="text-red-100 text-sm">• {formData.wall_piece_1}</p>
+                      )}
+                      {formData.wall_piece_2 && (
+                        <p className="text-red-100 text-sm">• {formData.wall_piece_2}</p>
+                      )}
+                      {formData.wall_piece_3 && (
+                        <p className="text-red-100 text-sm">• {formData.wall_piece_3}</p>
+                      )}
+                      {formData.wall_piece_4 && (
+                        <p className="text-red-100 text-sm">• {formData.wall_piece_4}</p>
+                      )}
+                      {formData.wall_piece_5 && (
+                        <p className="text-red-100 text-sm">• {formData.wall_piece_5}</p>
+                      )}
+                    </div>
+                </div>
+              </div>
+            )}
+
           </div>
 
           <div className="space-y-4">
@@ -88,6 +115,8 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
           </div>
         </div>
       </motion.div>
+
+      
 
       <motion.p variants={itemVariants} className="text-red-100/80">
         {isReservation && (

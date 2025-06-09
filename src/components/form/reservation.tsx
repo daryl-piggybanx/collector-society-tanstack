@@ -8,18 +8,16 @@ import { usePostHog } from "posthog-js/react";
 
 import { createUpdateProfile, subscribeProfile } from "@/integrations/klaviyo/profiles/services"
 import { useMutation } from "@tanstack/react-query"
-import { collectionPreferences, collectionVariations } from "@/lib/data"
-
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 
 import { useSharedFormData } from "@/hooks/shared-data"
 
-import CollectorReasons from "@/components/phases/collector-reasons"
-import CommunityRules from "@/components/phases/community-rules"
+
 import MarketingConsent from "@/components/phases/marketing-consent"
-import TopCategories from "@/components/phases/top-categories"
 import UserIdentity from "@/components/phases/user-identity"
+
+import PieceSelection from "@/components/phases/piece-selection"
 
 import ConfirmationPage from "@/components/phases/confirmation-page"
 import { validatePhoneNumber } from "@/utils/validation"
@@ -150,7 +148,7 @@ export function ReservationForm() {
 
             {currentPhase === 2 && (
               <>
-                <CollectorReasons key="collector-reasons" formData={formData} updateFormData={updateFormData} />
+                <PieceSelection key="piece-selection" formData={formData} updateFormData={updateFormData} />
               </>
 
             )}
