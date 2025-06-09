@@ -33,6 +33,7 @@ export default function FlappyPigGame() {
   const [score, setScore] = useState(0)
   const [highScore, setHighScore] = useState(0)
   const [pipes, setPipes] = useState<PipeData[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const gameAreaRef = useRef<HTMLDivElement>(null)
   const lastPipeRef = useRef(0)
 
@@ -77,8 +78,8 @@ export default function FlappyPigGame() {
     startGame()
   }, [startGame])
 
-  // Handle input
-  useGameInput(flap, startGame, restartGame, gameState)
+  // Handle input - disable when modal is open
+  useGameInput(flap, startGame, restartGame, gameState, !isModalOpen)
 
   // Game loop for pipes and collision detection
   useEffect(() => {
@@ -245,7 +246,7 @@ export default function FlappyPigGame() {
           </div>
         )}
 
-        {gameState === "gameOver" && <GameOverScreen score={score} highScore={highScore} onRestart={restartGame} />}
+        {gameState === "gameOver" && <GameOverScreen score={score} highScore={highScore} onRestart={restartGame} onModalStateChange={setIsModalOpen} />}
       </div>
     </Card>
   )

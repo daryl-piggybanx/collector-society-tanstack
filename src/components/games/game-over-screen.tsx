@@ -14,9 +14,10 @@ type GameOverScreenProps = {
   score: number
   highScore: number
   onRestart: () => void
+  onModalStateChange?: (isModalOpen: boolean) => void
 }
 
-export default function GameOverScreen({ score, highScore, onRestart }: GameOverScreenProps) {
+export default function GameOverScreen({ score, highScore, onRestart, onModalStateChange }: GameOverScreenProps) {
   const [canRestart, setCanRestart] = useState(false);
   const isNewHighScore = score === highScore && score > 0;
   const [showUsernameInput, setShowUsernameInput] = useState(false);
@@ -34,11 +35,19 @@ export default function GameOverScreen({ score, highScore, onRestart }: GameOver
 
   const handleAddToLeaderboard = () => {
     setShowUsernameInput(true);
+    onModalStateChange?.(true);
   }
 
   const handleUsernameSubmit = (username: string) => {
     // ScoreEntry already submitted the score, just navigate to leaderboard
+    setShowUsernameInput(false);
+    onModalStateChange?.(false);
     router.history.push("/play/leaderboard")
+  }
+
+  const handleCancel = () => {
+    setShowUsernameInput(false);
+    onModalStateChange?.(false);
   }
 
   const handleViewLeaderboard = () => {
@@ -120,7 +129,7 @@ export default function GameOverScreen({ score, highScore, onRestart }: GameOver
           <ScoreEntry
             score={highScore}
             onSubmit={handleUsernameSubmit}
-            onCancel={() => setShowUsernameInput(false)}
+            onCancel={handleCancel}
           />
         )}
       </Card>
