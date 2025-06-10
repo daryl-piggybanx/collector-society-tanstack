@@ -8,6 +8,7 @@ import {
   Phone,
   Palette,
 } from "lucide-react"
+import { FaDiscord } from "react-icons/fa"
 import type { FormData } from "@/components/form/types"
 
 interface ConfirmationPageProps {
@@ -66,6 +67,16 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
               </div>
             </div>
 
+            {isVerification && (
+              <div className="flex items-start gap-3">
+                <FaDiscord size={20} className="text-red-300 mt-1" />
+                <div>
+                  <h4 className="font-medium text-red-200">Proof of Piece Submission</h4>
+                  <p className="text-red-100/70 text-sm">{formData.proof_of_piece?.length} files uploaded</p>
+                </div>
+              </div>
+            )}
+
             {isReservation && (
               <div className="flex items-start gap-3">
                 <Palette size={20} className="text-red-300 mt-1" />
@@ -91,6 +102,7 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
                 </div>
               </div>
             )}
+            
 
           </div>
 

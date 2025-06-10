@@ -80,7 +80,6 @@ export function VerificationCollectorForm() {
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
     onSuccess: () => {
-      setSharedData(formData);
       // console.log("Profile created/updated successfully")
     },
     onError: (error) => {
@@ -146,14 +145,16 @@ export function VerificationCollectorForm() {
             ...finalFormData,
             proof_of_piece: uploadResult.urls
           };
-          console.log('Updated form data:', finalFormData);
+          // console.log('Updated form data:', finalFormData);
         }
       }
       
-      console.log('formData after upload:', finalFormData);
+      // console.log('formData after upload:', finalFormData);
 
       await mutation.mutateAsync({ data: finalFormData });
       await mutationSubscribe.mutateAsync({ data: finalFormData });
+      setSharedData(finalFormData);
+      setFormData(finalFormData);
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
       posthog.capture('discord_verification_form_submission_success', finalFormData);
