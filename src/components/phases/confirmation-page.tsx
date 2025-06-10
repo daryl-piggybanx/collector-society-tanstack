@@ -51,7 +51,7 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
         variants={itemVariants}
         className="bg-gradient-to-br from-red-900/40 to-orange-800/40 rounded-xl p-6 border border-red-400/30 mb-8 backdrop-blur-sm"
       >
-        <h3 className="text-xl font-semibold text-red-200 mb-4">Your Collector Character Sheet</h3>
+        <h3 className="text-xl font-semibold text-red-200 mb-4">Your Collector Info</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
           <div className="space-y-4">
@@ -131,10 +131,9 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
       <motion.p variants={itemVariants} className="text-red-100/80">
         {isReservation && (
           <>
-            Thank you, your preferences have been carefully recorded, and your place on the waitlist is now reserved. 
-            A confirmation email has just been sent to your inbox with the details of your submission. 
-            If your email is not in your inbox right away please check your Junk Folder, we'd hate for you to miss your moment.
-            We appreciate your discerning eye, and we look forward to sharing what's next.
+            Your preferences have been saved and your spot on the waitlist is secured.
+            A confirmation email is on its way, if it’s not in your inbox, please check your junk folder.
+            We’d hate for you to miss your moment.
             - PiggyBanx
           </>
         )}
