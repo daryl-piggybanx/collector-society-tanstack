@@ -62,14 +62,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
     return (
       <RootDocument>
-        {/* <PostHogClientProvider> */}
+        <PostHogClientProvider>
           {shouldShowHeader && <Header />}
 
           <Outlet />
           <TanStackRouterDevtools />
 
           <TanstackQueryLayout />
-        {/* </PostHogClientProvider> */}
+        </PostHogClientProvider>
       </RootDocument>
     )
   },
