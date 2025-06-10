@@ -58,7 +58,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     const currentPath = router.state.location.pathname
     
     // Exclude routes that start with '/play' from showing the header
-    const shouldShowHeader = !currentPath.startsWith('/play') && !currentPath.startsWith('/')
+    const shouldShowHeader = !currentPath.startsWith('/play')
 
     return (
       <RootDocument>
