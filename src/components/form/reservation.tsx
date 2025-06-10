@@ -49,7 +49,9 @@ const createInitialReservationFormData = (sharedData: FormData | null): FormData
     communication_preference: sharedData.communication_preference || "",
     discord_username: sharedData.discord_username || "",
     instagram_handle: sharedData.instagram_handle || "",
-    is_returning_collector: false
+    is_returning_collector: false,
+    is_reservation_collector: true,
+    is_discord_collector: false
   };
 };
 
@@ -78,7 +80,7 @@ export function ReservationForm() {
       // console.log("Subscriptions processed successfully")
     },
     onError: (error) => {
-      console.error("Error subscribing to profiles:", error)
+      console.error("Error subscribing to reservation:", error)
     },
   });
 

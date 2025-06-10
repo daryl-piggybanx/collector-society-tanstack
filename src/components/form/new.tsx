@@ -49,7 +49,9 @@ const createInitialNewCollectorFormData = (sharedData: FormData | null): FormDat
     communication_preference: sharedData.communication_preference || "",
     discord_username: sharedData.discord_username || "",
     instagram_handle: sharedData.instagram_handle || "",
-    is_returning_collector: false
+    is_returning_collector: false,
+    is_discord_collector: false,
+    is_reservation_collector: false
   };
 };
 

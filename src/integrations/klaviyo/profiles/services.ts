@@ -63,6 +63,8 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     community_experience: z.string().optional(),
     improvements: z.string().optional(),
     is_returning_collector: z.boolean().optional(),
+    is_discord_collector: z.boolean().optional(),
+    is_reservation_collector: z.boolean().optional(),
     wall_piece_1: z.string().optional(),
     wall_piece_2: z.string().optional(),
     wall_piece_3: z.string().optional(),
@@ -77,7 +79,11 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     console.log('test data: ', data);
 
     const properties: Record<string, any> = {
-      '$source': data.is_returning_collector ? 'Update Collector Profile' : 'New Collector Form',
+      '$source': data.is_discord_collector 
+                ? 'Discord Verification' 
+                : data.is_reservation_collector 
+                ? 'Wall-Piece Reservation' 
+                : data.is_returning_collector ? 'Update Collector Profile' : 'New Collector Form',
       '$consent_method': 'Custom Klaviyo Form',
       '$consent': data.phone_number ? ['email', 'sms'] : ['email'],
       '$consent_timestamp': new Date().toISOString(),
@@ -165,7 +171,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       }
     };
 
-    console.log('test payload to klaviyo: ', klaviyoData);
+    // console.log('test payload to klaviyo: ', klaviyoData);
 
     const options = {
       method: 'POST',
@@ -193,6 +199,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       throw new Error(`Failed to create/update profile: ${errorMessage}`);
     }
   });
+
 
 const subscriptionService  = (async (profileData: KlaviyoConsent, listId: string, subscriptionType: string) => {
     const url = 'https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/';
@@ -313,4 +320,30 @@ export const subscribeProfile = createServerFn({ method: 'POST' })
             'All subscriptions processed successfully' : 
             'Some subscriptions failed'
     };
+  });
+
+export const subscribeProfileDiscord = createServerFn({ method: 'POST' })
+  .validator(z.object({
+    email: z.string().email(),
+    phone_number: z.string().optional(),
+    marketing_consent: z.boolean()
+  }))
+  .handler(async ({ data }) => {
+    const emailConsent : KlaviyoConsent = {
+      email: data.email,
+      subscriptions: {
+        email: {
+          marketing: {
+            consent: 'SUBSCRIBED'
+          }
+        }
+      }
+    }
+
+    const emailResult = await subscriptionService(emailConsent, process.env.KLAVIYO_DISCORD_LIST_ID!, 'Discord');
+    
+    return {
+      success: emailResult.success,
+      message: emailResult.message
+    }
   });

@@ -51,7 +51,9 @@ const createInitialOGFormData = (sharedData: FormData | null): FormData => {
   return {
     ...baseData,
     ...sharedData,
-    is_returning_collector: true
+    is_returning_collector: true,
+    is_discord_collector: false,
+    is_reservation_collector: false
   };
 };
 

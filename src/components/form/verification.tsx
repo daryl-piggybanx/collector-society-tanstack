@@ -7,7 +7,7 @@ import { useRouter } from "@tanstack/react-router"
 
 import { usePostHog } from "posthog-js/react";
 
-import { getProfileByEmail, createUpdateProfile } from "@/integrations/klaviyo/profiles/services"
+import { getProfileByEmail, createUpdateProfile, subscribeProfileDiscord } from "@/integrations/klaviyo/profiles/services"
 import { useMutation } from "@tanstack/react-query"
 import { collectionVariations } from "@/lib/data"
 
@@ -50,7 +50,9 @@ const createInitialVerificationFormData = (sharedData: FormData | null): FormDat
   return {
     ...baseData,
     ...sharedData,
-    is_returning_collector: true
+    is_returning_collector: true,
+    is_discord_collector: true,
+    is_reservation_collector: false,
   };
 };
 
@@ -83,6 +85,16 @@ export function VerificationCollectorForm() {
     },
     onError: (error) => {
       console.error("Error creating/updating profile:", error)
+    },
+  });
+
+  const mutationSubscribe = useMutation({
+    mutationFn: subscribeProfileDiscord,
+    onSuccess: () => {
+      // console.log("Subscriptions processed successfully")
+    },
+    onError: (error) => {
+      console.error("Error subscribing to reservation:", error)
     },
   });
 
@@ -141,6 +153,7 @@ export function VerificationCollectorForm() {
       console.log('formData after upload:', finalFormData);
 
       await mutation.mutateAsync({ data: finalFormData });
+      await mutationSubscribe.mutateAsync({ data: finalFormData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
       posthog.capture('discord_verification_form_submission_success', finalFormData);

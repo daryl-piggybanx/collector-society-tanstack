@@ -104,14 +104,6 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <Phone size={20} className="text-red-300 mt-1" />
-              <div>
-                <h4 className="font-medium text-red-200">Communication Preference</h4>
-                <p className="text-red-100 capitalize">{formData.communication_preference}</p>
-              </div>
-            </div>
-
           </div>
         </div>
       </motion.div>

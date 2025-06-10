@@ -1,5 +1,7 @@
 export type FormData = {
   is_returning_collector: boolean
+  is_discord_collector: boolean
+  is_reservation_collector: boolean
   rules_accepted: boolean[]
   first_name: string
   last_name: string
@@ -32,6 +34,8 @@ export type FormData = {
 
 export const initialFormData: FormData = {
   is_returning_collector: false,
+  is_discord_collector: false,
+  is_reservation_collector: false,
   rules_accepted: [false, false, false, false],
   first_name: "",
   last_name: "",
