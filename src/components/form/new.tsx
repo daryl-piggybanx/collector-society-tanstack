@@ -121,8 +121,8 @@ export function NewCollectorForm() {
   // Determine if the next button should be disabled
   const isNextDisabled = () => {
     switch (currentPhase) {
-      case 1:
-        return !formData.rules_accepted.every((rule) => rule)
+      case 1:  
+        return !formData.rules_accepted.slice(0, collectionRules.length).every((rule) => rule)
       case 2:
         return !formData.first_name || !formData.last_name
       case 3:

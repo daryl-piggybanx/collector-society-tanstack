@@ -298,20 +298,22 @@ export const subscribeProfile = createServerFn({ method: 'POST' })
     const emailResult = await subscriptionService(emailConsent, process.env.KLAVIYO_EMAIL_LIST_ID!, 'Email');
     results.push(emailResult);
 
-    const smsConsent : KlaviyoConsent = {
-      email: data.email,
-      phone_number: data.phone_number,
-      subscriptions: {
-        sms: {
-          marketing: {
-            consent: data.marketing_consent ? 'SUBSCRIBED' : 'UNSUBSCRIBED'
+    if (data.marketing_consent) {
+      const smsConsent : KlaviyoConsent = {
+        email: data.email,
+        phone_number: data.phone_number,
+        subscriptions: {
+          sms: {
+            marketing: {
+              consent: 'SUBSCRIBED'
+            }
           }
         }
       }
-    }
 
-    const smsResult = await subscriptionService(smsConsent, process.env.KLAVIYO_SMS_LIST_ID!, 'SMS');
-    results.push(smsResult);
+      const smsResult = await subscriptionService(smsConsent, process.env.KLAVIYO_SMS_LIST_ID!, 'SMS');
+      results.push(smsResult);
+    }
 
     return { 
         success: results.every(r => r.success),

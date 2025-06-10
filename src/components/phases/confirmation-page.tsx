@@ -72,7 +72,13 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
                 <FaDiscord size={20} className="text-red-300 mt-1" />
                 <div>
                   <h4 className="font-medium text-red-200">Proof of Piece Submission</h4>
-                  <p className="text-red-100/70 text-sm">{formData.proof_of_piece?.length} files uploaded</p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    {formData.proof_of_piece?.map((file, index) => (
+                      <div key={index} className="bg-red-950/30 border border-red-400/20 rounded-lg p-4">
+                        <img src={file} alt="Proof of Piece" className="w-full h-full object-cover rounded-lg border border-red-400/30" />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -125,7 +131,11 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
       <motion.p variants={itemVariants} className="text-red-100/80">
         {isReservation && (
           <>
-            Your preferences are now on file. If your reservation is selected, a member of our team will reach out directly. Timing may vary, but rest assured, you're locked in.
+            Thank you, your preferences have been carefully recorded, and your place on the waitlist is now reserved. 
+            A confirmation email has just been sent to your inbox with the details of your submission. 
+            If your email is not in your inbox right away please check your Junk Folder, we'd hate for you to miss your moment.
+            We appreciate your discerning eye, and we look forward to sharing what's next.
+            - PiggyBanx
           </>
         )}
         {isVerification && (

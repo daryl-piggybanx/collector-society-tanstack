@@ -66,6 +66,7 @@ export function ReservationForm() {
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
     onSuccess: () => {
+      setFormData(formData);
       setSharedData(formData);
       // console.log("Profile created/updated successfully")
     },
@@ -122,7 +123,7 @@ export function ReservationForm() {
   const isNextDisabled = () => {
     switch (currentPhase) {
       case 1:
-        return !formData.rules_accepted.every((rule) => rule)
+        return !formData.rules_accepted.slice(0, wallPieceRules.length).every((rule) => rule)
       case 2:
         const emailValidation = validateEmail(formData.email);
         const phoneValidation = validatePhoneNumber(formData.phone_number || "");
