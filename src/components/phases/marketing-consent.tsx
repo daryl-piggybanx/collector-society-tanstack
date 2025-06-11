@@ -74,47 +74,48 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   }
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value
+    const value = e.target.value
     
-    // ensure + prefix if user starts typing numbers
-    if (value && !value.startsWith('+') && /^\d/.test(value)) {
-      value = ensurePlusPrefix(value)
-    }
-    
-    // format as user types for better UX
-    const formattedForDisplay = formatPhoneNumberAsYouType(value, 'US')
-    
-    // real-time validation for immediate feedback
-    const isPossible = isPhoneNumberPossible(formattedForDisplay, 'US')
-    
-    // update local state with formatted display value
+    // Update local state with raw input value (no formatting)
     setPhoneState(prev => updateFieldState(prev, { 
-      value: formattedForDisplay,
+      value: value,
       isTouched: true,
-      isValid: isPossible || !formattedForDisplay.trim(), // Valid if possible or empty
-      error: isPossible || !formattedForDisplay.trim() ? undefined : 'Invalid phone number format'
+      isValid: false, // Set to false while typing
+      error: undefined
     }))
     
-    // update form data with display value (will be converted to E.164 on blur)
-    updateFormData({ phone_number: formattedForDisplay })
+    // Update form data with raw input value
+    updateFormData({ phone_number: value })
   }
 
   const handlePhoneBlur = () => {
-    const validation = validatePhoneNumber(phoneState.value, 'US')
+    if (!phoneState.value.trim()) {
+      // If empty, that's okay (optional field)
+      setPhoneState(prev => updateFieldState(prev, {
+        error: undefined,
+        isValid: true
+      }))
+      updateFormData({ phone_number: '' })
+      return
+    }
+
+    // Add + prefix if user entered numbers without it (for validation)
+    let phoneForValidation = phoneState.value
+    if (phoneForValidation && !phoneForValidation.startsWith('+') && /^\d/.test(phoneForValidation)) {
+      phoneForValidation = `+${phoneForValidation}`
+    }
+
+    const validation = validatePhoneNumber(phoneForValidation, 'US')
     
-    // convert to E.164 format for Klaviyo if valid
-    const e164Value = validation.isValid && validation.formattedValue 
+    // Update form data with E.164 format for Klaviyo if valid, otherwise keep raw input
+    const formValue = validation.isValid && validation.formattedValue 
       ? validation.formattedValue 
       : phoneState.value
 
-    // update form data with E.164 format
-    if (validation.isValid && validation.formattedValue) {
-      updateFormData({ phone_number: e164Value })
-    }
+    updateFormData({ phone_number: formValue })
     
-    // update local validation state
+    // Update local validation stat
     setPhoneState(prev => updateFieldState(prev, {
-      value: e164Value,
       error: validation.error,
       isValid: validation.isValid
     }))
@@ -122,18 +123,6 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
 
   const handleCommunicationChange = (value: string) => {
     updateFormData({ communication_preference: value })
-  }
-
-  // get display format for phone number
-  const getPhoneDisplayValue = () => {
-    if (!phoneState.value) return ''
-    
-    // if it's in E.164 format, show international format for better readability
-    if (phoneState.value.startsWith('+') && phoneState.value.length > 10) {
-      return getFormattedPhoneNumber(phoneState.value, 'international', 'US')
-    }
-    
-    return phoneState.value
   }
 
   const containerVariants = {
@@ -210,10 +199,10 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
               id="phone_number"
               name="phone_number"
               type="tel"
-              value={getPhoneDisplayValue()}
+              value={phoneState.value}
               onChange={handlePhoneChange}
               onBlur={handlePhoneBlur}
-              placeholder="Phone Number with country code"
+              placeholder="Phone number (e.g., 1 800 XXX XXXX)"
               className={`border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 ${
                 phoneState.isTouched && !phoneState.isValid ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : ''
               }`}
