@@ -100,6 +100,9 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     if (data.piece_count) {
       properties['# of Pieces'] = data.piece_count;
     }
+    if (data.piece_count) {
+      properties['of-Pieces'] = data.piece_count;
+    }
     if (data.favorite_variation) {
       properties['Favorite-Variation'] = data.favorite_variation;
     }
@@ -128,7 +131,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       properties['First Piece'] = data.first_piece;
     }
     if (data.proof_of_piece) {
-      properties['Proof of Piece'] = data.proof_of_piece;
+      properties['Proof of Piece'] = data.proof_of_piece.join(', ');
     }
     if (data.community_experience) {
       properties['Community Experience'] = data.community_experience;

@@ -128,21 +128,23 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
 
       
 
-      <motion.p variants={itemVariants} className="text-red-100/80">
+      <motion.div variants={itemVariants}>
         {isReservation && (
           <>
+          <p className="text-red-100/80 max-w-xl mx-auto">
             Your preferences have been saved and your spot on the waitlist is secured.
             A confirmation email is on its way, if it’s not in your inbox, please check your junk folder.
             We’d hate for you to miss your moment.
-            - PiggyBanx
+          </p>
+          <p className="text-red-100/80">- PiggyBanx</p>
           </>
         )}
         {isVerification && (
-          <>
+          <p className="text-red-100/80">
             Please allow up to 1-2 weeks for your verification to be processed.
-          </>
+          </p>
         )}
-      </motion.p>
+      </motion.div>
     </motion.div>
   )
 }
