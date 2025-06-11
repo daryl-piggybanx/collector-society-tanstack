@@ -6,7 +6,7 @@ import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 
 import { usePostHog } from "posthog-js/react";
 
-import { createUpdateProfile, subscribeProfile } from "@/integrations/klaviyo/profiles/services"
+import { createUpdateProfile, subscribeProfileReservation } from "@/integrations/klaviyo/profiles/services"
 import { useMutation } from "@tanstack/react-query"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -76,7 +76,7 @@ export function ReservationForm() {
   });
 
   const mutationSubscribe = useMutation({
-    mutationFn: subscribeProfile,
+    mutationFn: subscribeProfileReservation,
     onSuccess: () => {
       // console.log("Subscriptions processed successfully")
     },

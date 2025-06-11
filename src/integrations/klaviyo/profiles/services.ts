@@ -98,7 +98,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       properties['Discord-Username'] = data.discord_username;
     }
     if (data.piece_count) {
-      properties['of-Pieces'] = data.piece_count;
+      properties['# of Pieces'] = data.piece_count;
     }
     if (data.favorite_variation) {
       properties['Favorite-Variation'] = data.favorite_variation;
@@ -349,3 +349,29 @@ export const subscribeProfileDiscord = createServerFn({ method: 'POST' })
       message: emailResult.message
     }
   });
+
+export const subscribeProfileReservation = createServerFn({ method: 'POST' })
+.validator(z.object({
+  email: z.string().email(),
+  phone_number: z.string().optional(),
+  marketing_consent: z.boolean()
+}))
+.handler(async ({ data }) => {
+  const emailConsent : KlaviyoConsent = {
+    email: data.email,
+    subscriptions: {
+      email: {
+        marketing: {
+          consent: 'SUBSCRIBED'
+        }
+      }
+    }
+  }
+
+  const emailResult = await subscriptionService(emailConsent, process.env.KLAVIYO_RESERVATION_LIST_ID!, 'Reservation');
+  
+  return {
+    success: emailResult.success,
+    message: emailResult.message
+  }
+});
