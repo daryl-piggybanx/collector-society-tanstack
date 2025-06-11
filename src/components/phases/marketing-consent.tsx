@@ -191,7 +191,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
         {/* Phone Number */}
         <div className="space-y-2">
           <Label htmlFor="phone_number" className="text-red-200">
-            Phone Number
+            Phone Number (include country code)
           </Label>
           <div className="flex items-center">
             <Phone size={18} className="text-red-300 mr-2" />
@@ -202,7 +202,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
               value={phoneState.value}
               onChange={handlePhoneChange}
               onBlur={handlePhoneBlur}
-              placeholder="Phone number (e.g., 1 800 XXX XXXX)"
+              placeholder="Phone number (e.g., 1800XXXXXXX)"
               className={`border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 ${
                 phoneState.isTouched && !phoneState.isValid ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : ''
               }`}

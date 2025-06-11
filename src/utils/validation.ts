@@ -59,7 +59,7 @@ export const validatePhoneNumber = (phoneNumber: string, defaultCountry: string 
           errorMessage = 'Invalid phone number length'
           break
         default:
-          errorMessage = 'Please enter a valid phone number with country code (e.g., +1 808 728 6347)'
+          errorMessage = 'Please enter a valid phone number with country code (e.g., 1800XXXXXXX)'
       }
       
       return { isValid: false, error: errorMessage }
@@ -69,7 +69,7 @@ export const validatePhoneNumber = (phoneNumber: string, defaultCountry: string 
     if (!isValidPhoneNumber(phoneNumber, defaultCountry)) {
       return { 
         isValid: false, 
-        error: 'Please enter a valid phone number with country code (e.g., +1 808 728 6347)' 
+        error: 'Please enter a valid phone number with country code (e.g., 1800XXXXXXX)' 
       }
     }
 
@@ -91,7 +91,7 @@ export const validatePhoneNumber = (phoneNumber: string, defaultCountry: string 
   } catch (error) {
     return { 
       isValid: false, 
-      error: 'Please enter a valid phone number with country code (e.g., +1 808 728 6347)' 
+      error: 'Please enter a valid phone number with country code (e.g., 1800XXXXXXX)' 
     }
   }
 }
