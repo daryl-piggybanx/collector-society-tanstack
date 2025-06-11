@@ -368,7 +368,7 @@ export const subscribeProfileReservation = createServerFn({ method: 'POST' })
     }
   }
 
-  const emailResult = await subscriptionService(emailConsent, process.env.KLAVIYO_RESERVATION_LIST_ID!, 'Reservation');
+  const emailResult = await subscriptionService(emailConsent, process.env.KLAVIYO_WAITLIST_LIST_ID!, 'Reservation');
   
   return {
     success: emailResult.success,
