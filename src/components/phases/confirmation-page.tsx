@@ -131,7 +131,7 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
       <motion.div variants={itemVariants}>
         {isReservation && (
           <>
-          <p className="text-red-100/80 max-w-xl mx-auto">
+          <p className="text-red-100/80 max-w-lg mx-auto">
             Your preferences have been saved and your spot on the waitlist is secured.
             A confirmation email is on its way, if it’s not in your inbox, please check your junk folder.
           </p>

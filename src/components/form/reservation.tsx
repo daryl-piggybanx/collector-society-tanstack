@@ -127,7 +127,7 @@ export function ReservationForm() {
       case 2:
         const emailValidation = validateEmail(formData.email);
         const phoneValidation = validatePhoneNumber(formData.phone_number || "");
-        return !formData.first_name || !formData.last_name || !emailValidation.isValid || !phoneValidation.isValid || !formData.shipping_address_line_1
+        return !formData.first_name || !formData.last_name || !emailValidation.isValid || !formData.shipping_address_line_1
       case 3:
         return !formData.wall_piece_1
       default:
