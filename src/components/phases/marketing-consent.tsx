@@ -35,9 +35,12 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   const [emailState, setEmailState] = useState<FieldValidationState>(() => 
     createFieldState(formData.email)
   )
-  const [phoneState, setPhoneState] = useState<FieldValidationState>(() => 
-    createFieldState(formData.phone_number || '')
-  )
+  const [phoneState, setPhoneState] = useState<FieldValidationState>(() => {
+    // Extract digits only for display, even if form data has +1 prefix
+    const phoneDisplay = formData.phone_number ? 
+      formData.phone_number.replace(/^\+1/, '').replace(/\D/g, '') : ''
+    return createFieldState(phoneDisplay)
+  })
 
   // sync with form data when it changes externally
   useEffect(() => {
@@ -47,8 +50,11 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   }, [formData.email])
 
   useEffect(() => {
-    if (formData.phone_number !== phoneState.value) {
-      setPhoneState(prev => updateFieldState(prev, { value: formData.phone_number || '' }))
+    // Extract digits only for display, even if form data has +1 prefix
+    const phoneDisplay = formData.phone_number ? 
+      formData.phone_number.replace(/^\+1/, '').replace(/\D/g, '') : ''
+    if (phoneDisplay !== phoneState.value) {
+      setPhoneState(prev => updateFieldState(prev, { value: phoneDisplay }))
     }
   }, [formData.phone_number])
 
@@ -76,16 +82,19 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     
-    // Update local state with raw input value (no formatting)
+    // Keep only digits for user display
+    const digitsOnly = value.replace(/\D/g, '')
+    
+    // Update local state with digits only (what user sees)
     setPhoneState(prev => updateFieldState(prev, { 
-      value: value,
+      value: digitsOnly,
       isTouched: true,
       isValid: false, // Set to false while typing
       error: undefined
     }))
     
-    // Update form data with raw input value
-    updateFormData({ phone_number: value })
+    // Store digits only in form data during typing (validation will add +1 later)
+    updateFormData({ phone_number: digitsOnly })
   }
 
   const handlePhoneBlur = () => {
@@ -99,22 +108,17 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
       return
     }
 
-    // Add + prefix if user entered numbers without it (for validation)
-    let phoneForValidation = phoneState.value
-    if (phoneForValidation && !phoneForValidation.startsWith('+') && /^\d/.test(phoneForValidation)) {
-      phoneForValidation = `+${phoneForValidation}`
-    }
-
-    const validation = validatePhoneNumber(phoneForValidation, 'US')
+    // Validate the phone number (validation function will add +1 automatically)
+    const validation = validatePhoneNumber(phoneState.value, 'US')
     
-    // Update form data with E.164 format for Klaviyo if valid, otherwise keep raw input
+    // Update form data with E.164 format for Klaviyo if valid, otherwise keep digits only
     const formValue = validation.isValid && validation.formattedValue 
-      ? validation.formattedValue 
-      : phoneState.value
+      ? validation.formattedValue  // E.164 format (+1XXXXXXXXXX) for Klaviyo
+      : phoneState.value           // Keep user's digits if invalid
 
     updateFormData({ phone_number: formValue })
     
-    // Update local validation stat
+    // Update local validation state
     setPhoneState(prev => updateFieldState(prev, {
       error: validation.error,
       isValid: validation.isValid
@@ -191,7 +195,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
         {/* Phone Number */}
         <div className="space-y-2">
           <Label htmlFor="phone_number" className="text-red-200">
-            Phone Number (include country code)
+            Phone Number (United States only)
           </Label>
           <div className="flex items-center">
             <Phone size={18} className="text-red-300 mr-2" />
@@ -202,7 +206,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
               value={phoneState.value}
               onChange={handlePhoneChange}
               onBlur={handlePhoneBlur}
-              placeholder="Phone number (e.g., 1800XXXXXXX)"
+              placeholder="Phone number (e.g., 5628842097)"
               className={`border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 ${
                 phoneState.isTouched && !phoneState.isValid ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : ''
               }`}
