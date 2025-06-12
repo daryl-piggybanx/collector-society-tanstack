@@ -21,7 +21,7 @@ function App() {
           alt="PiggyBanx Logo" 
           className="h-32 w-32 object-contain mx-auto mb-6"
         />
-        <h1 className="text-white text-2xl font-bold">Coming Soon</h1>
+        <h1 className="text-white text-2xl font-bold">COMING SOON</h1>
       </div>
     </main>
     // <main className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-950 to-zinc-950">
