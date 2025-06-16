@@ -98,6 +98,9 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       properties['Discord-Username'] = data.discord_username;
     }
     if (data.piece_count) {
+      properties['# of Pieces'] = data.piece_count;
+    }
+    if (data.piece_count) {
       properties['of-Pieces'] = data.piece_count;
     }
     if (data.favorite_variation) {
@@ -128,7 +131,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       properties['First Piece'] = data.first_piece;
     }
     if (data.proof_of_piece) {
-      properties['Proof of Piece'] = data.proof_of_piece;
+      properties['Proof of Piece'] = data.proof_of_piece.join(', ');
     }
     if (data.community_experience) {
       properties['Community Experience'] = data.community_experience;
@@ -298,20 +301,22 @@ export const subscribeProfile = createServerFn({ method: 'POST' })
     const emailResult = await subscriptionService(emailConsent, process.env.KLAVIYO_EMAIL_LIST_ID!, 'Email');
     results.push(emailResult);
 
-    const smsConsent : KlaviyoConsent = {
-      email: data.email,
-      phone_number: data.phone_number,
-      subscriptions: {
-        sms: {
-          marketing: {
-            consent: data.marketing_consent ? 'SUBSCRIBED' : 'UNSUBSCRIBED'
+    if (data.marketing_consent) {
+      const smsConsent : KlaviyoConsent = {
+        email: data.email,
+        phone_number: data.phone_number,
+        subscriptions: {
+          sms: {
+            marketing: {
+              consent: 'SUBSCRIBED'
+            }
           }
         }
       }
-    }
 
-    const smsResult = await subscriptionService(smsConsent, process.env.KLAVIYO_SMS_LIST_ID!, 'SMS');
-    results.push(smsResult);
+      const smsResult = await subscriptionService(smsConsent, process.env.KLAVIYO_SMS_LIST_ID!, 'SMS');
+      results.push(smsResult);
+    }
 
     return { 
         success: results.every(r => r.success),
@@ -347,3 +352,29 @@ export const subscribeProfileDiscord = createServerFn({ method: 'POST' })
       message: emailResult.message
     }
   });
+
+export const subscribeProfileReservation = createServerFn({ method: 'POST' })
+.validator(z.object({
+  email: z.string().email(),
+  phone_number: z.string().optional(),
+  marketing_consent: z.boolean()
+}))
+.handler(async ({ data }) => {
+  const emailConsent : KlaviyoConsent = {
+    email: data.email,
+    subscriptions: {
+      email: {
+        marketing: {
+          consent: 'SUBSCRIBED'
+        }
+      }
+    }
+  }
+
+  const emailResult = await subscriptionService(emailConsent, process.env.KLAVIYO_WAITLIST_LIST_ID!, 'Reservation');
+  
+  return {
+    success: emailResult.success,
+    message: emailResult.message
+  }
+});

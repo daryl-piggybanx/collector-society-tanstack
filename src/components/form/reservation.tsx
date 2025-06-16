@@ -6,7 +6,7 @@ import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 
 import { usePostHog } from "posthog-js/react";
 
-import { createUpdateProfile, subscribeProfile } from "@/integrations/klaviyo/profiles/services"
+import { createUpdateProfile, subscribeProfileReservation } from "@/integrations/klaviyo/profiles/services"
 import { useMutation } from "@tanstack/react-query"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -66,6 +66,7 @@ export function ReservationForm() {
   const mutation = useMutation({
     mutationFn: createUpdateProfile,
     onSuccess: () => {
+      setFormData(formData);
       setSharedData(formData);
       // console.log("Profile created/updated successfully")
     },
@@ -75,7 +76,7 @@ export function ReservationForm() {
   });
 
   const mutationSubscribe = useMutation({
-    mutationFn: subscribeProfile,
+    mutationFn: subscribeProfileReservation,
     onSuccess: () => {
       // console.log("Subscriptions processed successfully")
     },
@@ -122,11 +123,11 @@ export function ReservationForm() {
   const isNextDisabled = () => {
     switch (currentPhase) {
       case 1:
-        return !formData.rules_accepted.every((rule) => rule)
+        return !formData.rules_accepted.slice(0, wallPieceRules.length).every((rule) => rule)
       case 2:
         const emailValidation = validateEmail(formData.email);
         const phoneValidation = validatePhoneNumber(formData.phone_number || "");
-        return !formData.first_name || !formData.last_name || !emailValidation.isValid || !phoneValidation.isValid || !formData.shipping_address_line_1
+        return !formData.first_name || !formData.last_name || !emailValidation.isValid || !formData.shipping_address_line_1
       case 3:
         return !formData.wall_piece_1
       default:

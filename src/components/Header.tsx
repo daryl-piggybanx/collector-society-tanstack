@@ -1,13 +1,23 @@
 import { Link } from '@tanstack/react-router'
 import logo from '@/assets/logo-white.png'
 import logoHover from '@/assets/logo-red.png'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Header() {
   const [isHovered, setIsHovered] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  const handleScroll = () => {
+    setIsScrolled(window.scrollY > 50)
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <header className="fixed top-10 left-0 right-0 p-2 flex gap-2 bg-transparent justify-center z-[100]">
+    <header className={`fixed top-10 left-0 right-0 p-2 flex gap-2 bg-transparent justify-center z-[100] ${isScrolled ? 'hidden' : ''}`}>
       <nav className="flex flex-row items-center">
         <div className="px-2 font-bold">
           <Link 

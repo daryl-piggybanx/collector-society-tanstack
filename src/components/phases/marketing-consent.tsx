@@ -35,9 +35,12 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   const [emailState, setEmailState] = useState<FieldValidationState>(() => 
     createFieldState(formData.email)
   )
-  const [phoneState, setPhoneState] = useState<FieldValidationState>(() => 
-    createFieldState(formData.phone_number || '')
-  )
+  const [phoneState, setPhoneState] = useState<FieldValidationState>(() => {
+    // Extract digits only for display, even if form data has +1 prefix
+    const phoneDisplay = formData.phone_number ? 
+      formData.phone_number.replace(/^\+1/, '').replace(/\D/g, '') : ''
+    return createFieldState(phoneDisplay)
+  })
 
   // sync with form data when it changes externally
   useEffect(() => {
@@ -47,8 +50,11 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   }, [formData.email])
 
   useEffect(() => {
-    if (formData.phone_number !== phoneState.value) {
-      setPhoneState(prev => updateFieldState(prev, { value: formData.phone_number || '' }))
+    // Extract digits only for display, even if form data has +1 prefix
+    const phoneDisplay = formData.phone_number ? 
+      formData.phone_number.replace(/^\+1/, '').replace(/\D/g, '') : ''
+    if (phoneDisplay !== phoneState.value) {
+      setPhoneState(prev => updateFieldState(prev, { value: phoneDisplay }))
     }
   }, [formData.phone_number])
 
@@ -74,47 +80,46 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
   }
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value
+    const value = e.target.value
     
-    // ensure + prefix if user starts typing numbers
-    if (value && !value.startsWith('+') && /^\d/.test(value)) {
-      value = ensurePlusPrefix(value)
-    }
+    // Keep only digits for user display
+    const digitsOnly = value.replace(/\D/g, '')
     
-    // format as user types for better UX
-    const formattedForDisplay = formatPhoneNumberAsYouType(value, 'US')
-    
-    // real-time validation for immediate feedback
-    const isPossible = isPhoneNumberPossible(formattedForDisplay, 'US')
-    
-    // update local state with formatted display value
+    // Update local state with digits only (what user sees)
     setPhoneState(prev => updateFieldState(prev, { 
-      value: formattedForDisplay,
+      value: digitsOnly,
       isTouched: true,
-      isValid: isPossible || !formattedForDisplay.trim(), // Valid if possible or empty
-      error: isPossible || !formattedForDisplay.trim() ? undefined : 'Invalid phone number format'
+      isValid: false, // Set to false while typing
+      error: undefined
     }))
     
-    // update form data with display value (will be converted to E.164 on blur)
-    updateFormData({ phone_number: formattedForDisplay })
+    // Store digits only in form data during typing (validation will add +1 later)
+    updateFormData({ phone_number: digitsOnly })
   }
 
   const handlePhoneBlur = () => {
+    if (!phoneState.value.trim()) {
+      // If empty, that's okay (optional field)
+      setPhoneState(prev => updateFieldState(prev, {
+        error: undefined,
+        isValid: true
+      }))
+      updateFormData({ phone_number: '' })
+      return
+    }
+
+    // Validate the phone number (validation function will add +1 automatically)
     const validation = validatePhoneNumber(phoneState.value, 'US')
     
-    // convert to E.164 format for Klaviyo if valid
-    const e164Value = validation.isValid && validation.formattedValue 
-      ? validation.formattedValue 
-      : phoneState.value
+    // Update form data with E.164 format for Klaviyo if valid, otherwise keep digits only
+    const formValue = validation.isValid && validation.formattedValue 
+      ? validation.formattedValue  // E.164 format (+1XXXXXXXXXX) for Klaviyo
+      : phoneState.value           // Keep user's digits if invalid
 
-    // update form data with E.164 format
-    if (validation.isValid && validation.formattedValue) {
-      updateFormData({ phone_number: e164Value })
-    }
+    updateFormData({ phone_number: formValue })
     
-    // update local validation state
+    // Update local validation state
     setPhoneState(prev => updateFieldState(prev, {
-      value: e164Value,
       error: validation.error,
       isValid: validation.isValid
     }))
@@ -122,18 +127,6 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
 
   const handleCommunicationChange = (value: string) => {
     updateFormData({ communication_preference: value })
-  }
-
-  // get display format for phone number
-  const getPhoneDisplayValue = () => {
-    if (!phoneState.value) return ''
-    
-    // if it's in E.164 format, show international format for better readability
-    if (phoneState.value.startsWith('+') && phoneState.value.length > 10) {
-      return getFormattedPhoneNumber(phoneState.value, 'international', 'US')
-    }
-    
-    return phoneState.value
   }
 
   const containerVariants = {
@@ -202,7 +195,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
         {/* Phone Number */}
         <div className="space-y-2">
           <Label htmlFor="phone_number" className="text-red-200">
-            Phone Number
+            Phone Number (United States only)
           </Label>
           <div className="flex items-center">
             <Phone size={18} className="text-red-300 mr-2" />
@@ -210,10 +203,10 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
               id="phone_number"
               name="phone_number"
               type="tel"
-              value={getPhoneDisplayValue()}
+              value={phoneState.value}
               onChange={handlePhoneChange}
               onBlur={handlePhoneBlur}
-              placeholder="Phone Number with country code"
+              placeholder="Phone number (e.g., 5628842097)"
               className={`border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 ${
                 phoneState.isTouched && !phoneState.isValid ? 'border-red-400 focus:border-red-400 focus:ring-red-400' : ''
               }`}

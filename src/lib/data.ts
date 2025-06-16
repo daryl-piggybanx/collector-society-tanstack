@@ -8,8 +8,7 @@ export const collectionRules = [
 
 export const wallPieceRules = [
   "Each 1,000% Wall-Piece is priced at $15,000 USD.",
-  "Each piece is an original 1-of-1 artwork, signed by the Artist.",
-  "The Studio reserves the right to produce proofs for studio or gallery use.",
+  "Only 1 artwork, per design, will be produced and released at 1,000%; the Studio reserves the right to produce alternate variants (i.e. Black Label) of a given design, in the future.",
   "Artworks with the highest demand will be listed in a private auction for interested collectors.",
 ]
 

@@ -121,8 +121,8 @@ export function NewCollectorForm() {
   // Determine if the next button should be disabled
   const isNextDisabled = () => {
     switch (currentPhase) {
-      case 1:
-        return !formData.rules_accepted.every((rule) => rule)
+      case 1:  
+        return !formData.rules_accepted.slice(0, collectionRules.length).every((rule) => rule)
       case 2:
         return !formData.first_name || !formData.last_name
       case 3:
@@ -130,7 +130,7 @@ export function NewCollectorForm() {
       case 4:
         const emailValidation = validateEmail(formData.email);
         const phoneValidation = validatePhoneNumber(formData.phone_number || "");
-        return !emailValidation.isValid || !phoneValidation.isValid
+        return !emailValidation.isValid 
       case 5:
         return formData.collect_preferences && formData.collect_preferences.length === 0
       default:

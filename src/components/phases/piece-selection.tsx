@@ -77,7 +77,9 @@ export default function PieceSelection({ formData, updateFormData }: PieceSelect
             </motion.div>
 
             <motion.p variants={itemVariants} className="text-red-100/80 mb-6">
-            This form allows you to submit up to 5 designs you'd love to own as a 1000% wall-mounted piece. These are not guaranteed; this is a reservation queue only. If your selection is chosen for release or becomes available, we'll contact you directly to move forward.
+            This form allows you to submit up to 5 designs (please specify Original or any alternate label) that you would want to own as a 1000% wall-mounted artwork. 
+            These are not guaranteed; this is a reservation queue only. 
+            If your selection is chosen for release or becomes available, we'll contact you directly to move forward.
             </motion.p>
 
             <motion.div variants={itemVariants} className="space-y-6">

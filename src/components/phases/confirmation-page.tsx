@@ -51,7 +51,7 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
         variants={itemVariants}
         className="bg-gradient-to-br from-red-900/40 to-orange-800/40 rounded-xl p-6 border border-red-400/30 mb-8 backdrop-blur-sm"
       >
-        <h3 className="text-xl font-semibold text-red-200 mb-4">Your Collector Character Sheet</h3>
+        <h3 className="text-xl font-semibold text-red-200 mb-4">Your Collector Info</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
           <div className="space-y-4">
@@ -72,7 +72,13 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
                 <FaDiscord size={20} className="text-red-300 mt-1" />
                 <div>
                   <h4 className="font-medium text-red-200">Proof of Piece Submission</h4>
-                  <p className="text-red-100/70 text-sm">{formData.proof_of_piece?.length} files uploaded</p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    {formData.proof_of_piece?.map((file, index) => (
+                      <div key={index} className="bg-red-950/30 border border-red-400/20 rounded-lg p-4">
+                        <img src={file} alt="Proof of Piece" className="w-full h-full object-cover rounded-lg border border-red-400/30" />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -122,18 +128,22 @@ export default function ConfirmationPage({ formData, formType }: ConfirmationPag
 
       
 
-      <motion.p variants={itemVariants} className="text-red-100/80">
+      <motion.div variants={itemVariants}>
         {isReservation && (
           <>
-            Your preferences are now on file. If your reservation is selected, a member of our team will reach out directly. Timing may vary, but rest assured, you're locked in.
+          <p className="text-red-100/80 max-w-lg mx-auto">
+            Your preferences have been saved and your spot on the waitlist is secured.
+            A confirmation email is on its way, if it’s not in your inbox, please check your junk folder.
+          </p>
+          <p className="text-red-100/80">- PiggyBanx</p>
           </>
         )}
         {isVerification && (
-          <>
+          <p className="text-red-100/80">
             Please allow up to 1-2 weeks for your verification to be processed.
-          </>
+          </p>
         )}
-      </motion.p>
+      </motion.div>
     </motion.div>
   )
 }
