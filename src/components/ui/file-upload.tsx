@@ -47,6 +47,7 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
     useImperativeHandle(ref, () => ({
         uploadAllFiles: async () => {
             const pendingFiles = uploadedFiles.filter(f => f.status === 'pending');
+            console.log('Pending files to upload:', pendingFiles);
             if (pendingFiles.length === 0) return { success: true, urls: [] };
 
             let allSuccessful = true;
@@ -55,19 +56,27 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
             // Upload all pending files and collect URLs directly from results
             for (let i = 0; i < uploadedFiles.length; i++) {
                 if (uploadedFiles[i].status === 'pending') {
+                    console.log(`Attempting to upload file ${i}:`, uploadedFiles[i].file.name);
                     const result = await uploadFile(i);
+                    console.log(`Upload result for file ${i}:`, result);
+                    
                     if (!result.success) {
+                        console.error(`Failed to upload file ${i}:`, result.error);
                         allSuccessful = false;
                     } else {
                         // Get the URL directly from the upload result
                         if (result.asset?.hostedUrl) {
+                            console.log(`Successfully got hostedUrl for file ${i}:`, result.asset.hostedUrl);
                             uploadedUrls.push(result.asset.hostedUrl);
+                        } else {
+                            console.error(`No hostedUrl in result for file ${i}:`, result);
                         }
                     }
                 }
             }
 
-            console.log('Collected URLs:', uploadedUrls);
+            console.log('Final collected URLs:', uploadedUrls);
+            console.log('Upload success status:', allSuccessful);
 
             return { success: allSuccessful, urls: uploadedUrls };
         },
@@ -160,6 +169,12 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
         const fileData = uploadedFiles[fileIndex];
         if (!fileData || fileData.status === 'uploading') return { success: false };
 
+        console.log(`Starting upload for file ${fileIndex}:`, {
+            name: fileData.file.name,
+            type: fileData.file.type,
+            size: fileData.file.size
+        });
+
         // Update status to uploading
         setUploadedFiles(prev => prev.map((f, i) => 
             i === fileIndex ? { ...f, status: 'uploading' } : f
@@ -168,6 +183,7 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
         try {
             // Convert file to ArrayBuffer
             const arrayBuffer = await fileData.file.arrayBuffer();
+            console.log(`Converted file ${fileIndex} to ArrayBuffer, size:`, arrayBuffer.byteLength);
             
             // Convert ArrayBuffer to base64 string for serialization
             const bytes = new Uint8Array(arrayBuffer);
@@ -176,14 +192,17 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
                 binaryString += String.fromCharCode(bytes[i]);
             }
             const base64String = btoa(binaryString);
+            console.log(`Converted file ${fileIndex} to base64, length:`, base64String.length);
             
+            console.log(`Calling uploadAssetFn for file ${fileIndex}`);
             const result = await uploadAssetFn({
                 data: {
                     fileName: fileData.file.name,
-                    fileBuffer: base64String, // Send as base64 string
+                    fileBuffer: base64String,
                     contentType: fileData.file.type,
                 }
             });
+            console.log(`Upload result for file ${fileIndex}:`, result);
 
             // Update status based on result
             setUploadedFiles(prev => prev.map((f, i) => 
@@ -195,11 +214,10 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
                 } : f
             ));
 
-            // Return the result directly
             return result;
 
         } catch (error) {
-            console.error('Upload error:', error);
+            console.error(`Error uploading file ${fileIndex}:`, error);
             setUploadedFiles(prev => prev.map((f, i) => 
                 i === fileIndex ? { 
                     ...f, 
