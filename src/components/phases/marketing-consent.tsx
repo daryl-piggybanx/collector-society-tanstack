@@ -165,7 +165,7 @@ export default function MarketingConsent({ formData, updateFormData }: Marketing
         {/* Email */}
         <div className="space-y-2">
           <Label htmlFor="email" className="text-red-200">
-            Email Address *
+            Email Address*
           </Label>
           <div className="flex items-center">
             <Mail size={18} className="text-red-300 mr-2" />
