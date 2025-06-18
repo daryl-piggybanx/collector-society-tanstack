@@ -116,7 +116,7 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
                 name="discord_username"
                 value={formData.discord_username}
                 onChange={handleInputChange}
-                placeholder="Discord Username (optional)"
+                placeholder={isDiscordRoute ? "Discord Username" : "Discord Username (optional)"}
                 className="border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400 pl-3 pr-10"
                 required
               />
