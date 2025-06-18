@@ -121,10 +121,12 @@ export function UpdateProfileForm() {
       await mutation.mutateAsync({ data: formData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
+      posthog.identify(formData.email);
       posthog.capture('returning_collector_form_submission_success', formData);
 
     } catch (error) {
       console.error("Error submitting form:", error);
+      posthog.identify(formData.email);
       posthog.capture('returning_collector_form_submission_fail', formData);
 
     } finally {

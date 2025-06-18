@@ -157,10 +157,12 @@ export function VerificationCollectorForm() {
       setFormData(finalFormData);
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
+      posthog.identify(finalFormData.email);
       posthog.capture('discord_verification_form_submission_success', finalFormData);
 
     } catch (error) {
       console.error("Error submitting form:", error);
+      posthog.identify(formData.email);
       posthog.capture('discord_verification_form_submission_fail', formData);
 
     } finally {
@@ -184,6 +186,7 @@ export function VerificationCollectorForm() {
     };
     // transfer current form data to shared data
     setSharedData(phase1Data);
+    posthog.identify(formData.email);
     posthog.capture('discord_verification_form_redirected', formData);
     router.navigate({ to: '/collector/new' });
   };
