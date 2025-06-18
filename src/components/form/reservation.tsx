@@ -108,10 +108,12 @@ export function ReservationForm() {
       await mutationSubscribe.mutateAsync({ data: formData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
+      posthog.identify(formData.email);
       posthog.capture('wall_piece_reservation_success', formData);
 
     } catch (error) {
       console.error("Error submitting form:", error);
+      posthog.identify(formData.email);
       posthog.capture('wall_piece_reservation_fail', formData);
 
     } finally {
