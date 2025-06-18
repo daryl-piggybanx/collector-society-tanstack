@@ -108,7 +108,7 @@ export default function UserIdentity({ formData, updateFormData }: UserIdentityP
           {!isUpdateRoute && (
           <div className="space-y-2">
             <Label htmlFor="discordUsername" className="text-red-200">
-              Discord Username
+              Discord Username{isDiscordRoute && "*"}
             </Label>
             <div className="relative">
               <Input
