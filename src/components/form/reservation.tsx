@@ -78,7 +78,7 @@ export function ReservationForm() {
   const mutationSubscribe = useMutation({
     mutationFn: subscribeProfileReservation,
     onSuccess: () => {
-      // console.log("Subscriptions processed successfully")
+      console.log("Subscriptions processed successfully")
     },
     onError: (error) => {
       console.error("Error subscribing to reservation:", error)
