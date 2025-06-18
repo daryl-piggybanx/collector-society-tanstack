@@ -277,12 +277,16 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
 
     return (
         <motion.div variants={containerVariants} initial="hidden" animate="visible" exit="exit">
-            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-6">
+            <motion.div variants={itemVariants} className="flex items-center gap-3 mb-3">
                 <Image size={28} className="text-red-300" />
                 <h2 className="text-2xl font-bold text-red-100">
                     Upload Proof of Piece
                 </h2>
             </motion.div>
+
+            <motion.p variants={itemVariants} className="text-red-100/80 mb-6">
+                At least one image must include a piece of paper with your name on it, shown alongside your piece.
+            </motion.p>
 
             <motion.div variants={itemVariants} className="space-y-6">
 
@@ -503,7 +507,7 @@ const FileUpload = forwardRef<FileUploadRef, FileUploadProps>((props, ref) => {
 
                 {uploadedFiles.length === 0 && (
                     <div className="text-red-400 text-sm text-center">
-                        At least one image is required to proceed
+                        At least one image of your piece is required to proceed. <br />The image must include a piece of paper with your name on it, shown alongside your piece.
                     </div>
                 )}
 

@@ -192,7 +192,7 @@ export function VerificationCollectorForm() {
   const isNextDisabled = () => {
     switch (currentPhase) {
       case 1:
-        return !formData.first_name || !formData.last_name || !formData.email || isValidatingEmail
+        return !formData.first_name || !formData.last_name || !formData.discord_username || !formData.email || isValidatingEmail
       case 2:
         return !formData.piece_count || fileCount === 0
       default:
@@ -226,6 +226,7 @@ export function VerificationCollectorForm() {
                   updateFormData={updateFormData}
                   variations={collectionVariations}
                 />
+                <div className="mb-6"></div>
                 <FileUpload 
                   key="file-upload" 
                   ref={fileUploadRef}
