@@ -7,7 +7,7 @@ import { useRouter } from "@tanstack/react-router"
 
 import { usePostHog } from "posthog-js/react";
 
-import { getProfileByEmail, createUpdateProfile } from "@/integrations/klaviyo/profiles/services"
+import { getProfileByEmail, createUpdateProfile, subscribeProfile  } from "@/integrations/klaviyo/profiles/services"
 import { useMutation } from "@tanstack/react-query"
 import { collectionPreferences, collectionVariations } from "@/lib/data"
 
@@ -85,6 +85,16 @@ export function UpdateProfileForm() {
     },
   });
 
+  const mutationSubscribe = useMutation({
+    mutationFn: subscribeProfile,
+    onSuccess: () => {
+      // console.log("Subscriptions processed successfully")
+    },
+    onError: (error) => {
+      console.error("Error subscribing to profiles:", error)
+    },
+  });
+
   const totalPhases = 4;
   const progressPercentage = (currentPhase / totalPhases) * 100
 
@@ -119,6 +129,7 @@ export function UpdateProfileForm() {
 
     try {
       await mutation.mutateAsync({ data: formData });
+      await mutationSubscribe.mutateAsync({ data: formData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
       posthog.identify(formData.email);
