@@ -113,7 +113,8 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       properties['Favorite-Variation-3'] = data.favorite_variation_3;
     }
     if (data.collect_preferences?.[0]) {
-      properties['Collection-Category-1'] = data.collect_preferences[0];
+      properties['Collection Category 1'] = data.collect_preferences[0];
+      properties['Collection-Category-1'] = data.collect_preferences[1];
     }
     if (data.communication_preference) {
       properties['Communication-Preference'] = data.communication_preference;
