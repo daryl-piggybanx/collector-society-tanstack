@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Target, Check, Trophy, Music, Sparkles, Gamepad2, Film, Palette, Car, ChevronDown } from "lucide-react"
+import { Target, Check, Trophy, Music, Sparkles, Gamepad2, Film, Palette, Car, ChevronDown, Clapperboard, Warehouse } from "lucide-react"
+import { MdCatchingPokemon } from "react-icons/md";
+import { PiFlyingSaucer } from "react-icons/pi";
 import type { FormData } from "@/components/collector-form"
 
 interface Preference {
@@ -104,6 +106,14 @@ export default function TopCategories({ formData, updateFormData, preferences }:
         return <Palette size={iconSize} className={iconClass} />
       case "car":
         return <Car size={iconSize} className={iconClass} />
+      case "pokemon":
+        return <MdCatchingPokemon size={iconSize} className={iconClass} />
+      case "spaceship":
+        return <PiFlyingSaucer size={iconSize} className={iconClass} />
+      case "clapperboard":
+        return <Clapperboard size={iconSize} className={iconClass} />
+      case "warehouse":
+        return <Warehouse size={iconSize} className={iconClass} />
       default:
         return <Target size={iconSize} className={iconClass} />
     }
@@ -154,6 +164,11 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                 <span className={`font-medium ${isSelected ? "text-red-200" : "text-red-100/80"}`}>
                   {preference.name}
                 </span>
+                {preference.name === "Studio Concepts" && (
+                  <span className="text-red-100/80 text-xs px-0.5">
+                    Mind Ya Business, Nunya Business, etc.
+                  </span>
+                )}
                 {/* DISABLED: ChevronDown icon for subcategories */}
                 {/* {hasSubcategories && (
                   <ChevronDown 

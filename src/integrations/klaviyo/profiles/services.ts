@@ -114,7 +114,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
     }
     if (data.collect_preferences?.[0]) {
       properties['Collection Category 1'] = data.collect_preferences[0];
-      properties['Collection-Category-1'] = data.collect_preferences[1];
+      properties['Collection-Category-1'] = data.collect_preferences[0];
     }
     if (data.communication_preference) {
       properties['Communication-Preference'] = data.communication_preference;

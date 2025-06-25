@@ -116,7 +116,7 @@ export const collectionPreferences = [
   },
   {
     name: "Pocket Monsters",
-    icon: "zap",
+    icon: "pokemon",
   },
   {
     name: "Comics/ Superheroes",
@@ -130,6 +130,10 @@ export const collectionPreferences = [
   },
   {
     name: "Galaxy Far Away",
-    icon: "star",
+    icon: "spaceship",
   },
+  {
+    name: "Studio Concepts",
+    icon: "warehouse",
+  }
 ]
