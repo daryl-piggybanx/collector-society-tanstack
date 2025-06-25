@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import VideoBackground from '@/components/video-background'
 import ParticleTwinkleBackground from '@/components/particle-background-twinkle'
 import RedirectButtons from '@/components/redirect-buttons'
-
+import SocialIcons from '@/components/social-icons'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -45,6 +45,10 @@ function App() {
 
           <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
             <ActionButtons />
+          </div>
+
+          <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
+            <SocialIcons />
           </div>
         </div>
 
