@@ -80,6 +80,15 @@ export default function ParticleTwinkleBackground() {
       "rgba(249, 250, 251, 0.8)", // gray-50 (very bright off-white)
       "rgba(253, 253, 253, 0.6)", // Almost pure white with transparency
       "rgba(245, 245, 245, 0.9)", // Bright light gray
+
+      // Darker variants
+      // "rgba(0, 0, 0, 0.5)", // Black with medium opacity
+      // "rgba(0, 0, 0, 0.3)", // Black with low opacity
+      // "rgba(0, 0, 0, 0.1)", // Black with very low opacity
+      // "rgba(0, 0, 0, 0.05)", // Black with very very low opacity
+      // "rgba(0, 0, 0, 0.01)", // Black with very very very low opacity
+      
+      
     ]
 
     for (let i = 0; i < particleCount; i++) {

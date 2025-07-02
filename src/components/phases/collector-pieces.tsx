@@ -109,7 +109,8 @@ export default function CollectorPieces({ formData, updateFormData, variations }
           <Input
             id="piece_count"
             name="piece_count"
-            value={formData.piece_count}
+            type="number"
+            value={formData.piece_count?.toString() || ""}
             onChange={handleInputChange}
             placeholder="Enter the number of pieces"
             className="border-red-400/30 bg-red-950/40 text-red-100 placeholder:text-red-300/50 focus:border-red-400 focus:ring-red-400"
