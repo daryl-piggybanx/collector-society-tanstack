@@ -13,7 +13,7 @@ export type FormData = {
   phone_number?: string
   communication_preference?: string
   marketing_consent: boolean
-  piece_count?: number
+  piece_count?: string
   first_piece?: string
   proof_of_piece?: string[]
   favorite_variation?: string
@@ -47,7 +47,7 @@ export const initialFormData: FormData = {
   phone_number: "",
   communication_preference: "",
   marketing_consent: false,
-  piece_count: 0,
+  piece_count: "",
   first_piece: "",
   proof_of_piece: [],
   favorite_variation: "",
