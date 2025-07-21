@@ -9,7 +9,7 @@ import { usePostHog } from "posthog-js/react";
 
 import { getProfileByEmail, createUpdateProfile, subscribeProfile  } from "@/integrations/klaviyo/profiles/services"
 import { useMutation } from "@tanstack/react-query"
-import { collectionPreferences, collectionVariations } from "@/lib/data"
+import { originalCollectionPreferences, collectionPreferences, collectionVariations } from "@/lib/data"
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 import { useSharedFormData } from "@/hooks/shared-data"
+import { filterEmptyValues } from "@/lib/utils"
 
 import CollectorPieces from "@/components/phases/collector-pieces"
 import CommunityExperience from "@/components/phases/community-experience"
@@ -133,12 +134,18 @@ export function UpdateProfileForm() {
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
       posthog.identify(formData.email);
-      posthog.capture('returning_collector_form_submission_success', formData);
+      posthog.capture('returning_collector_form_submission_success', {
+        ...filterEmptyValues(formData),
+        $set: filterEmptyValues(formData)
+      });
 
     } catch (error) {
       console.error("Error submitting form:", error);
       posthog.identify(formData.email);
-      posthog.capture('returning_collector_form_submission_fail', formData);
+      posthog.capture('returning_collector_form_submission_fail', {
+        ...filterEmptyValues(formData),
+        $set: filterEmptyValues(formData)
+      });
 
     } finally {
       setIsSubmitting(false);
@@ -161,7 +168,7 @@ export function UpdateProfileForm() {
     };
     // transfer current form data to shared data
     setSharedData(phase1Data);
-    posthog.capture('returning_collector_form_redirected', formData);
+    posthog.capture('returning_collector_form_redirected', filterEmptyValues(formData));
     router.navigate({ to: '/collector/new' });
   };
 
@@ -213,7 +220,7 @@ export function UpdateProfileForm() {
                 key="top-categories"
                 formData={formData}
                 updateFormData={updateFormData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
               />
             )}
 
@@ -229,7 +236,7 @@ export function UpdateProfileForm() {
               <SuccessPage
                 key="success"
                 formData={formData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
                 variations={collectionVariations}
               />
             )}

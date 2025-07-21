@@ -10,7 +10,7 @@ import { usePostHog } from "posthog-js/react";
 import { getProfileByEmail, createUpdateProfile, subscribeProfile } from "@/integrations/klaviyo/profiles/services"
 import type { KlaviyoProfile } from "@/integrations/klaviyo/profiles/types"
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query"
-import { collectionPreferences, collectionRules, collectionVariations } from "@/lib/data"
+import { originalCollectionPreferences, collectionPreferences, collectionRules, collectionVariations } from "@/lib/data"
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -114,7 +114,7 @@ const createInitialNewCollectorFormData = (sharedData: FormData | null): FormDat
   };
 };
 
-export function NewCollectorForm() {
+export function NewCollectorFormOUTDATED() {
   const posthog = usePostHog();
   const { sharedData, clearSharedData, setSharedData } = useSharedFormData();
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -245,7 +245,7 @@ export function NewCollectorForm() {
                 key="top-categories"
                 formData={formData}
                 updateFormData={updateFormData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
               />
             )}
 
@@ -253,7 +253,7 @@ export function NewCollectorForm() {
               <SuccessPage
                 key="success"
                 formData={formData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
               />
             )}
           </AnimatePresence>
@@ -342,7 +342,7 @@ const createInitialOGFormData = (sharedData: FormData | null): FormData => {
   };
 };
 
-export function OGCollectorForm() {
+export function OGCollectorFormOUTDATED() {
   const posthog = usePostHog();
   const { sharedData, hasSharedData, setSharedData, clearSharedData } = useSharedFormData();
   const [formData, setFormData] = useState<FormData>(() => createInitialOGFormData(sharedData as FormData | null));
@@ -487,7 +487,7 @@ export function OGCollectorForm() {
                 key="top-categories"
                 formData={formData}
                 updateFormData={updateFormData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
               />
             )}
 
@@ -503,7 +503,7 @@ export function OGCollectorForm() {
               <SuccessPage
                 key="success"
                 formData={formData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
                 variations={collectionVariations}
               />
             )}

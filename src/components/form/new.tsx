@@ -8,12 +8,13 @@ import { usePostHog } from "posthog-js/react";
 
 import { createUpdateProfile, subscribeProfile } from "@/integrations/klaviyo/profiles/services"
 import { useMutation } from "@tanstack/react-query"
-import { collectionPreferences, collectionRules } from "@/lib/data"
+import { originalCollectionPreferences, collectionPreferences, collectionRules } from "@/lib/data"
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 
 import { useSharedFormData } from "@/hooks/shared-data"
+import { filterEmptyValues } from "@/lib/utils"
 
 import CollectorReasons from "@/components/phases/collector-reasons"
 import CommunityRules from "@/components/phases/community-rules"
@@ -108,12 +109,24 @@ export function NewCollectorForm() {
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
       posthog.identify(formData.email);
-      posthog.capture('new_collector_form_submission_success', formData);
+      posthog?.capture(
+        'new_collector_form_submission_success',
+        {
+          ...filterEmptyValues(formData),
+          $set: filterEmptyValues(formData)
+        }
+      );
 
     } catch (error) {
       console.error("Error submitting form:", error);
       posthog.identify(formData.email);
-      posthog.capture('new_collector_form_submission_fail', formData);
+      posthog?.capture(
+        'new_collector_form_submission_fail',
+        {
+          ...filterEmptyValues(formData),
+          $set: filterEmptyValues(formData)
+        }
+      );
 
     } finally {
       setIsSubmitting(false);
@@ -186,7 +199,7 @@ export function NewCollectorForm() {
                 key="top-categories"
                 formData={formData}
                 updateFormData={updateFormData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
               />
             )}
 
@@ -194,7 +207,7 @@ export function NewCollectorForm() {
               <SuccessPage
                 key="success"
                 formData={formData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
               />
             )}
           </AnimatePresence>

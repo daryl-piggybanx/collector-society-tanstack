@@ -9,7 +9,7 @@ import { usePostHog } from "posthog-js/react";
 
 import { getProfileByEmail, createUpdateProfile } from "@/integrations/klaviyo/profiles/services"
 import { useMutation } from "@tanstack/react-query"
-import { collectionPreferences, collectionVariations } from "@/lib/data"
+import { originalCollectionPreferences, collectionPreferences, collectionVariations } from "@/lib/data"
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 import { useSharedFormData } from "@/hooks/shared-data"
+import { filterEmptyValues } from "@/lib/utils"
 
 import CollectorPieces from "@/components/phases/collector-pieces"
 import CommunityExperience from "@/components/phases/community-experience"
@@ -123,11 +124,23 @@ export function OGCollectorForm() {
       await mutation.mutateAsync({ data: formData });
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
-      posthog.capture('returning_collector_form_submission_success', formData);
+      posthog?.capture(
+        'returning_collector_form_submission_success',
+        {
+          ...filterEmptyValues(formData),
+          $set: filterEmptyValues(formData)
+        }
+      );
 
     } catch (error) {
       console.error("Error submitting form:", error);
-      posthog.capture('returning_collector_form_submission_fail', formData);
+      posthog?.capture(
+        'returning_collector_form_submission_fail',
+        {
+          ...filterEmptyValues(formData),
+          $set: filterEmptyValues(formData)
+        }
+      );
 
     } finally {
       setIsSubmitting(false);
@@ -202,7 +215,7 @@ export function OGCollectorForm() {
                 key="top-categories"
                 formData={formData}
                 updateFormData={updateFormData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
               />
             )}
 
@@ -218,7 +231,7 @@ export function OGCollectorForm() {
               <SuccessPage
                 key="success"
                 formData={formData}
-                preferences={collectionPreferences}
+                preferences={originalCollectionPreferences}
                 variations={collectionVariations}
               />
             )}

@@ -24,42 +24,48 @@ export default function TopCategories({ formData, updateFormData, preferences }:
   const [showSubcategories, setShowSubcategories] = useState(false)
 
   // TEMPORARILY DISABLED: Subcategory functionality
-  const ENABLE_SUBCATEGORIES = false
+  const ENABLE_SUBCATEGORIES = true
 
   const handlePreferenceToggle = (preference: Preference) => {
-    // Simplified logic - only select the main preference
-    setSelectedPreference(preference.name)
-    setSelectedSubcategory(null)
-    setShowSubcategories(false) // Always keep subcategories hidden
-    
+    console.log('preference: ', preference)
+    if (selectedPreference === preference.name) {
+      setShowSubcategories(!showSubcategories)
+    } else {
+      // If clicking a different preference, select it and show subcategories if available
+      setSelectedPreference(preference.name)
+      setSelectedSubcategory(null)
+      setShowSubcategories(preference.subcategories.length > 0 && ENABLE_SUBCATEGORIES)
+    }
     // Update form data with the klaviyoValue if it exists, otherwise use the name
     const valueForKlaviyo = preference.klaviyoValue || preference.name
     updateFormData({ collect_preferences: [valueForKlaviyo] })
   }
 
   // COMMENTED OUT: Subcategory selection handler (keeping for future use)
-  // const handleSubcategorySelect = (subcategory: string) => {
-  //   setSelectedSubcategory(subcategory)
-  //   updateFormData({ collect_preferences: [subcategory] })
-  //   setShowSubcategories(true)
-  // }
+  const handleSubcategorySelect = (subcategory: string) => {
+    console.log('subcategory: ', subcategory)
+    setSelectedSubcategory(subcategory)
+    updateFormData({ collect_preferences: [subcategory] })
+    setShowSubcategories(true)
+  }
 
   // Initialize from form data if it exists
   useEffect(() => {
     if (formData.collect_preferences && formData.collect_preferences.length > 0) {
       const selected = formData.collect_preferences[0]
-      const preference = preferences.find(p => p.name === selected)
-      if (preference) {
-        setSelectedPreference(preference.name)
-      }
-      // DISABLED: Subcategory initialization
-      // const preference = preferences.find(p => p.name === selected || p.subcategories.includes(selected))
+      // DISABLED: single category selection
+      // const preference = preferences.find(p => p.name === selected)
       // if (preference) {
       //   setSelectedPreference(preference.name)
-      //   if (preference.subcategories.includes(selected)) {
-      //     setSelectedSubcategory(selected)
-      //   }
       // }
+      // DISABLED: Subcategory initialization
+      const preference = preferences.find(p => p.name === selected || p.subcategories.includes(selected))
+      if (preference) {
+        setSelectedPreference(preference.name)
+        if (preference.subcategories.includes(selected)) {
+          setSelectedSubcategory(selected)
+        }
+      }
     }
   }, [formData.collect_preferences, preferences])
 
@@ -133,23 +139,23 @@ export default function TopCategories({ formData, updateFormData, preferences }:
         Select one category that interests you
       </motion.p>
 
+      {/* Categories */}
       <motion.div variants={itemVariants} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {preferences.map((preference, index) => {
           const isSelected = selectedPreference === preference.name
           // DISABLED: Subcategory selection logic
-          // const hasSubcategories = preference.subcategories.length > 0
-          // const isSubcategorySelected = preference.subcategories.includes(selectedSubcategory || '')
+          const hasSubcategories = preference.subcategories.length > 0
+          const isSubcategorySelected = preference.subcategories.includes(selectedSubcategory || '')
 
           return (
             <motion.div
-              key={preference.name}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                transition: { delay: index * 0.05 + 0.2 },
-              }}
-              whileHover={{ scale: 1.05 }} // Simplified hover effect
+              // key={preference.name}
+              // initial={{ scale: 0.9 }}
+              // animate={{
+              //   scale: 1,
+              //   transition: { delay: index * 0.05 + 0.2 },
+              // }}
+              // whileHover={{ scale: 1.05 }} // Simplified hover effect
               className="relative rounded-lg overflow-visible"
             >
               <button
@@ -170,34 +176,34 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                   </span>
                 )}
                 {/* DISABLED: ChevronDown icon for subcategories */}
-                {/* {hasSubcategories && (
+                {hasSubcategories && (
                   <ChevronDown 
                     size={16} 
                     className={`transition-transform ${showSubcategories && isSelected ? 'rotate-180' : ''} text-red-100/60`}
                   />
-                )} */}
+                )}
               </button>
 
               {/* DISABLED: Subcategories dropdown (keeping for future use) */}
-              {/* <AnimatePresence>
+              <AnimatePresence>
                 {isSelected && showSubcategories && hasSubcategories && ENABLE_SUBCATEGORIES && (
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute left-0 right-0 mt-2 bg-red-950/90 border border-red-400/30 rounded-lg overflow-hidden z-10 shadow-lg pointer-events-auto"
+                    // initial={{ height: 0 }}
+                    // animate={{ height: "auto" }}
+                    // exit={{ height: 0 }}
+                    // transition={{ duration: 0.2 }}
+                    className="absolute left-0 right-0 mt-2 bg-red-950 border border-red-400/30 rounded-lg overflow-hidden shadow-xl pointer-events-auto backdrop-blur-sm z-50"
                   >
-                    <p className="text-red-100/80 text-sm p-2">More specific (optional)</p>
+                    <p className="text-red-100/80 text-sm p-2 bg-red-950">More specific (optional)</p>
                     <hr className="border-red-400/30 mx-3" />
                     {preference.subcategories.map((subcategory) => (
                       <button
                         key={subcategory}
                         onClick={() => handleSubcategorySelect(subcategory)}
-                        className={`w-full p-3 text-left transition-all ${
+                        className={`w-full p-3 text-left transition-colors bg-red-950 ${
                           selectedSubcategory === subcategory
-                            ? "bg-red-800/60 text-red-200"
-                            : "text-red-100/80 hover:bg-red-800/30"
+                            ? "bg-red-800 text-red-200"
+                            : "text-red-100/80 hover:bg-red-800 hover:text-red-200"
                         }`}
                       >
                         {subcategory}
@@ -205,17 +211,17 @@ export default function TopCategories({ formData, updateFormData, preferences }:
                     ))}
                   </motion.div>
                 )}
-              </AnimatePresence> */}
+              </AnimatePresence>
             </motion.div>
           )
         })}
       </motion.div>
 
       <motion.div variants={itemVariants} className="mt-6 text-center text-red-100/80">
-        {selectedPreference ? (
+        {selectedPreference || selectedSubcategory ? (
           <div className="flex items-center justify-center gap-2 text-red-300">
             <Check size={18} />
-            <span>Selected: {selectedPreference}</span>
+            <span>Selected: {selectedSubcategory || selectedPreference}</span>
           </div>
         ) : (
           <span>Please select a category</span>

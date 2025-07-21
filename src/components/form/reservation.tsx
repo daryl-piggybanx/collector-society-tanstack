@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 
 import { useSharedFormData } from "@/hooks/shared-data"
+import { filterEmptyValues } from "@/lib/utils"
 
 import { wallPieceRules } from "@/lib/data"
 
@@ -109,12 +110,24 @@ export function ReservationForm() {
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
       posthog.identify(formData.email);
-      posthog.capture('wall_piece_reservation_success', formData);
+      posthog?.capture(
+        'wall_piece_reservation_success',
+        {
+          ...filterEmptyValues(formData),
+          $set: filterEmptyValues(formData)
+        }
+      );
 
     } catch (error) {
       console.error("Error submitting form:", error);
       posthog.identify(formData.email);
-      posthog.capture('wall_piece_reservation_fail', formData);
+      posthog?.capture(
+        'wall_piece_reservation_fail',
+        {
+          ...filterEmptyValues(formData),
+          $set: filterEmptyValues(formData)
+        }
+      );
 
     } finally {
       setIsSubmitting(false);

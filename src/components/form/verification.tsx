@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/alert-dialog"
 
 import { useSharedFormData } from "@/hooks/shared-data"
+import { filterEmptyValues } from "@/lib/utils"
 
 import CollectorPieces from "@/components/phases/collector-pieces"
 import MarketingConsent from "@/components/phases/marketing-consent"
@@ -158,12 +159,24 @@ export function VerificationCollectorForm() {
       setIsComplete(true);
       setCurrentPhase(totalPhases + 1);
       posthog.identify(finalFormData.email);
-      posthog.capture('discord_verification_form_submission_success', finalFormData);
+      posthog?.capture(
+        'discord_verification_form_submission_success',
+        {
+          ...finalFormData,
+          $set: finalFormData
+        }
+      );
 
     } catch (error) {
       console.error("Error submitting form:", error);
       posthog.identify(formData.email);
-      posthog.capture('discord_verification_form_submission_fail', formData);
+      posthog?.capture(
+        'discord_verification_form_submission_fail',
+        {
+          ...formData,
+          $set: formData
+        }
+      );
 
     } finally {
       setIsSubmitting(false);
@@ -187,7 +200,7 @@ export function VerificationCollectorForm() {
     // transfer current form data to shared data
     setSharedData(phase1Data);
     posthog.identify(formData.email);
-    posthog.capture('discord_verification_form_redirected', formData);
+    posthog.capture('discord_verification_form_redirected', filterEmptyValues(formData));
     router.navigate({ to: '/collector/new' });
   };
 

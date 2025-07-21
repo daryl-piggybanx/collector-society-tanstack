@@ -52,44 +52,63 @@ export const collectionVariations = [
 // Original collection preferences with subcategories (kept for potential future use)
 export const originalCollectionPreferences = [
   {
-    name: "Sports/Athletes",
+    name: "Sports",
     icon: "trophy",
     subcategories: [
-      "Modern",
-      "Vintage",
-      "Hall of Fame",
-    ],
+      "Baseball",
+      "Basketball",
+      "Fighting",
+      "Football",
+      "Soccer",
+    ]
   },
   {
     name: "Music",
     icon: "music",
-    subcategories: [],
+    subcategories: []
   },
   {
-    name: "Pop Culture",
-    icon: "sparkles",
-    subcategories: [
-      "Comics/ Superheroes",
-      "Titans of Industry"
-    ]
+    name: "Movies",
+    icon: "film",
+    subcategories: []
   },
   {
     name: "Video Games",
     icon: "gamepad-2",
-    subcategories: [
-        "Pocket Monsters"
-    ],
+    subcategories: []
   },
   {
     name: "Anime",
     icon: "palette",
-    subcategories: [],
+    subcategories: []
   },
   {
-    name: "Cars/Racing",
-    icon: "car",
-    subcategories: [],
+    name: "Pocket Monsters",
+    icon: "pokemon",
+    subcategories: []
   },
+  {
+    name: "Comics/ Superheroes",
+    icon: "sparkles",
+    klaviyoValue: "Comics/Superheroes",
+    subcategories: []
+  },
+  {    
+    name: "Cars/ Racing",
+    icon: "car",
+    klaviyoValue: "Cars/Racing",
+    subcategories: []
+  },
+  {
+    name: "Galaxy Far Away",
+    icon: "spaceship",
+    subcategories: []
+  },
+  {
+    name: "Studio Concepts",
+    icon: "warehouse",
+    subcategories: []
+  }
 ]
 
 // New collection preferences without subcategories
