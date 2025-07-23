@@ -8,7 +8,7 @@ import { usePostHog } from "posthog-js/react";
 
 import { createUpdateProfile, subscribeProfile } from "@/integrations/klaviyo/profiles/services"
 import { useMutation } from "@tanstack/react-query"
-import { originalCollectionPreferences, collectionPreferences, collectionRules } from "@/lib/data"
+import { originalCollectionPreferences, collectionPreferences, collectionRules, collectionVariations } from "@/lib/data"
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -208,6 +208,7 @@ export function NewCollectorForm() {
                 key="success"
                 formData={formData}
                 preferences={originalCollectionPreferences}
+                variations={collectionVariations}
               />
             )}
           </AnimatePresence>

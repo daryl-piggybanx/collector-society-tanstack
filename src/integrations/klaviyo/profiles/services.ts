@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import type { KlaviyoProfile, KlaviyoConsent } from './types'
 import { z } from 'zod'
-import { parsePhoneNumber } from 'libphonenumber-js'
+import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
 
 export const getProfileByEmail = createServerFn({ method: 'GET' })
   .validator(z.object({
@@ -78,6 +78,28 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
 
     console.log('test data: ', data);
 
+    const safeParsePhoneNumber = (phoneNumber: string) => {
+      try {
+        if (!phoneNumber || phoneNumber.trim() === '') return null;
+        
+        // Try to clean common formatting issues
+        const cleanedPhone = phoneNumber.replace(/[^\d+\-\(\)\s]/g, '');
+        if (!cleanedPhone) return null;
+        
+        if (!isValidPhoneNumber(cleanedPhone)) {
+          console.warn('Invalid phone number provided, skipping phone validation:', phoneNumber);
+          return null;
+        }
+        return parsePhoneNumber(cleanedPhone);
+      } catch (error) {
+        console.warn('Error parsing phone number, proceeding without phone validation:', phoneNumber, error);
+        return null;
+      }
+    };
+
+    const parsedPhone = data.phone_number ? safeParsePhoneNumber(data.phone_number) : null;
+    const hasValidPhone = parsedPhone !== null;
+
     const properties: Record<string, any> = {
       '$source': data.is_discord_collector 
                 ? 'Discord Verification' 
@@ -85,14 +107,14 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
                 ? 'Wall-Piece Reservation' 
                 : data.is_returning_collector ? 'Update Collector Profile' : 'New Collector Form',
       '$consent_method': 'Custom Klaviyo Form',
-      '$consent': data.phone_number ? ['email', 'sms'] : ['email'],
+      '$consent': hasValidPhone ? ['email', 'sms'] : ['email'],
       '$consent_timestamp': new Date().toISOString(),
       'Accepts Marketing': data.marketing_consent,
     };
 
     // Add optional properties only if they have values
-    if (data.phone_number) {
-      properties['$phone_number_region'] = parsePhoneNumber(data.phone_number).country;
+    if (hasValidPhone && parsedPhone) {
+      properties['$phone_number_region'] = parsedPhone.country;
     }
     if (data.discord_username) {
       properties['Discord-Username'] = data.discord_username;
@@ -167,7 +189,7 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
         type: "profile",
         attributes: {
           email: data.email,
-          phone_number: data.phone_number ? parsePhoneNumber(data.phone_number).format('E.164') : undefined,
+          phone_number: hasValidPhone && parsedPhone ? parsedPhone.format('E.164') : undefined,
           first_name: data.first_name,
           last_name: data.last_name,
           properties
@@ -193,6 +215,17 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
 
       if (!response.ok) {
         const errorText = await response.text();
+        console.error('Klaviyo API Error:', {
+          status: response.status,
+          statusText: response.statusText,
+          errorText,
+          requestData: {
+            email: data.email,
+            hasPhone: !!data.phone_number,
+            hasValidPhone,
+            source: properties['$source']
+          }
+        });
         throw new Error(`Klaviyo API Error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
@@ -200,6 +233,49 @@ export const createUpdateProfile = createServerFn({ method: 'POST' })
       return json;
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('createUpdateProfile error details:', {
+        email: data.email,
+        hasPhone: !!data.phone_number,
+        hasValidPhone,
+        originalPhone: data.phone_number,
+        source: properties['$source'],
+        error: errorMessage
+      });
+      
+      // If phone number error, retry without phone data
+      if (hasValidPhone && (errorMessage.includes('phone') || errorMessage.includes('Phone'))) {
+        console.warn('Retrying profile creation without phone number due to phone-related error');
+        try {
+          const fallbackData = {
+            ...klaviyoData,
+            data: {
+              ...klaviyoData.data,
+              attributes: {
+                ...klaviyoData.data.attributes,
+                phone_number: undefined,
+                properties: {
+                  ...properties,
+                  '$consent': ['email'],
+                  '$phone_number_region': undefined
+                }
+              }
+            }
+          };
+          
+          const retryResponse = await fetch(url, {
+            ...options,
+            body: JSON.stringify(fallbackData)
+          });
+          
+          if (retryResponse.ok) {
+            console.log('Successfully created profile without phone number');
+            return await retryResponse.json();
+          }
+        } catch (retryError) {
+          console.error('Retry also failed:', retryError);
+        }
+      }
+      
       throw new Error(`Failed to create/update profile: ${errorMessage}`);
     }
   });
