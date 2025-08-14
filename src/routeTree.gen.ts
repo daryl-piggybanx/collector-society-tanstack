@@ -11,7 +11,9 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as EthosImport } from './routes/ethos'
 import { Route as IndexImport } from './routes/index'
+import { Route as CollectorIndexImport } from './routes/collector.index'
 import { Route as PlayLeaderboardImport } from './routes/play.leaderboard'
 import { Route as PlayFlappyPigImport } from './routes/play.flappy-pig'
 import { Route as DemoTanstackQueryImport } from './routes/demo.tanstack-query'
@@ -21,16 +23,24 @@ import { Route as CollectorReservationImport } from './routes/collector.reservat
 import { Route as CollectorOgImport } from './routes/collector.og'
 import { Route as CollectorNewImport } from './routes/collector.new'
 import { Route as CollectorDiscordImport } from './routes/collector.discord'
-import { Route as DemoStartServerFuncsImport } from './routes/demo.start.server-funcs'
-import { Route as DemoStartApiRequestImport } from './routes/demo.start.api-request'
-import { Route as DemoFormSimpleImport } from './routes/demo.form.simple'
-import { Route as DemoFormAddressImport } from './routes/demo.form.address'
 
 // Create/Update Routes
+
+const EthosRoute = EthosImport.update({
+  id: '/ethos',
+  path: '/ethos',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CollectorIndexRoute = CollectorIndexImport.update({
+  id: '/collector/',
+  path: '/collector/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,30 +98,6 @@ const CollectorDiscordRoute = CollectorDiscordImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DemoStartServerFuncsRoute = DemoStartServerFuncsImport.update({
-  id: '/demo/start/server-funcs',
-  path: '/demo/start/server-funcs',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DemoStartApiRequestRoute = DemoStartApiRequestImport.update({
-  id: '/demo/start/api-request',
-  path: '/demo/start/api-request',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DemoFormSimpleRoute = DemoFormSimpleImport.update({
-  id: '/demo/form/simple',
-  path: '/demo/form/simple',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DemoFormAddressRoute = DemoFormAddressImport.update({
-  id: '/demo/form/address',
-  path: '/demo/form/address',
-  getParentRoute: () => rootRoute,
-} as any)
-
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -121,6 +107,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/ethos': {
+      id: '/ethos'
+      path: '/ethos'
+      fullPath: '/ethos'
+      preLoaderRoute: typeof EthosImport
       parentRoute: typeof rootRoute
     }
     '/collector/discord': {
@@ -186,32 +179,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayLeaderboardImport
       parentRoute: typeof rootRoute
     }
-    '/demo/form/address': {
-      id: '/demo/form/address'
-      path: '/demo/form/address'
-      fullPath: '/demo/form/address'
-      preLoaderRoute: typeof DemoFormAddressImport
-      parentRoute: typeof rootRoute
-    }
-    '/demo/form/simple': {
-      id: '/demo/form/simple'
-      path: '/demo/form/simple'
-      fullPath: '/demo/form/simple'
-      preLoaderRoute: typeof DemoFormSimpleImport
-      parentRoute: typeof rootRoute
-    }
-    '/demo/start/api-request': {
-      id: '/demo/start/api-request'
-      path: '/demo/start/api-request'
-      fullPath: '/demo/start/api-request'
-      preLoaderRoute: typeof DemoStartApiRequestImport
-      parentRoute: typeof rootRoute
-    }
-    '/demo/start/server-funcs': {
-      id: '/demo/start/server-funcs'
-      path: '/demo/start/server-funcs'
-      fullPath: '/demo/start/server-funcs'
-      preLoaderRoute: typeof DemoStartServerFuncsImport
+    '/collector/': {
+      id: '/collector/'
+      path: '/collector'
+      fullPath: '/collector'
+      preLoaderRoute: typeof CollectorIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -221,6 +193,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ethos': typeof EthosRoute
   '/collector/discord': typeof CollectorDiscordRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
@@ -230,14 +203,12 @@ export interface FileRoutesByFullPath {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/play/flappy-pig': typeof PlayFlappyPigRoute
   '/play/leaderboard': typeof PlayLeaderboardRoute
-  '/demo/form/address': typeof DemoFormAddressRoute
-  '/demo/form/simple': typeof DemoFormSimpleRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/collector': typeof CollectorIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ethos': typeof EthosRoute
   '/collector/discord': typeof CollectorDiscordRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
@@ -247,15 +218,13 @@ export interface FileRoutesByTo {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/play/flappy-pig': typeof PlayFlappyPigRoute
   '/play/leaderboard': typeof PlayLeaderboardRoute
-  '/demo/form/address': typeof DemoFormAddressRoute
-  '/demo/form/simple': typeof DemoFormSimpleRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/collector': typeof CollectorIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/ethos': typeof EthosRoute
   '/collector/discord': typeof CollectorDiscordRoute
   '/collector/new': typeof CollectorNewRoute
   '/collector/og': typeof CollectorOgRoute
@@ -265,16 +234,14 @@ export interface FileRoutesById {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/play/flappy-pig': typeof PlayFlappyPigRoute
   '/play/leaderboard': typeof PlayLeaderboardRoute
-  '/demo/form/address': typeof DemoFormAddressRoute
-  '/demo/form/simple': typeof DemoFormSimpleRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/collector/': typeof CollectorIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ethos'
     | '/collector/discord'
     | '/collector/new'
     | '/collector/og'
@@ -284,13 +251,11 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/play/flappy-pig'
     | '/play/leaderboard'
-    | '/demo/form/address'
-    | '/demo/form/simple'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
+    | '/collector'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ethos'
     | '/collector/discord'
     | '/collector/new'
     | '/collector/og'
@@ -300,13 +265,11 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/play/flappy-pig'
     | '/play/leaderboard'
-    | '/demo/form/address'
-    | '/demo/form/simple'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
+    | '/collector'
   id:
     | '__root__'
     | '/'
+    | '/ethos'
     | '/collector/discord'
     | '/collector/new'
     | '/collector/og'
@@ -316,15 +279,13 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/play/flappy-pig'
     | '/play/leaderboard'
-    | '/demo/form/address'
-    | '/demo/form/simple'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
+    | '/collector/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EthosRoute: typeof EthosRoute
   CollectorDiscordRoute: typeof CollectorDiscordRoute
   CollectorNewRoute: typeof CollectorNewRoute
   CollectorOgRoute: typeof CollectorOgRoute
@@ -334,14 +295,12 @@ export interface RootRouteChildren {
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   PlayFlappyPigRoute: typeof PlayFlappyPigRoute
   PlayLeaderboardRoute: typeof PlayLeaderboardRoute
-  DemoFormAddressRoute: typeof DemoFormAddressRoute
-  DemoFormSimpleRoute: typeof DemoFormSimpleRoute
-  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-  DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
+  CollectorIndexRoute: typeof CollectorIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EthosRoute: EthosRoute,
   CollectorDiscordRoute: CollectorDiscordRoute,
   CollectorNewRoute: CollectorNewRoute,
   CollectorOgRoute: CollectorOgRoute,
@@ -351,10 +310,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   PlayFlappyPigRoute: PlayFlappyPigRoute,
   PlayLeaderboardRoute: PlayLeaderboardRoute,
-  DemoFormAddressRoute: DemoFormAddressRoute,
-  DemoFormSimpleRoute: DemoFormSimpleRoute,
-  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-  DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
+  CollectorIndexRoute: CollectorIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -368,6 +324,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/ethos",
         "/collector/discord",
         "/collector/new",
         "/collector/og",
@@ -377,14 +334,14 @@ export const routeTree = rootRoute
         "/demo/tanstack-query",
         "/play/flappy-pig",
         "/play/leaderboard",
-        "/demo/form/address",
-        "/demo/form/simple",
-        "/demo/start/api-request",
-        "/demo/start/server-funcs"
+        "/collector/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/ethos": {
+      "filePath": "ethos.tsx"
     },
     "/collector/discord": {
       "filePath": "collector.discord.tsx"
@@ -413,17 +370,8 @@ export const routeTree = rootRoute
     "/play/leaderboard": {
       "filePath": "play.leaderboard.tsx"
     },
-    "/demo/form/address": {
-      "filePath": "demo.form.address.tsx"
-    },
-    "/demo/form/simple": {
-      "filePath": "demo.form.simple.tsx"
-    },
-    "/demo/start/api-request": {
-      "filePath": "demo.start.api-request.tsx"
-    },
-    "/demo/start/server-funcs": {
-      "filePath": "demo.start.server-funcs.tsx"
+    "/collector/": {
+      "filePath": "collector.index.tsx"
     }
   }
 }

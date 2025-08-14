@@ -21,8 +21,13 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-    }
+          "paths": {
+        "@/*": ["./src/*"],
+        "@assets/*": ["./src/assets/*"],
+        "@components/*": ["./src/components/*"],
+        "@lib/*": ["./src/lib/*"],
+        "@routes/*": ["./src/routes/*"],
+        "@integrations/*": ["./src/integrations/*"]
+      }
   }
 }

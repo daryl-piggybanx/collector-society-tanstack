@@ -7,10 +7,10 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
-import Header from '../components/Header'
+import LogoHeader from '../components/logo-header'
 
 import TanstackQueryLayout from '../integrations/tanstack-query/layout'
-
+import { cn } from '@/lib/utils'
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
@@ -19,6 +19,7 @@ import type { TRPCRouter } from '@/integrations/trpc/router'
 import type { TRPCOptionsProxy } from '@trpc/tanstack-react-query'
 
 import { PostHogClientProvider } from '@/integrations/posthog/provider'
+
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -63,12 +64,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     const currentPath = router.state.location.pathname
     
     // Exclude routes that start with '/play' from showing the header
-    const shouldShowHeader = !currentPath.startsWith('/play')
+    const shouldShowHeader = currentPath.startsWith('/collector')
 
     return (
       <RootDocument>
         <PostHogClientProvider>
-          {shouldShowHeader && <Header />}
+          {shouldShowHeader && <LogoHeader />}
 
           <Outlet />
           <TanStackRouterDevtools />
@@ -88,6 +89,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+
+        <footer className="absolute bottom-0 left-0 p-8 text-sm text-white/50">
+          <p>PIGGYBANK ©2025</p>
+        </footer>
         <Scripts />
       </body>
     </html>

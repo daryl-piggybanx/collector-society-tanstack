@@ -20,11 +20,13 @@ code {
 }
 
 :root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
   --primary: var(--color-slate-300);
   --complement: #C76E00;
   --contrast: #e7e9ec;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
+  /* --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823); */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
@@ -138,5 +140,32 @@ code {
   }
   body {
     @apply bg-zinc-900
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

@@ -1,3 +1,11 @@
+export const navItems = [
+  { name: "Start Here", image: "/assets/landing_hover_black-white_1.jpg", link: "/ethos" },
+  { name: "Collector Applications", image: "/assets/landing_hover_black-white_2.jpg", link: "/collector" },
+  { name: "Drop Site", image: "/assets/landing_hover_black-white_3.jpg", link: "https://piggybanxinc.com" },
+  { name: "PiggyVerse", image: "/assets/landing_hover_black-white_1.jpg", link: "https://intothepiggyverse.com" },
+  { name: "The Knights", image: "/assets/landing_hover_black-white_2.jpg", link: "/knights-of-the-roundtable" },
+]
+
 // temp data file for collector form
 export const collectionRules = [
   "I am here to collect and appreciate the art as well as have a positive impact on the community.",
