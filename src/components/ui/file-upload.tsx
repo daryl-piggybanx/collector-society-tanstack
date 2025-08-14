@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef, useImperativeHandle, forwardRef } from "react";
 import { Image, Upload, X, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 import { useServerFn } from '@tanstack/react-start';
 import { uploadAsset, getFolderWithLastAsset } from "@/integrations/webflow/assets/services";

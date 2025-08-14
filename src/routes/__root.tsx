@@ -89,9 +89,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         {children}
 
-        <footer className="absolute bottom-0 left-0 p-8 text-sm text-white/50">
+        {/* <footer className="absolute bottom-0 left-0 p-8 text-sm text-white/50">
           <p>PIGGYBANK ©2025</p>
-        </footer>
+        </footer> */}
         <Scripts />
       </body>
     </html>

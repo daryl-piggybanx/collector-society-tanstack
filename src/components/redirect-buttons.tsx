@@ -2,7 +2,7 @@
 
 import { DomainButton, DomainButtonV2 } from "@/components/ui/domain-button";
 import { useMobile } from "@/hooks/use-mobile";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function RedirectButtons() {
     const isMobile = useMobile()

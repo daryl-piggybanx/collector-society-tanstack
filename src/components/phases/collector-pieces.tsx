@@ -1,6 +1,6 @@
 import type React from "react"
 
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 import { Sparkles, Users, X } from "lucide-react"
 import { useLocation } from "@tanstack/react-router"
 import { Input } from "@/components/ui/input"

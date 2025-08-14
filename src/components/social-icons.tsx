@@ -3,7 +3,7 @@
 import { TbBrandDiscord } from "react-icons/tb";
 import { useMobile } from "@/hooks/use-mobile"
 import { FaInstagram } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 export default function SocialIcons() {
   const isMobile = useMobile()

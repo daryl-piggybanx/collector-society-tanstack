@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 import { Check, ScrollText } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { FormData } from "@/components/collector-form"

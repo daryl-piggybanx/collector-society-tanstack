@@ -2,7 +2,7 @@
 
 import FuturisticButton from "@/components/ui/futuristic-button"
 import { useMobile } from "@/hooks/use-mobile"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 
 
 export default function ActionButtons() {

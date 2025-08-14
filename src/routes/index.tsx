@@ -4,7 +4,7 @@ import { useState } from "react"
 
 import { createFileRoute } from '@tanstack/react-router'
 
-import { AnimatePresence } from "framer-motion"
+import { AnimatePresence } from "motion/react"
 import IntroPage from "@/components/pages/intro"
 import LandingPage from "@/components/pages/landing"
 import { Menu, SquareX } from "lucide-react"
@@ -40,6 +40,9 @@ function App() {
           // <ThreeCanvasWrapper key="three-scene" />
         )}
       </AnimatePresence>
+      <footer className="absolute bottom-0 left-0 p-8 text-sm text-white/50 z-[100]">
+        <p>PIGGYBANK ©2025</p>
+      </footer>
     </div>
   )
 }

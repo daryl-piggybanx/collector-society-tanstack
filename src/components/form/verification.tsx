@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "motion/react"
 import { Check, ChevronLeft, ChevronRight, Loader2, AlertTriangle } from "lucide-react"
 import { useRouter } from "@tanstack/react-router"
 

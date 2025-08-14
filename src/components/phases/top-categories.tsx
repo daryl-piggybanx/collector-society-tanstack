@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "motion/react"
 import { Target, Check, Trophy, Music, Sparkles, Gamepad2, Film, Palette, Car, ChevronDown, Clapperboard, Warehouse } from "lucide-react"
 import { MdCatchingPokemon } from "react-icons/md";
 import { PiFlyingSaucer } from "react-icons/pi";

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Package, Home, Users, UserPlus, ExternalLink, UserCheck, Wallpaper } from "lucide-react";
 import { FaDiscord } from "react-icons/fa";
 import { GiFalling } from "react-icons/gi";
