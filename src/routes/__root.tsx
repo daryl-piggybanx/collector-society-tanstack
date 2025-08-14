@@ -3,14 +3,13 @@ import {
   HeadContent,
   Scripts,
   createRootRouteWithContext,
-  useRouter,
+  useLocation,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
 import LogoHeader from '../components/logo-header'
 
 import TanstackQueryLayout from '../integrations/tanstack-query/layout'
-import { cn } from '@/lib/utils'
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
@@ -59,11 +58,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
 
-  component: () => {
-    const router = useRouter()
-    const currentPath = router.state.location.pathname
+  component: () => {    
+    const location = useLocation()
+    const currentPath = location.pathname
     
-    // Exclude routes that start with '/play' from showing the header
+    // Show header only for routes that start with '/collector'
     const shouldShowHeader = currentPath.startsWith('/collector')
 
     return (
