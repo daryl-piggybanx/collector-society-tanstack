@@ -124,8 +124,8 @@ export default function LandingPage() {
     ))} */}
 
 
-    <main className="absolute z-10 inset-0 flex items-center justify-center sm:items-end sm:justify-start sm:pb-8 sm:pl-8 md:pb-12 md:pl-12 lg:pb-20 lg:pl-20">
-      <nav>
+    <main className="absolute z-10 inset-0 py-8 sm:px-8 md:py-12 md:px-12 lg:py-20 lg:px-20 flex flex-col-reverse sm:flex-row">
+      <nav className="flex items-center justify-center sm:items-end sm:justify-start">
         <ul className="flex flex-col gap-4 sm:gap-5 md:gap-4 text-center sm:text-left">
           {navItems.map((item, index) => (
             <li
@@ -135,7 +135,7 @@ export default function LandingPage() {
             >
               <Link
                 to={item.link}
-                className="text-wrap relative z-10 block text-2xl sm:text-4xl md:text-4xl lg:text-6xl xl:text-7xl font-light leading-tight text-white/70 transition-all duration-300 hover:text-white/90 hover:text-shadow-md hover:text-shadow-white/50 uppercase"
+                className="text-wrap relative z-10 block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light leading-tight text-white/70 transition-all duration-300 hover:text-white/90 hover:text-shadow-md hover:text-shadow-white/50 uppercase"
                 style={{
                   mixBlendMode: "difference",
                 }}
@@ -144,6 +144,26 @@ export default function LandingPage() {
               </Link>
             </li>
           ))}
+        </ul>
+      </nav>
+      <nav className="flex-1 flex justify-center sm:justify-end pt-4 sm:pt-8">
+        <ul className="flex flex-col gap-4 sm:gap-5 md:gap-4 text-center sm:text-right">
+          <li>
+            <a 
+              href="https://discord.com/invite/piggybanx-1133508764474019870"
+              className="font-light leading-tight text-white/70 transition-all duration-300 hover:text-white/90 hover:text-shadow-md hover:text-shadow-white/50 uppercase"
+            >
+              Gallery
+            </a>
+          </li>
+          <li>
+            <a 
+              href="https://www.instagram.com/piggy_banx/"
+              className="font-light leading-tight text-white/70 transition-all duration-300 hover:text-white/90 hover:text-shadow-md hover:text-shadow-white/50 uppercase"
+            >
+              Discord
+            </a>
+          </li>
         </ul>
       </nav>
     </main>
