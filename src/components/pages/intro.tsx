@@ -5,11 +5,32 @@ import { motion, AnimatePresence } from "motion/react"
 import bgVideo from "/assets/webBG.mp4"
 import arrow from "/assets/arrow.png"
 
+
+/** Cloudinary */
+// import { Cloudinary, CloudinaryVideo } from "@cloudinary/url-gen";
+// import { quality } from "@cloudinary/url-gen/actions/delivery";
+// import { format } from "@cloudinary/url-gen/actions/delivery";
+// import { auto } from "@cloudinary/url-gen/qualifiers/format";
+// import {AdvancedVideo} from '@cloudinary/react';
+
+// const cld = new Cloudinary({
+//   cloud: {
+//     cloudName: 'dj0feyubj'
+//   }
+// });
+
+// const bgVideo2 = cld.video("studio-landscape_mb7r4j").delivery(quality(85)).delivery(format(auto()));
+/** End Cloudinary */
+
 type IntroPageProps = {
   onEnter: () => void
 }
 
 export default function IntroPage({ onEnter }: IntroPageProps) {
+
+
+
+
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -65,9 +86,24 @@ export default function IntroPage({ onEnter }: IntroPageProps) {
         onCanPlayThrough={handleVideoReady}
         onPlaying={handleVideoReady}
       >
-        <source src={bgVideo as string} type="video/mp4" />
+        <source src={bgVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
+      {/* Cloudinary */}
+      {/* <AdvancedVideo
+        cldVid={bgVideo2}
+        className="absolute inset-0 h-full w-full object-cover"
+        controls={false}
+        autoPlay
+        muted
+        loop
+        playsInline
+        onLoadStart={handleVideoReady}
+        onCanPlay={handleVideoReady}
+        onCanPlayThrough={handleVideoReady}
+        onPlaying={handleVideoReady}
+        innerRef={videoRef}
+      /> */}
 
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/40" />
