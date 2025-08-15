@@ -12,6 +12,9 @@ import { useRef } from "react"
 import SunriseBackground from '@/components/sunrise-background'
 import Header from "@/components/header"
 
+import steveAoki from "/assets/steve-aoki_banner.png"
+import astroBoy from "/assets/astro-boy_banner.png"
+
 const sections = [
     Mission,
     Mission2
@@ -29,8 +32,8 @@ export default function Ethos() {
     const titleHeight = size.height * 1.2
 
     const sectiontimeline = sections.map((_, i) => {
-        const start = titleHeight + i * size.height
-        const end = titleHeight + (i + 1) * size.height
+        const start = titleHeight + i * size.height * 1.5
+        const end = titleHeight + (i + 1) * size.height * 1.5
 
         return [start, end]
     })
@@ -74,7 +77,10 @@ export default function Ethos() {
 
   function Mission() {
      return (
-       <div className="relative h-screen flex items-center justify-center px-6 bg-neutral-200 text-black">
+       <div 
+       className="relative h-screen flex items-center justify-center px-6 bg-neutral-200 text-black"
+       style={{backgroundImage:`url(${steveAoki})`}}
+       >
         <motion.div 
           className="absolute inset-0 flex items-center justify-center opacity-10"
           initial={{ opacity: 0 }}
@@ -121,7 +127,10 @@ export default function Ethos() {
 
   function Mission2() {
      return (
-       <div className="relative h-screen flex items-center justify-center px-6 bg-gradient-to-b from-slate-900 to-black text-white">
+       <div 
+       className="relative h-screen flex items-center justify-center px-6 bg-gradient-to-b from-slate-900 to-black text-white"
+       style={{backgroundImage:`url(${astroBoy})`}}
+       >
         <div className="container mx-auto text-center max-w-5xl">
           <motion.h3 
             className="text-4xl md:text-6xl lg:text-7xl font-light text-center mb-8"
