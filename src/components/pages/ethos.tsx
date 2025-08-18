@@ -1,167 +1,330 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
+import { motion } from "motion/react"
 
-import { motion, useScroll, useTransform, useMotionValueEvent } from "motion/react"
+import { useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollSmoother } from 'gsap/ScrollSmoother';
+import { useGSAP } from '@gsap/react';
+import { Card } from "@/components/ui/card";
 
-import useWindowResize from "@/hooks/use-window-resize"
-
-import landingbg from "/assets/landingBG2.png"
-import { useRef } from "react"
-
-import SunriseBackground from '@/components/sunrise-background'
 import Header from "@/components/header"
 
-import steveAoki from "/assets/steve-aoki_banner.png"
-import astroBoy from "/assets/astro-boy_banner.png"
+import SunriseBackground from "@/components/sunrise-background"
+import Collaborators from "@/components/collaborators"
+
+import acquireCards from "/assets/acquire-cards.png"
+
+// Register GSAP plugins
+gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollSmoother);
+const animation = gsap.timeline()
+
+// Counter Animation Component
+
+
+type SectionProps = {
+  index: number;
+}
 
 const sections = [
-    Mission,
-    Mission2
-]
+    Affiliations,
+    AcquireSection,
+    BlockedSection,
+    CommunitySection,
+    FifthSection,
+];
+
+
 
 export default function Ethos() {
-    const scrollRef = useRef(null);
-    const {size} = useWindowResize();
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    const { scrollYProgress } = useScroll({
-        target: scrollRef,
-        offset: ["start start", "end end"] // start at the top of the page and end at the bottom of the page
-    })
+    useGSAP(() => {
+        const cards = gsap.utils.toArray<HTMLElement>('.stack-section');
+        
+        if (cards.length === 0) return;
+        
+        const initCards = () => {
+            const cardHeight = cards[0]?.offsetHeight || window.innerHeight;
+            console.log("initCards()", cardHeight);
 
-    const titleHeight = size.height * 1.2
+            // Clear any existing animations            
+            gsap.killTweensOf(cards);
+            
+            // Set initial positions - stack cards on top of each other with offsets
+            cards.forEach((card, index) => {
+                if (index > 0) {
+                    // Increment y value of each card by cardHeight (stack them)
+                    gsap.set(card, { y: index * cardHeight });
+                }
+            });
+            
+            // Create the main timeline for the stacking animation
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top top",
+                    end: () => `+=${cards.length * cardHeight}`,
+                    scrub: true,
+                    pin: true,
+                    anticipatePin: 1,
+                    // markers: true, // Remove in production
+                }
+            });
+            
+            // Animate each card back to 0 (for stacking effect)
+            cards.forEach((card, index) => {
+                if (index > 0) {
+                    tl.to(card, {
+                        y: 0,
+                        duration: index * 0.5,
+                        ease: "none"
+                    }, 0); // All animations start at the same time
+                }
+            });
+        };
+        
+        // Initialize cards
+        initCards();
+        
+        // Reinitialize on resize
+        const handleResize = () => {
+            // ScrollTrigger.refresh();
+            // initCards();
+        };
+        
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
 
-    const sectiontimeline = sections.map((_, i) => {
-        const start = titleHeight + i * size.height * 1.5
-        const end = titleHeight + (i + 1) * size.height * 1.5
-
-        return [start, end]
-    })
-
-    const timeline = [[0, titleHeight], ...sectiontimeline]
-
-    const animation = timeline.map((data) => (
-        {
-            scale: useTransform(scrollYProgress, data, [1, 0.8])
-        }
-    ))
+    }, { scope: containerRef });
 
     return (
-      <>
-      <Header />
-      <SunriseBackground />
-      {/* Spacer to allow Hero animations to complete */}
-      <div className="h-[400vh]" />
-      <section ref={scrollRef} className="relative z-10">
-        {/* <motion.div 
-        style={{ scale: animation[0].scale, height: titleHeight }} 
-        className="sticky top-0 flex items-end text-8xl lg:text-[160px] uppercase lg:leading-[140px] px-36 overflow-clip z-20 bg-white">
-            <h1 className="w-full h-max">Stacking <br /> <span className="ml-20 lg:ml-52">Sections</span></h1>
-        </motion.div> */}
-        {sections.map((Section, index) => (
-             <motion.div 
-                 key={index} 
-                 className="h-dvh sticky top-0 z-20"
-                 style={animation[index]}
-                 >
-               <Card key={index} className="h-dvh">
-                 <Section />
-               </Card>
-             </motion.div>
-         ))}
-        {/* <div className="h-dvh"/> */}
-      </section>
-      </>
+        <>
+          <Header />
+            {/* Header section that scrolls normally */}
+            {/* <div className="h-screen w-screen bg-gradient-to-br from-gray-900 to-gray-700 flex items-center justify-center">
+                <div className="text-center text-white">
+                    <h1 className="text-6xl font-bold mb-4">Stacked Cards Demo</h1>
+                    <p className="text-xl opacity-80">Scroll down to see the stacking animation</p>
+                    <div className="mt-8 animate-bounce">
+                        <svg className="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                    </div>
+                </div>
+            </div> */}
+            <SunriseBackground />
+            <div className="h-[500vh]" />
+            
+
+            {/* Stacked sections container */}
+            <div ref={containerRef} className="relative">
+                {sections.map((Section, index) => (
+                    <Card key={index}>
+                        <Section index={index} />
+                    </Card>
+                ))}
+            </div>
+            <div className="h-dvh"/>
+        </>
+    );
+}
+
+
+
+function Affiliations({ index }: SectionProps) {
+    return (
+        <section
+            className={`stack-section h-screen flex flex-col items-center justify-center absolute top-0 left-0 w-full bg-gradient-to-b from-[#242426] from-10% via-[#2D2D30] via-30% to-white to-70%`}
+            style={{ 
+                zIndex: index + 1,
+            }}
+        >
+            <Collaborators />
+
+        </section>
     )
 }
 
-  function Mission() {
-     return (
-       <div 
-       className="relative h-screen flex items-center justify-center px-6 bg-neutral-200 text-black"
-       style={{backgroundImage:`url(${steveAoki})`}}
-       >
-        <motion.div 
-          className="absolute inset-0 flex items-center justify-center opacity-10"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+function AcquireSection({ index }: SectionProps) {
+    return (
+        <section
+            className={`stack-section h-screen flex items-center justify-center absolute top-0 left-0 w-full bg-gradient-to-b from-black from-10% via-black/90 via-30% to-black to-90%`}
+            style={{ 
+                zIndex: index + 1,
+            }}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" fill="none" className="w-96 h-96">
-            <path d="M 150,10 A 140,140 0 1,1 149.99,10" stroke="#E5E5DF" strokeWidth="1" fill="none" />
-          </svg>
-        </motion.div>
-
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <em className="text-sm uppercase tracking-wider text-orange-400 mb-4">Mission</em>
-          <motion.h2 className="text-4xl md:text-6xl font-light leading-tight mb-8"
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            Lorem Ipsum PiggyBanx Collaboratorium
-          </motion.h2>
-          <div className="max-w-2xl mx-auto">
-            <motion.p className="text-lg text-gray-900 leading-relaxed mb-8"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-            >
-            <span className="text-orange-400">PiggyBanx is a new kind of collectible art company.</span> lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium. Our{" "}
-            <span className="text-orange-400">intelligent, autonomous art cells</span> lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium. and{" "}
-            <span className="text-orange-400">empower artists</span> lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium.
-            </motion.p>
-            <motion.button className="border border-orange-400 text-orange-400 px-6 py-3 rounded hover:bg-orange-400 hover:text-white transition-colors"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-            >
-              Read more
-            </motion.button>
-          </div>
-        </div>
-        <div className="h-dvh"/>
-      </div>
+            <motion.div className="flex text-white px-8 max-w-4xl">
+                <div className="flex text-white flex-col items-center justify-center relative">
+                    <motion.p 
+                        initial={{ opacity: 0, x: -200 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
+                        viewport={{ once: true }}
+                        className="text-lg max-w-2xl mx-auto leading-relaxed mb-8 text-wrap z-20"
+                    >
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                    </motion.p>
+                    {/* <motion.div 
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        viewport={{ once: true }}
+                        className="absolute top-0 left-0 w-full h-full bg-black/50 z-10" 
+                    /> */}
+                </div>
+                
+                <div 
+                    className="flex flex-col items-center justify-center relative"
+                >
+                    <motion.h1 
+                        initial={{ opacity: 0}}
+                        whileInView={{ opacity: 1}}
+                        transition={{ duration: 1, delay: 0.1 }}
+                        viewport={{ once: true }}
+                        className="text-6xl font-bold mb-4 font-sans absolute top-[-3rem] left-0 uppercase"
+                    >Acquire</motion.h1>
+                    <motion.img 
+                        initial={{ translateX: 100}}
+                        whileInView={{ translateX: 0}}
+                        transition={{ duration: 1, delay: 0.1, ease: "easeInOut" }}
+                        viewport={{ once: true }}
+                        src={acquireCards} alt="Acquire" width={400} height={600} className="w-full h-full object-contain" />
+                </div>
+            </motion.div>
+        </section>
     )
-  }
+}
 
-  function Mission2() {
-     return (
-       <div 
-       className="relative h-screen flex items-center justify-center px-6 bg-gradient-to-b from-slate-900 to-black text-white"
-       style={{backgroundImage:`url(${astroBoy})`}}
-       >
-        <div className="container mx-auto text-center max-w-5xl">
-          <motion.h3 
-            className="text-4xl md:text-6xl lg:text-7xl font-light text-center mb-8"
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            PiggyBanx Lorem Ipsum
-          </motion.h3>
-          
-          <motion.p 
-            className="text-xl md:text-2xl leading-relaxed opacity-90 font-light max-w-3xl mx-auto mb-16"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium 
-            lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
-          </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            <button className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-12 py-5 rounded-full text-lg font-medium hover:bg-white/20 transition-all duration-500 transform hover:scale-110 hover:shadow-2xl">
-              Explore Further
-            </button>
-          </motion.div>
-        </div>
-        <div className="h-dvh"/>
-      </div>
+function BlockedSection({ index }: SectionProps) {
+    return (
+        <section
+        className={`stack-section h-screen flex items-center justify-center absolute top-0 left-0 w-full bg-gradient-to-b from-black/100 from-20% via-black via-30% to-black to-90%`}
+            style={{ 
+                zIndex: index + 1,
+            }}
+        >
+            <motion.div className="flex text-white px-8 max-w-4xl">
+                <div 
+                    className="flex flex-col items-center justify-center relative"
+                >
+                    <motion.h1 
+                        initial={{ opacity: 0}}
+                        whileInView={{ opacity: 1}}
+                        transition={{ duration: 1, delay: 0.1 }}
+                        viewport={{ once: true }}
+                        className="text-6xl font-bold mb-4 font-sans absolute top-[-3rem] left-0 uppercase"
+                    >Blocked</motion.h1>
+                    <motion.img 
+                        initial={{ translateX: -100}}
+                        whileInView={{ translateX: 0}}
+                        transition={{ duration: 1, delay: 0.1, ease: "easeInOut" }}
+                        viewport={{ once: true }}
+                        src={acquireCards} alt="Acquire" width={400} height={600} className="w-full h-full object-contain" />
+                </div>
+
+                <div className="flex text-white flex-col items-center justify-center relative">
+                    <motion.p 
+                        initial={{ opacity: 0, x: 200 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
+                        viewport={{ once: true }}
+                        className="text-lg max-w-2xl mx-auto leading-relaxed mb-8 text-wrap z-20 text-right"
+                    >
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                    </motion.p>
+                </div>
+                
+            </motion.div>
+        </section>
     )
-  }
+}
+
+function CommunitySection({ index }: SectionProps) {
+    return (
+        <section
+        className={`stack-section h-screen flex items-center justify-center absolute top-0 left-0 w-full bg-gradient-to-b from-black/80 from-20% via-black via-30% to-black to-90%`}
+            style={{ 
+                zIndex: index + 1,
+            }}
+        >
+            <motion.div className="flex text-white px-8 max-w-4xl">
+                <div className="flex text-white flex-col items-center justify-center relative">
+                    <motion.p 
+                        initial={{ opacity: 0, x: -200 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
+                        viewport={{ once: true }}
+                        className="text-lg max-w-2xl mx-auto leading-relaxed mb-8 text-wrap z-20"
+                    >
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                        lorem ipsum piggybanx collaboratorium lorem ipsum piggybanx collaboratorium
+                    </motion.p>
+                </div>
+
+                <div 
+                    className="flex flex-col items-center justify-center relative"
+                >
+                    <motion.h1 
+                        initial={{ opacity: 0}}
+                        whileInView={{ opacity: 1}}
+                        transition={{ duration: 1, delay: 0.1 }}
+                        viewport={{ once: true }}
+                        className="text-6xl font-bold mb-4 font-sans absolute top-[-3rem] left-0 uppercase"
+                    >Community</motion.h1>
+                    <motion.img 
+                        initial={{ translateX: 100}}
+                        whileInView={{ translateX: 0}}
+                        transition={{ duration: 1, delay: 0.1, ease: "easeInOut" }}
+                        viewport={{ once: true }}
+                        src={acquireCards} alt="Acquire" width={400} height={600} className="w-full h-full object-contain" />
+                </div>
+                
+            </motion.div>
+        </section>
+    )
+}
+
+function FifthSection({ index }: SectionProps) {
+    return (
+        <section
+            className={`stack-section h-screen flex items-center justify-center absolute top-0 left-0 w-full bg-gradient-to-br from-indigo-600 to-blue-700`}
+            style={{ 
+                zIndex: index + 1,
+            }}
+        >
+            <div className="text-center text-white px-8 max-w-4xl">
+                <h1 className="text-6xl font-bold mb-4 font-sans">Contact</h1>
+                <h2 className="text-2xl mb-6 opacity-80">Final Section</h2>
+                <p className="text-lg max-w-2xl mx-auto leading-relaxed mb-8">fifth section for stacking animation.</p>
+                <div className="inline-block px-6 py-3 border-2 border-white/30 rounded-full text-sm tracking-wider">
+                    Section 5 of 5
+                </div>
+            </div>
+        </section>
+    )
+}
+
+

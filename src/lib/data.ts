@@ -164,3 +164,61 @@ export const collectionPreferences = [
     icon: "warehouse",
   }
 ]
+
+
+export type Collaborator = {
+  image: string
+  alt: string
+  href: string
+  title: string
+}
+export const collaborators: Collaborator[] = [
+  {
+    image: "/assets/aaron-kai_logo.png",
+    alt: "Aaron Kai",
+    href: "https://www.aaronkai.com/",
+    title: "Aaron Kai",
+  },
+  {
+    image: "/assets/good-charlotte_logo.png",
+    alt: "Good Charlotte",
+    href: "https://www.goodcharlotte.com/",
+    title: "Good Charlotte",
+  },
+  {
+    image: "/assets/astro-boy_logo.png",
+    alt: "Astro Boy",
+    href: "https://astroboy.ai/",
+    title: "Astro Boy",
+  },
+  {
+    image: "/assets/steve-aoki_logo.png",
+    alt: "Steve Aoki",
+    href: "https://www.steveaoki.com/",
+    title: "Steve Aoki",
+  },
+  {
+      image: "/assets/aaron-kai_logo.png",
+      alt: "Aaron Kai",
+      href: "https://www.aaronkai.com/",
+      title: "Aaron Kai",
+    },
+    {
+      image: "/assets/good-charlotte_logo.png",
+      alt: "Good Charlotte",
+      href: "https://www.goodcharlotte.com/",
+      title: "Good Charlotte",
+    },
+    {
+      image: "/assets/astro-boy_logo.png",
+      alt: "Astro Boy",
+      href: "https://astroboy.ai/",
+      title: "Astro Boy",
+    },
+    {
+      image: "/assets/steve-aoki_logo.png",
+      alt: "Steve Aoki",
+      href: "https://www.steveaoki.com/",
+      title: "Steve Aoki",
+    },
+]

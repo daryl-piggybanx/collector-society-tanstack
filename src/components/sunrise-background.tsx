@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { motion, useScroll, useTransform, useMotionValueEvent } from "motion/react"
 
+
 export default function SunriseBackground() {
     const { scrollYProgress } = useScroll()
   
