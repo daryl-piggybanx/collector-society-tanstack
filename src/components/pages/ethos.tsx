@@ -39,6 +39,7 @@ const sections = [
 
 export default function Ethos() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const sunriseRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
         const cards = gsap.utils.toArray<HTMLElement>('.stack-section');
@@ -83,6 +84,20 @@ export default function Ethos() {
                     }, 0); // All animations start at the same time
                 }
             });
+
+            // Fade out SunriseBackground when stacked sections come into view
+            if (sunriseRef.current) {
+                gsap.to(sunriseRef.current, {
+                    opacity: 0,
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top bottom", // When container starts entering viewport
+                        end: "top top", // When container reaches top of viewport
+                        scrub: true,
+                        // markers: true, // Remove in production
+                    }
+                });
+            }
         };
         
         // Initialize cards
@@ -117,14 +132,16 @@ export default function Ethos() {
                     </div>
                 </div>
             </div> */}
-            <SunriseBackground />
-            <div className="h-[500vh]" />
+            <div ref={sunriseRef}>
+                <SunriseBackground />
+            </div>
+            <div className="h-[700vh]" />
             
 
             {/* Stacked sections container */}
-            <div ref={containerRef} className="relative">
+            <div ref={containerRef} className="relative border-none bg-transparent">
                 {sections.map((Section, index) => (
-                    <Card key={index}>
+                    <Card key={index} className="border-none shadow-none">
                         <Section index={index} />
                     </Card>
                 ))}
@@ -139,7 +156,7 @@ export default function Ethos() {
 function Affiliations({ index }: SectionProps) {
     return (
         <section
-            className={`stack-section h-screen flex flex-col items-center justify-center absolute top-0 left-0 w-full bg-gradient-to-b from-[#242426] from-10% via-[#2D2D30] via-30% to-white to-70%`}
+            className={`stack-section h-screen flex flex-col items-center justify-center absolute top-0 left-0 w-full bg-gradient-to-b from-[#242426]/0 via-10% to-white to-30%`}
             style={{ 
                 zIndex: index + 1,
             }}

@@ -61,7 +61,7 @@ export default function Collaborators() {
           {/* Three columns of text */}
           <motion.div className="grid grid-cols-3 gap-8 uppercase pt-20">
               <motion.div 
-                  className="text-center text-white px-8 w-full max-w-4xl"
+                  className="text-center text-black px-8 w-full max-w-4xl text-shadow-lg"
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
@@ -75,7 +75,7 @@ export default function Collaborators() {
                   <h2 className="text-2xl mb-6 opacity-80 text-shadow-lg">Wishes Granted</h2>
               </motion.div>
               <motion.div 
-                  className="text-center text-white px-8 max-w-4xl"
+                  className="text-center text-black px-8 max-w-4xl text-shadow-lg"
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 }}
@@ -89,7 +89,7 @@ export default function Collaborators() {
                   <h2 className="text-2xl mb-6 opacity-80 text-shadow-lg">Charity Donations</h2>
               </motion.div>
               <motion.div 
-                  className="text-center text-white px-8 max-w-4xl"
+                  className="text-center text-black px-8 max-w-4xl text-shadow-lg"
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.5 }}

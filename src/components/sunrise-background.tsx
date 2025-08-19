@@ -10,11 +10,14 @@ export default function SunriseBackground() {
     // Overlay opacity (fades from 1 to 0)
     const overlayOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1])
   
-    // Logo position (moves from 85.89% to -50%)
-    const logoY = useTransform(scrollYProgress, [0, 0.6], [85.89, -50])
+    // Logo position (moves from 85.89% to center)
+    const logoY = useTransform(scrollYProgress, [0, 0.6], [85.89, 0])
     // Logo gradient colors - SVG gradients need string values, so using state with useMotionValueEvent
     const [topColor, setTopColor] = useState("rgba(0,0,0,1)")
     const [bottomColor, setBottomColor] = useState("rgba(0,0,0,1)")
+    
+    // Title color - transitions from black to white matching logo timing
+    const [titleColor, setTitleColor] = useState("#000000")
     
     // Geometric lines color - transitions from black to white
     const [linesColor, setLinesColor] = useState("#FFFFFF")
@@ -28,11 +31,14 @@ export default function SunriseBackground() {
         // Transition from dark to light - matches overlay darkening (0-20% scroll)
         setTopColor(latest > 0.2 ? "#FFFFFF" : latest > 0.15 ? "#F0F0F0" : "#e0dede")
         setBottomColor(latest > 0.4 ? "#FFFFFF" : latest > 0.3 ? "#e0dede" : "#212121")
+        // Title color transitions matching logo timing
+        setTitleColor(latest > 0.2 ? "#FFFFFF" : latest > 0.15 ? "#F0F0F0" : "#e0dede")
       } else {
         // Initial state - dark colors when background is light
         setTopColor("#212121")
         setBottomColor("rgba(0,0,0,1)")
         setLinesColor("rgba(250,250,250,0.9)")
+        setTitleColor("#000000")
       }
     })
   
@@ -70,9 +76,17 @@ export default function SunriseBackground() {
           <div className="relative z-10 h-full flex flex-col items-center justify-center px-6">
             {/* Title */}
             <div className="flex justify-start w-full margin-auto mb-8 pl-8 md:pl-20 lg:pl-40">
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-light leading-tight text-black text-right max-w-3xl">
+              <motion.h1 
+                initial={{ opacity: 0}}
+                whileInView={{ opacity: 1}}
+                exit={{ opacity: 0}}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-5xl lg:text-6xl font-light leading-tight text-right max-w-3xl"
+                style={{ color: titleColor }}
+              >
                 Community Driven<br />Collectible Art
-              </h1>
+              </motion.h1>
             </div>
           </div>
 
