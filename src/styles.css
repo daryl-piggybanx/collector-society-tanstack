@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 @plugin "tailwindcss-animate";
 
@@ -204,4 +205,22 @@ code {
 
 .animate-marquee-mobile {
   animation: marquee-mobile 20s linear infinite;
+}
+
+/* Custom styles for main element */
+.statue-custom-radial-gradient {
+  background: black;
+  background: radial-gradient(circle at bottom center, rgb(160, 160, 160) 0%, rgba(0, 0, 0, 1) 58%);
+}
+
+.statue-custom-cursor {
+  cursor: url('https://github.com/chenglou/react-motion/raw/master/demos/demo8-draggable-list/cursor.png') 39 39, auto;
+}
+
+
+.annotation-hover:hover {
+  box-shadow: inset 250px 0 0 0 #fff;
+  background: rgba(255, 255, 255, 0.5);
+  color: #000;
+  border: 1px solid #000;
 }

@@ -110,6 +110,9 @@ importers:
       lucide-react:
         specifier: ^0.476.0
         version: 0.476.0(react@19.1.0)
+      maath:
+        specifier: ^0.10.8
+        version: 0.10.8(@types/three@0.179.0)(three@0.179.1)
       motion:
         specifier: ^12.23.12
         version: 12.23.12(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
