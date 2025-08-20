@@ -6,7 +6,7 @@ import { motion } from "motion/react"
 import { User, Edit } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import type { FormData } from "@/components/collector-form"
+import type { FormData } from "@/components/form/types"
 import { useLocation } from "@tanstack/react-router"
 
 interface UserIdentityProps {
