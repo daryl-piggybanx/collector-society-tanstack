@@ -14,20 +14,9 @@ const config = defineConfig({
       }),
       tailwindcss(),
     ],
-    resolve: {
-      alias: {
-        '@': './src',
-        '@assets': './src/assets',
-        '@components': './src/components',
-        '@lib': './src/lib',
-        '@routes': './src/routes',
-        '@integrations': './src/integrations',
-      },
-    },
     ssr: {
       noExternal: ["posthog-js", "posthog-js/react"],
     },
-    assetsInclude: ['**/*.mp4', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
   },
 })
 
