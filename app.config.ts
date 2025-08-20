@@ -17,6 +17,13 @@ const config = defineConfig({
     ssr: {
       noExternal: ["posthog-js", "posthog-js/react"],
     },
+    build: {
+      rollupOptions: {
+        external: [
+          '/assets/webBG.mp4'
+        ]
+      }
+    }
   },
 })
 
