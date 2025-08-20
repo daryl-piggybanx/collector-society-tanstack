@@ -17,11 +17,13 @@ const config = defineConfig({
     ssr: {
       noExternal: ["posthog-js", "posthog-js/react"],
     },
+    assetsInclude: ['**/*.mp4', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
     build: {
       rollupOptions: {
-        external: [
-          '/assets/webBG.mp4'
-        ]
+        external: (id) => {
+          // Externalize all assets from /assets/ directory
+          return id.startsWith('/assets/')
+        }
       }
     }
   },
