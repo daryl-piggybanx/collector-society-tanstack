@@ -14,13 +14,9 @@ import Header from "@/components/header"
 import SunriseBackground from "@/components/sunrise-background"
 import Collaborators from "@/components/collaborators"
 
-import acquireCards from "/assets/acquire-cards.png"
-
 // Register GSAP plugins
 gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollSmoother);
 const animation = gsap.timeline()
-
-// Counter Animation Component
 
 
 type SectionProps = {
@@ -216,7 +212,7 @@ function AcquireSection({ index }: SectionProps) {
                         whileInView={{ translateX: 0}}
                         transition={{ duration: 1, delay: 0.1, ease: "easeInOut" }}
                         viewport={{ once: true }}
-                        src={acquireCards} alt="Acquire" width={400} height={600} className="w-full h-full object-contain" />
+                        src="/assets/acquire-cards.png" alt="Acquire" width={400} height={600} className="w-full h-full object-contain" />
                 </div>
             </motion.div>
         </section>
@@ -248,7 +244,7 @@ function BlockedSection({ index }: SectionProps) {
                         whileInView={{ translateX: 0}}
                         transition={{ duration: 1, delay: 0.1, ease: "easeInOut" }}
                         viewport={{ once: true }}
-                        src={acquireCards} alt="Acquire" width={400} height={600} className="w-full h-full object-contain" />
+                        src="/assets/acquire-cards.png" alt="Acquire" width={400} height={600} className="w-full h-full object-contain" />
                 </div>
 
                 <div className="flex text-white flex-col items-center justify-center relative">
@@ -316,7 +312,7 @@ function CommunitySection({ index }: SectionProps) {
                         whileInView={{ translateX: 0}}
                         transition={{ duration: 1, delay: 0.1, ease: "easeInOut" }}
                         viewport={{ once: true }}
-                        src={acquireCards} alt="Acquire" width={400} height={600} className="w-full h-full object-contain" />
+                        src="/assets/acquire-cards.png" alt="Acquire" width={400} height={600} className="w-full h-full object-contain" />
                 </div>
                 
             </motion.div>

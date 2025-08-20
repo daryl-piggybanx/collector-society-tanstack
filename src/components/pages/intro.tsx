@@ -2,9 +2,6 @@
 
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import bgVideo from "/assets/webBG.mp4"
-import arrow from "/assets/arrow.png"
-
 
 /** Cloudinary */
 // import { Cloudinary, CloudinaryVideo } from "@cloudinary/url-gen";
@@ -86,7 +83,7 @@ export default function IntroPage({ onEnter }: IntroPageProps) {
         onCanPlayThrough={handleVideoReady}
         onPlaying={handleVideoReady}
       >
-        <source src={bgVideo} type="video/mp4" />
+        <source src="/assets/webBG.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       {/* Cloudinary */}
@@ -155,7 +152,7 @@ export default function IntroPage({ onEnter }: IntroPageProps) {
               whileTap={{ scale: 0.95 }}
             >
               <span className="relative z-10 transition-colors duration-300 group-hover:font-bold">Enter</span>
-              <img src={arrow} alt="arrow" className="w-[95%]" />
+              <img src="/assets/arrow.png" alt="arrow" className="w-[95%]" />
               <motion.div
                 className="absolute inset-0"
                 initial={{ x: "-100%" }}
